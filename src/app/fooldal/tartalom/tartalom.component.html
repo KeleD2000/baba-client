@@ -1,0 +1,56 @@
+<div *ngFor="let contents of content; index as i">
+    <ng-container *ngIf="i <= 4">
+        <ng-container *ngIf="contents === undefined; else elseBlock">
+            <img class="img" [src]="getPhotos(i)">
+        </ng-container>
+        <ng-template #elseBlock>
+            <div class="mb-3 mt-3" [innerHTML]="contents"></div>
+        </ng-template>
+    </ng-container>
+</div>
+<div class="d-flex mb-3 mt-3 flex-md-row flex-column">
+    <div *ngFor="let contents of content; index as i">
+        <div class="p-text" *ngIf="i === 5">
+            <div [innerHTML]="contents"></div>
+        </div>
+        <div *ngIf="i === 6"> <img class="img-left1" [src]="getPhotos(i)" alt=""></div>
+    </div>
+</div>
+<div *ngFor="let contents of content; index as i">
+    <ng-container *ngIf="i > 6 && i < 10">
+        <ng-container *ngIf="contents === undefined; else elseBlock">
+            <img class="img" [src]="getPhotos(i)">
+        </ng-container>
+        <ng-template #elseBlock>
+            <div [innerHTML]="contents"></div>
+        </ng-template>
+    </ng-container>
+</div>
+<div class="d-flex mb-3 mt-3 flex-md-row flex-column">
+    <div *ngFor="let contents of content; index as i" class="d-flex align-items-center justify-content-center">
+        <div class="p-text" *ngIf="i === 10">
+            <div [innerHTML]="contents"></div>
+        </div>
+        <div *ngIf="i === 11"> <img class="img-left2" [src]="getPhotos(i)" alt=""></div>
+    </div>
+</div>
+<div *ngFor="let contents of content; index as i">
+    <ng-container *ngIf="i === 12">
+        <ng-container *ngIf="contents === undefined; else elseBlock">
+            <img class="img" [src]="getPhotos(i)">
+        </ng-container>
+        <ng-template #elseBlock>
+            <div [innerHTML]="contents"></div>
+        </ng-template>
+    </ng-container>
+</div>
+<div class="d-flex mb-3 mt-3 flex-md-row flex-column w-100">
+    <div *ngFor="let contents of content; index as i"  [ngClass]="{'w-50 column': i >= 13}">
+        <div *ngIf="i === 13">
+            <img class="img-right" [src]="getPhotos(i)" alt="">
+        </div>
+        <div class="p-text" *ngIf="i === 14">
+            <div [innerHTML]="contents"></div>
+        </div>
+    </div>
+</div>

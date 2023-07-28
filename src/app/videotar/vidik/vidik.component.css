@@ -1,0 +1,66 @@
+:host ::ng-deep .MsoNormal{
+    color: black;
+    font-size: medium;
+    text-align: center;
+    
+}
+
+:host ::ng-deep .MsoLeft{
+    color: black;
+    font-size: medium;
+    text-align: left;
+}
+
+:host ::ng-deep .MsoWhite{
+    color:white;
+}
+
+:host ::ng-deep .MsoLineHeight{
+    text-align: justify;
+    line-height: 1rem;
+}
+
+.img{
+    width: 100%;
+    height: auto;
+}
+
+.img-left1{
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    
+}
+
+.img-left2{
+    width: 100%;
+    height: auto;
+    padding: 10px;
+}
+
+.img-right{
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    
+}
+
+.p-text{
+    padding: 10px;
+}
+
+.d-flex{
+    background-color: #0A606F;
+    
+}
+
+@media screen and (max-width: 768px) {
+    .column{
+        width: 100% !important;
+    }
+  }
+
+.iframe-container{
+    display: flex;
+    justify-content: center;
+}

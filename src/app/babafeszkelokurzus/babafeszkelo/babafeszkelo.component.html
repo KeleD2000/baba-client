@@ -1,0 +1,40 @@
+<div *ngFor="let contents of content; index as i">
+    <ng-container *ngIf="i <= 2">
+        <ng-container *ngIf="contents === undefined; else elseBlock">
+            <img class="img" [src]="getPhotos(i)">
+        </ng-container>
+        <ng-template #elseBlock>
+            <div class="mb-3 mt-3" [innerHTML]="contents"></div>
+        </ng-template>
+    </ng-container>
+</div>
+<div class="d-flex mb-3 mt-3 flex-md-row flex-column">
+    <div *ngFor="let contents of content; index as i" class="d-flex align-items-center justify-content-center" [ngClass]="{'w-50 column' : i == 3 || i == 4}">
+        <div class="p-text" *ngIf="i === 3">
+            <div [innerHTML]="contents"></div>
+        </div>
+        <div *ngIf="i === 4">
+            <img class="img-right" [src]="getPhotos(i)">
+        </div>
+    </div>
+</div>
+<div *ngFor="let contents of content; index as i">
+    <ng-container *ngIf="i > 4 && i < 12">
+        <ng-container *ngIf="contents === undefined; else elseBlock">
+            <img class="img" [src]="getPhotos(i)">
+        </ng-container>
+        <ng-template #elseBlock>
+            <div [innerHTML]="contents"></div>
+        </ng-template>
+    </ng-container>
+</div>
+<div class="d-flex mb-3 mt-3 flex-md-row flex-column">
+    <div *ngFor="let contents of content; index as i" [ngClass]="{'w-50 column' : i == 12 || i == 13}">
+        <div class="p-text" *ngIf="i === 12">
+            <div [innerHTML]="contents"></div>
+        </div>
+        <div *ngIf="i === 13">
+            <img class="img-left1" [src]="getPhotos(i)">
+        </div>
+    </div>
+</div>

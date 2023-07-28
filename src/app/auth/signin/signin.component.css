@@ -1,0 +1,17 @@
+.reg{
+    float: right;
+}
+
+.c{
+    background-color: #0A606F;
+    border-color: #0A606F;
+}
+
+.form-control{
+    border-color: #0A606F;
+}
+
+.btn:hover{
+    background-color: #E6009F;
+    border-color: #E6009F;
+}

@@ -1,0 +1,20 @@
+<div class="p-1" *ngFor="let contents of content; index as i">
+    <ng-container *ngIf="i<=3">
+        <ng-container *ngIf="contents === undefined; else elseBlock">
+            <img class="img" [src]="getPhotos(i)">
+        </ng-container>
+        <ng-template #elseBlock>
+            <div class="mb-3 mt-3" [innerHTML]="contents"></div>
+        </ng-template>
+    </ng-container>
+</div>
+<div class="iframe-container" *ngFor="let contents of content; index as i">
+    <ng-container *ngIf="i == 4">
+        <iframe class="p-3" width="560" height="315" src="https://www.youtube.com/embed/auMllD0l_m4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </ng-container>
+</div>
+<div *ngFor="let contents of content; index as i">
+    <ng-container *ngIf="i == 5">
+        <img class="img pb-3" [src]="getPhotos(i)">
+    </ng-container>
+</div>

@@ -1,0 +1,88 @@
+<!--
+<header class="sticky-top header">
+  <div class="container-fluid">
+    <div class="row" style="background:  #0A606F">
+      <div class="d-flex p-2 justify-content-between align-items-baseline">
+        <button class="navbar-toggler float-end navsize" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <fa-icon [icon]="faBars"></fa-icon>
+        </button>
+        <nav class="navbar2 navbar-expand-lg navbar-light" [ngClass]="{'show' : showNavbar}">
+          <div class="collapse navbar-collapse" id="navbarNav2">
+            <div class="container-fluid ">
+              <ul>
+                <li class="navlink" *ngFor="let menu of menus" style="font-size: 14px;"
+                [routerLink]="menu.href" [ngClass]="{'active': isActiveMenu(menu.href), 'smaller': showNavbar}">{{ menu.title }}</li>
+                <li class="navlink" style="font-size: 14px;" (click)="Navigate()" [ngClass]="{'smaller': showNavbar}">Bejelentkezés/Regisztráció</li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light" [ngClass]="{'hide': showNavbar}">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="container-fluid">
+          <ul>
+            <li class="navlink" *ngFor="let menu of menus" style="font-size: 14px;" [routerLink]="menu.href" [ngClass]="{'active': isActiveMenu(menu.href), 'smaller': showNavbar}">{{ menu.title }}</li>
+            <li class="navlink" style="font-size: 14px;" (click)="Navigate()" [ngClass]="{'smaller': showNavbar}">Bejelentkezés/Regisztráció</li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+-->
+
+<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+  <div class="container-fluid">
+    <div id="imageContainer" [ngClass]="{'show-image': showImage, 'hide-image': !showImage}">
+      <a routerLink="/fooldal">
+        <img class="menu-logo" src="assets/menulogo.png" alt="Kép megjelenítés">
+      </a>
+    </div>
+    <button class="navbar-toggler float-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav ms-auto">
+        <a class="navlink" *ngFor="let menu of menus" style="font-size: 14px;" [routerLink]="menu.href"
+          [ngClass]="{'active': isActiveMenu(menu.href)}">{{ menu.title }}</a>
+        <a class="navlink active-login" style="font-size: 14px;" (click)="Navigate()">Bejelentkezés/Regisztráció</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+
+
+<footer class="footer">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6">
+        <h3>Kapcsolat </h3>
+        <div>
+          Balogh Erika E.V.
+        </div>
+        <div>
+          adószám: vmi szám.
+        </div>
+      </div>
+      <div class="col-lg-6 text-end">
+        <div> <a class="footera" href="#"><fa-icon [icon]="faFB"></fa-icon></a></div>
+        <div><a class="footera" href="http://www.babafeszkelo.hu/gdpr">ÁSZF</a></div>
+        <div><a class="footera" href="http://babafeszkelo.hu/aszf">Adatkezelés</a></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <span>powered by:<a class="footera" href="https://datastep.solutions/">Datastep Hungary Kft.</a></span>
+      </div>
+    </div>
+  </div>
+
+</footer>

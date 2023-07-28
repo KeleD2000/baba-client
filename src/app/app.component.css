@@ -1,0 +1,129 @@
+.navbar {
+  background: white !important;
+}
+
+.nav-link {
+  color: #0A606F !important;
+  
+}
+
+.nav-link:hover {
+  color: white !important;
+}
+
+.navbar-toggler{
+  outline: none;
+  box-shadow: none;
+  border: none;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+a{
+  text-decoration: none;
+  color: #0A606F;
+  padding: 5px;
+  margin-right: 2px;
+  border-radius: 10px;
+}
+
+#imageContainer {
+  transition: opacity 0.5s ease;
+}
+
+/* A kép megjelenésekor opacity 1 legyen (teljesen látható), ha showImage értéke true */
+#imageContainer.show-image {
+  opacity: 1;
+  pointer-events: auto; /* A kép legyen interaktív, ha megjelenik */
+}
+
+/* A kép eltűnésekor opacity 0 legyen (teljesen átlátszó), ha showImage értéke false */
+#imageContainer.hide-image {
+  opacity: 0;
+  pointer-events: none; /* A kép ne legyen interaktív, ha eltűnik */
+}
+
+.footer {
+  width: 100%;
+  background-color: #0A606F !important;
+  color: white !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.footera {
+  text-decoration: none;
+  color: white;
+}
+
+.navlink:hover {
+  color: white;
+  background-color: #0A606F;
+}
+
+.active-login{
+  color: white;
+  background-color: #E6009F;
+  cursor: pointer;
+}
+
+.active-login:hover{
+  color: white;
+  background-color: #E6009F;
+  cursor: pointer;
+}
+
+
+.active {
+  color: white;
+  background-color: #0A606F;
+}
+
+.scrolled {
+  display: flex !important;
+
+}
+
+.smaller {
+  font-size: 12px !important;
+  margin-right: 5px;
+}
+
+.smallerpic {
+  width: 75px;
+}
+
+.fit {
+  height: fit-content;
+}
+
+ul {
+  display: flex;
+  justify-content: space-evenly;
+  list-style-type: none;
+}
+
+.img {
+  max-width: 130px;
+
+}
+
+.navbar2 .navlink {
+  padding-right: 15px;
+}
+
+.navsize {
+  width: 50px;
+  height: 30px;
+}
+
+.menu-logo{
+  width: 80px;
+}
+
+.container{
+  max-width: 650px;
+}
+
+/* sticky-top classt kell a navbarra adni ha azt akarjuk hogy fennt maradjon görgésre de ezt majd angularba kell megírni */
