@@ -39,6 +39,15 @@ export class TartalomComponent {
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
                     if(value.field_paragraphs[k].field_content !== undefined){
+                      console.log(value.field_paragraphs[k].field_content.value);
+                      const contentRegex = /<strong>(.*?)<\/strong>/;
+                      const matches = value.field_paragraphs[k].field_content.value.match(contentRegex);
+                      const extractedContent = matches ? matches[1] : "";
+                      if(extractedContent != ""){
+                        const linkedContent = `<a href="#" style="text-decoration: none; color: #E6009F;"><strong>${extractedContent}</strong></a>`;
+                        value.field_paragraphs[k].field_content.value = value.field_paragraphs[k].field_content.value.replace(contentRegex, linkedContent);
+                      }
+                      
                       const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
                       this.content.push(paragraph_value);
                       if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
