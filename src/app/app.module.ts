@@ -9,12 +9,20 @@ import { FooldalModule } from './fooldal/fooldal.module';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HtmlconvertService } from './services/htmlconvert.service';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
+
+
+
+
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoadingSpinnerComponent,
 
   ],
   imports: [
@@ -23,7 +31,10 @@ import { HtmlconvertService } from './services/htmlconvert.service';
     FooldalModule, 
     HttpClientModule,
     RouterModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    AuthModule,
+    AdminModule,
+    
     
   ],
   providers: [HtmlconvertService],

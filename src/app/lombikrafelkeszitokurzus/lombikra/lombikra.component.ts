@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Page } from 'src/app/models/page';
+import { Page } from 'src/app/models/Page';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 

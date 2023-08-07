@@ -1,38 +1,74 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12 py-3">
-            <form>
+            <form [formGroup]="registerForm">
                 <div class="mb-3">
                     <label class="form-label">Email cím</label>
-                    <input type="email" class="form-control">
+                    <input formControlName="email" type="email" class="form-control">
+                    <div *ngIf="registerForm.get('email')?.errors?.['required'] && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+                        class="error-message">
+                        Email cím megadása kötelező
+                    </div>
+                    <div *ngIf="registerForm.get('email')?.errors?.['email'] && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)" 
+                        class="error-message">
+                        Adj meg érvényes email címet
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Név</label>
-                    <input type="text" class="form-control">
+                    <input formControlName="name" type="text" class="form-control">
+                    <div *ngIf="registerForm.get('name')?.errors?.['required'] && (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)"
+                        class="error-message">
+                        Név megadása kötelező
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Hogyan szólítsunk</label>
-                    <input type="text" class="form-control">
+                    <input formControlName="username" type="text" class="form-control">
+                    <div *ngIf="registerForm.get('username')?.errors?.['required'] && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)"
+                        class="error-message">
+                        Felhasználó név megadása kötelező
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Születési dátum</label>
-                    <input type="date" class="form-control">
+                    <input formControlName="birthdate" type="date" class="form-control">
+                    <div *ngIf="registerForm.get('birthdate')?.errors?.['required'] && (registerForm.get('birthdate')?.dirty || registerForm.get('birthdate')?.touched)"
+                        class="error-message">
+                        Születési dátum megadása kötelező
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Irányítószám</label>
-                    <input type="number" class="form-control">
+                    <input formControlName="postcode" type="number" class="form-control">
+                    <div *ngIf="registerForm.get('postcode')?.errors?.['required'] && (registerForm.get('postcode')?.dirty || registerForm.get('postcode')?.touched)"
+                        class="error-message">
+                        Irányítószám megadása kötelező
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Város</label>
-                    <input type="text" class="form-control">
+                    <input formControlName="city" type="text" class="form-control">
+                    <div *ngIf="registerForm.get('city')?.errors?.['required'] && (registerForm.get('city')?.dirty || registerForm.get('city')?.touched)"
+                        class="error-message">
+                        Város megadása kötelező
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Cím</label>
-                    <input type="text" class="form-control">
+                    <input formControlName="address" type="text" class="form-control">
+                    <div *ngIf="registerForm.get('address')?.errors?.['required'] && (registerForm.get('address')?.dirty || registerForm.get('address')?.touched)"
+                        class="error-message">
+                        Cím megadása kötelező
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Ország</label>
-                    <input type="text" class="form-control">
+                    <input formControlName="country" type="text" class="form-control">
+                    <div *ngIf="registerForm.get('country')?.errors?.['required'] && (registerForm.get('country')?.dirty || registerForm.get('country')?.touched)"
+                        class="error-message">
+                        Város megadása kötelező
+                    </div>
                 </div>
                 <div class="d-flex justify-content-center">
                     <button type="button" class="btn btn-primary c">Regisztráció</button>

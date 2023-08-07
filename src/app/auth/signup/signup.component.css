@@ -15,3 +15,9 @@
     background-color: #E6009F;
     border-color: #E6009F;
 }
+.error-message {
+    font-size: 0.6rem;
+    color: red;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  }

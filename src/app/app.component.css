@@ -23,9 +23,14 @@
 a{
   text-decoration: none;
   color: #0A606F;
-  padding: 5px;
-  margin-right: 2px;
+  padding: 8.5px;
+  margin-right: 26px;
   border-radius: 10px;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.afooter{
+  margin-right: 0px;
 }
 
 #imageContainer {
@@ -60,6 +65,9 @@ a{
 .navlink:hover {
   color: white;
   background-color: #0A606F;
+  padding: 8.5px;
+  margin-right: 26px;
+  border-radius: 10px;
 }
 
 .active-login{
@@ -124,6 +132,70 @@ ul {
 
 .container{
   max-width: 650px;
+}
+
+a {
+  text-decoration: none;
+  color: #000000;
+}
+
+a:hover {
+  color: #222222
+}
+
+/* Dropdown */
+
+.dropdown {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dd-input {
+  display: none;
+}
+
+.dd-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0;
+  margin: 2px 0 0 0;
+  box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  list-style-type: none;
+}
+
+.dd-input + .dd-menu {
+  display: none;
+} 
+
+.dd-input:checked + .dd-menu {
+  display: block;
+} 
+
+.dd-menu li {
+  padding: 5px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.dd-menu li:hover {
+  background-color: #f6f6f6;
+}
+
+.dd-menu li a {
+  display: block;
+  margin: -10px -20px;
+  padding: 10px 20px;
+}
+
+.dd-menu li.divider{
+  padding: 0;
+  border-bottom: 1px solid #cccccc;
 }
 
 /* sticky-top classt kell a navbarra adni ha azt akarjuk hogy fennt maradjon görgésre de ezt majd angularba kell megírni */

@@ -1,21 +1,29 @@
 <div class="container">
-    <div class="row">
-        <div class="col-lg-12 py-3">
-            <form>
-                <div class="mb-3">
-                  <label class="form-label">Email cím</label>
-                  <input type="email" class="form-control">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Jelszó</label>
-                  <input type="password" class="form-control">
-                </div>
-                <div class="mb-3">
-                  <label >Elfelejtette a jelszavát</label>
-                </div>
-                <button type="button" class="btn btn-primary c">Bejelentkezés</button>
-                <button type="button" class="btn btn-primary pe-2 reg c" routerLink="/signup">Regisztráció</button>
-              </form>
+  <div class="row">
+    <div class="col-lg-12 py-3">
+      <form [formGroup]="loginForm">
+        <div class="mb-3">
+          <label class="form-label">Felhasználó név</label>
+          <input formControlName="username" type="text" class="form-control">
+          <div *ngIf="loginForm.get('username')?.errors?.['required'] && (loginForm.get('username')?.dirty || loginForm.get('username')?.touched)"
+               class="error-message">
+            Felhasználó név megadása kötelező.
+          </div>
         </div>
+        <div class="mb-3">
+          <label class="form-label">Jelszó</label>
+          <input formControlName="password" type="password" class="form-control">
+          <div *ngIf="loginForm.get('password')?.errors?.['required'] && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+               class="error-message">
+            Jelszó megadása kötelező.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label routerLink="/resetpassword">Elfelejtette a jelszavát</label>
+        </div>
+        <button type="button" class="btn btn-primary c" (click)="onSubmit()">Bejelentkezés</button>
+        <!--<button type="button" class="btn btn-primary pe-2 reg c" routerLink="/signup">Regisztráció</button> -->
+      </form>
     </div>
+  </div>
 </div>

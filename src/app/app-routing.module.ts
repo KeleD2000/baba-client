@@ -6,6 +6,7 @@ import { LombikrafelkeszitokurzusModule } from './lombikrafelkeszitokurzus/lombi
 import { FoglalkozasokbpModule } from './foglalkozasokbp/foglalkozasokbp.module';
 import { RolamModule } from './rolam/rolam.module';
 import { VideotarModule } from './videotar/videotar.module';
+import { AdminModule } from './admin/admin.module';
 
 const routes: Routes = [
   {path: '', loadChildren: () => FooldalModule},
@@ -15,11 +16,12 @@ const routes: Routes = [
   {path: 'foglalkozasok-budapesten', loadChildren: () => FoglalkozasokbpModule},
   {path: 'rolam', loadChildren: () => RolamModule},
   {path: 'videotar', loadChildren:() => VideotarModule},
-  {path: '' , loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)}
+  {path: 'auth' , loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)},
+  {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

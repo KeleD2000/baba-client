@@ -1,8 +1,12 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { FooldalService } from './services/fooldal.service';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { NavigationEnd, Router } from '@angular/router';
-import { faFacebook, faKickstarter } from '@fortawesome/free-brands-svg-icons';
+import { faBars, faL } from '@fortawesome/free-solid-svg-icons';
+import { NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { AuthService } from './services/auth.service';
+import { SigninComponent } from './auth/signin/signin.component';
+import { Subscribable, Subscription } from 'rxjs';
+import { UserService } from './services/user.service';
 
 
 @Component({
@@ -24,32 +28,33 @@ export class AppComponent {
   faFB = faFacebook;
   isMenuOpen = false;
   showImage: boolean = true;
+  spinner: boolean = false;
+  username?: string ;
+  open: boolean = false;
+  loggedUser: any;
+  private loggedInUserSubscription?: Subscription
 
-  
-  constructor(private fooldalService: FooldalService, private router: Router){
+  constructor(private fooldalService: FooldalService, private router: Router, private authService: AuthService, private userService: UserService) {
 
   }
 
-  toggleMenu(){
+
+  toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
-
-  Navigate(){
-    this.router.navigate(["signin"]);
-  }
-
-  onScroll(){
+  
+  onScroll() {
     this.showNavbar = window.scrollY > 0;
   }
 
   isActiveMenu(menuPath: string) {
     return this.router.isActive(menuPath, true);
   }
-  
 
-  ngOnInit(){
-    this.router.events.subscribe((event) =>{
-      if(event instanceof NavigationEnd){
+
+  ngOnInit() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
         this.showImage = this.router.url !== '/fooldal';
       }
     });
@@ -58,13 +63,58 @@ export class AppComponent {
     this.fooldalService.getMenu().subscribe((linkSet) => {
       for (const [key, value] of Object.entries(linkSet)) {
         for (const key in value) {
-          for( const k in value[key].item){
+          for (const k in value[key].item) {
             this.menus.push(value[key].item[k]);
           }
         }
       }
     });
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.spinner = true;
+      } else if (event instanceof NavigationEnd || event instanceof NavigationError) {
+        setTimeout(() => {
+          this.spinner = false;
+        }, 2500);
+      }
+    });
+  
+    this.loggedInUserSubscription = this.userService.loggedInUser$.subscribe(user => {
+      console.log(user);
+      this.loggedUser = user;
+    });
+
+    const isAuthenticated = this.authService.isAuthenticated();
+    console.log(isAuthenticated);
+    if(isAuthenticated){
+      this.loggedUser = JSON.parse(isAuthenticated);
+    }
+  }
+
+  ngOnDestroy() {
+    // Ne felejtsük el leiratkozni a feliratkozásról a komponens megsemmisítésekor
+    this.loggedInUserSubscription?.unsubscribe();
+  }
+
+  Logout(){
+    const token = localStorage.getItem('login');
+    if(token){
+      var login = JSON.parse(token);
+      this.authService.fetchCsrfToken().subscribe((csrfToken: string) =>{
+        if(csrfToken){
+          console.log(csrfToken);
+          this.authService.logout(login.logout_token, csrfToken).subscribe(logout =>{
+            console.log(logout);
+          });
+        }
+      }, (error) =>{
+        console.log('Hiba történt: ' , error);
+      }); 
+    }
     
   }
- 
+
+
 }
+
