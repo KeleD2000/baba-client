@@ -28,7 +28,6 @@
     "tslib": "^2.3.0",
     "typeface-roboto": "^1.1.13",
     "typeface-roboto-condensed": "^1.1.13",
-    "videogular2": "^7.0.2",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
