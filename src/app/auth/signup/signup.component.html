@@ -55,11 +55,19 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Cím</label>
-                    <input formControlName="address" type="text" class="form-control">
-                    <div *ngIf="registerForm.get('address')?.errors?.['required'] && (registerForm.get('address')?.dirty || registerForm.get('address')?.touched)"
+                    <label class="form-label">Utca</label>
+                    <input formControlName="street" type="text" class="form-control">
+                    <div *ngIf="registerForm.get('street')?.errors?.['required'] && (registerForm.get('street')?.dirty || registerForm.get('street')?.touched)"
                         class="error-message">
-                        Cím megadása kötelező
+                        Utca megadása kötelező
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ház szám</label>
+                    <input formControlName="snumber" type="text" class="form-control">
+                    <div *ngIf="registerForm.get('snumber')?.errors?.['required'] && (registerForm.get('snumber')?.dirty || registerForm.get('snumber')?.touched)"
+                        class="error-message">
+                        Ház szám megadása kötelező
                     </div>
                 </div>
                 <div class="mb-3">
@@ -71,7 +79,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-primary c">Regisztráció</button>
+                    <button type="button" class="btn btn-primary c" (click)="onSubmit()" >Regisztráció</button>
                 </div>
             </form>
         </div>

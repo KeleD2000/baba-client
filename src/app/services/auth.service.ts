@@ -4,6 +4,8 @@ import { Login } from '../models/Login';
 import { User } from '../models/User';
 import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
+import { Register } from '../models/Register';
+import { Address } from '../models/Address';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,26 @@ export class AuthService {
 
   login(user: Login){
     return this.http.post<User>(`${this.baseUrl}/user/login?_format=json`, user);
+  }
+
+  register(userData: Register){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    return this.http.post(`${this.baseUrl}/user/register?_format=json`, userData, httpOptions);
+  }
+
+  registerAddress(userAddress: Address){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    return this.http.post(`${this.baseUrl}/user/register?_format=json`, userAddress, httpOptions);
   }
 
   isAuthenticated(){

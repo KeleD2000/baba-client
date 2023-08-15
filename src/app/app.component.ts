@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FooldalService } from './services/fooldal.service';
-import { faBars, faL } from '@fortawesome/free-solid-svg-icons';
-import { NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import {NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { AuthService } from './services/auth.service';
-import { SigninComponent } from './auth/signin/signin.component';
-import { Subscribable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { UserService } from './services/user.service';
+
 
 
 @Component({
@@ -29,20 +29,28 @@ export class AppComponent {
   isMenuOpen = false;
   showImage: boolean = true;
   spinner: boolean = false;
-  username?: string ;
+  username?: string;
   open: boolean = false;
   loggedUser: any;
-  private loggedInUserSubscription?: Subscription
+  private loggedInUserSubscription?: Subscription;
+  currentRoute?: string;
 
-  constructor(private fooldalService: FooldalService, private router: Router, private authService: AuthService, private userService: UserService) {
-
+  constructor(private fooldalService: FooldalService,
+    private router: Router,
+    private authService: AuthService,
+    private userService: UserService) {
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          this.currentRoute = event.url;
+        }
+      });
   }
 
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
-  
+
   onScroll() {
     this.showNavbar = window.scrollY > 0;
   }
@@ -79,7 +87,7 @@ export class AppComponent {
         }, 2500);
       }
     });
-  
+
     this.loggedInUserSubscription = this.userService.loggedInUser$.subscribe(user => {
       console.log(user);
       this.loggedUser = user;
@@ -87,7 +95,7 @@ export class AppComponent {
 
     const isAuthenticated = this.authService.isAuthenticated();
     console.log(isAuthenticated);
-    if(isAuthenticated){
+    if (isAuthenticated) {
       this.loggedUser = JSON.parse(isAuthenticated);
     }
   }
@@ -97,22 +105,28 @@ export class AppComponent {
     this.loggedInUserSubscription?.unsubscribe();
   }
 
-  Logout(){
+  Logout() {
     const token = localStorage.getItem('login');
-    if(token){
+    if (token) {
       var login = JSON.parse(token);
-      this.authService.fetchCsrfToken().subscribe((csrfToken: string) =>{
-        if(csrfToken){
+      this.authService.fetchCsrfToken().subscribe((csrfToken: string) => {
+        if (csrfToken) {
           console.log(csrfToken);
-          this.authService.logout(login.logout_token, csrfToken).subscribe(logout =>{
+          this.authService.logout(login.logout_token, csrfToken).subscribe(logout => {
             console.log(logout);
           });
         }
-      }, (error) =>{
-        console.log('Hiba történt: ' , error);
-      }); 
+      }, (error) => {
+        console.log('Hiba történt: ', error);
+      });
     }
-    
+  }
+  getClassForRoute(route: any): string{
+    if(route === "/avidi"){
+      return "container-fluid";
+    }else{
+      return "container";
+    }
   }
 
 

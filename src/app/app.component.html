@@ -32,7 +32,7 @@
     </div>
   </nav>
   
-  <div class="container">
+  <div [class]="getClassForRoute(currentRoute)">
     <router-outlet></router-outlet>
   </div>
   

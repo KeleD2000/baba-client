@@ -12,10 +12,12 @@ import { HtmlconvertService } from './services/htmlconvert.service';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
+import { SharedModule } from './shared/shared.module';
+
 @NgModule({
   declarations: [
     AppComponent,
-    LoadingSpinnerComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -25,8 +27,8 @@ import { AdminModule } from './admin/admin.module';
     RouterModule,
     FontAwesomeModule,
     AuthModule,
-    AdminModule
-    
+    AdminModule,
+    SharedModule
   ],
   providers: [HtmlconvertService],
   bootstrap: [AppComponent]

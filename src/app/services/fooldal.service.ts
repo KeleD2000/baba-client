@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Page } from '../models/Page';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +7,9 @@ import { Page } from '../models/Page';
 export class FooldalService {
   private baseUrl= "http://baba.jrdatashu.win";
 
-
+  getBaseUrl(){
+    return this.baseUrl;
+  }
 
   constructor(private http: HttpClient) { 
 
@@ -29,6 +30,22 @@ export class FooldalService {
 
   getPhotos(id: string, media: string, image: string){
     return this.http.get(`${this.baseUrl}/jsonapi/` + media + '/' + image + '/' + id);
+  }
+
+  getCatNames(){
+    return this.http.get(`${this.baseUrl}/jsonapi/taxonomy_term/videostore_categories`);
+  }
+
+  getRotation(){
+    return this.http.get(`${this.baseUrl}/jsonapi/taxonomy_term/rotation`);
+  }
+
+  getVideos(){
+    const auth = btoa('admin:c');
+    const headers = new HttpHeaders({
+      Authorization: 'Basic ' + auth
+    });
+    return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`,{ headers });
   }
 
 }

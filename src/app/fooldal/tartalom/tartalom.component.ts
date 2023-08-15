@@ -1,6 +1,6 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Page } from 'src/app/models/Page';
+
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 
@@ -33,10 +33,9 @@ export class TartalomComponent {
       for(const [key, value] of Object.entries(i)){
         if(Array.isArray(value)){
           for(const [k,v] of Object.entries(value)){
-            const page: Page = {page: v.title, id: v.id};
             //console.log(v.path.alias);
-            if(page.page === 'Főoldal'){
-              this.fooldalService.getFooldal(page.id).subscribe((page) =>{
+            if(v.title === 'Főoldal'){
+              this.fooldalService.getFooldal(v.id).subscribe((page) =>{
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
                     if(value.field_paragraphs[k].field_content !== undefined){

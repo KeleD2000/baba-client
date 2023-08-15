@@ -1,40 +1,24 @@
-<div class="container">
-    <div class="justify-content-center row divbgcolor">Ciklus 1.fele napok</div>
-    <div class="row justify-content-center">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-2 m-2">
-            <div class="justify-content-center row divbgcolor">A</div>
-            <div class="justify-content-center row">videó</div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-2 m-2">
-            <div class="justify-content-center row divbgcolor">B</div>
-            <div class="justify-content-center row">videó</div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-2 m-2">
-            <div class="justify-content-center row divbgcolor">C</div>
-            <div class="justify-content-center row">videó</div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-2 m-2">
-            <div class="justify-content-center row divbgcolor">D</div>
-            <div class="justify-content-center row">videó</div>
+{{ categories | json }}
+<div class="container" *ngFor="let name of categories; index as i">
+    <div class="justify-content-center row divbgcolor">
+        <div class="text-center"> {{ name.title }}</div>
+        <div class="text-center" [innerHTML]="name.description"></div>
+    </div>
+    <div class="row justify-content-center mt-2 mb-2">
+        <div class="col-lg-3" *ngFor="let rotation of name.rotation">
+            <div class="justify-content-center row divbgcolor m-1">{{rotation.title}}</div>
+            <div class="justify-content-center row" *ngFor="let video of rotation.videos">
+                <div class="col-lg-6 offset-lg-11" style="text-align: center;">
+                    <fa-icon [icon]="faTrash" style="color: red; cursor: pointer;"></fa-icon>
+                </div>
+                <iframe *ngIf="video.iframe; else elseBlock" class="p-3" width="700" height="315" [src]="video.url | safe : 'resourceUrl'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <ng-template #elseBlock>
+                    <app-video-player style="padding-top: 15px;" [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: 'https://images.unsplash.com/photo-1691456614896-589ffa30f950?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', sources: [{ src: video.url, type: 'video/mp4' , label: '1080p' },{ src: video.url, type: 'video/mp4' , label: '720p' }, { src: video.url, type: 'video/mp4' , label: '360p' }]}"></app-video-player>
+                </ng-template>
+            </div>
+            <div>
+                <button class="btn btn-primary btn-sm w-100 mt-2 mb-2">Video feltöltés</button>
+            </div>
         </div>
     </div>
-    <div class="justify-content-center row divbgcolor">Ciklus 2.fele napok</div>
-    <div class="row justify-content-center">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-2 m-2">
-            <div class="justify-content-center row divbgcolor">A</div>
-            <div class="justify-content-center row">videó</div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-2 m-2">
-            <div class="justify-content-center row divbgcolor">B</div>
-            <div class="justify-content-center row">videó</div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-2 m-2">
-            <div class="justify-content-center row divbgcolor">C</div>
-            <div class="justify-content-center row">videó</div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-2 m-2">
-            <div class="justify-content-center row divbgcolor">D</div>
-            <div class="justify-content-center row">videó</div>
-        </div>
-    </div>
-</div>
+</div> 

@@ -10,8 +10,5 @@ export class FbpComponent {
 
   constructor() { }
 
-  changeQuality(valami: any){
-
-  }
 
 }
