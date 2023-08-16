@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-videotar',
@@ -13,10 +14,41 @@ export class VideotarComponent {
   categories: any[] = [];
   faTrash =  faTrash;
 
+  showModal: boolean = false;
 
-  
-  constructor(private fooldalService: FooldalService, private htmlconvetrService: HtmlconvertService) {
+  uploadForm: FormGroup;
 
+  constructor(private fooldalService: FooldalService,
+    private htmlconvetrService: HtmlconvertService,
+    private renderer: Renderer2) {
+      this.uploadForm = new FormGroup(
+        {
+          video: new FormControl('', Validators.required),
+          thumbnail: new FormControl('', Validators.required),
+          title: new FormControl('', Validators.required),
+          description: new FormControl('', Validators.required)
+        }
+      )
+ }
+
+  openModal() {
+    const modal = document.getElementById('exampleModal');
+    if (modal) {
+      modal.style.display = 'block';
+      modal.classList.add('show');
+    }
+    this.showModal = true;
+    this.renderer.addClass(document.body, 'no-scroll');
+  }
+
+  closeModal() {
+    const modal = document.getElementById('exampleModal');
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.remove('show');
+    }
+    this.showModal = false;
+    this.renderer.removeClass(document.body, 'no-scroll');
   }
 
   ngOnInit() {
@@ -44,7 +76,7 @@ export class VideotarComponent {
       drupal_internal_revision_id: cat.drupal_internal__revision_id,
       title: cat.name,
       description: description,
-      rotation: [] as { title: string; weight: string; videos: {url: string, iframe: boolean, video_title: string, process: string }[]}[],
+      rotation: [] as { title: string; weight: string; videos: {url: string, iframe: boolean, video_title: string, description: string }[]}[],
     };
   }
 
@@ -73,14 +105,14 @@ export class VideotarComponent {
             const video = videos[k];
             if (video.field_category.name === obj.title) {
               const findedRotation = obj.rotation.find((i: any) => i.title === video.field_rotation.name);
-              
               if (findedRotation) {
+                
                 if(video.field_video.type === "paragraph--youtube_video"){
                   const videoId = this.extractVideoId(video.field_video.field_youtube_video.field_media_oembed_video);
-                  findedRotation.videos.push({url: "https://www.youtube.com/embed/"+ videoId, iframe: true});
+                  findedRotation.videos.push({url: "https://www.youtube.com/embed/"+ videoId, iframe: true, title: video.title, description:  this.htmlconvetrService.convertToHtml(video.body.value)});
                 }else{
                   const baseUrl = this.fooldalService.getBaseUrl();
-                  findedRotation.videos.push({url: baseUrl + video.field_video.field_video.field_media_video_file.uri.url, iframe: false});
+                  findedRotation.videos.push({url: baseUrl + video.field_video.field_video.field_media_video_file.uri.url, iframe: false,title: video.title, description:  this.htmlconvetrService.convertToHtml(video.body.value)});
                 }
               }
             }
