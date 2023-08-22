@@ -18,15 +18,17 @@ export class VideotarComponent {
 
   uploadForm: FormGroup;
 
+  video!: File;
+
   constructor(private fooldalService: FooldalService,
     private htmlconvetrService: HtmlconvertService,
     private renderer: Renderer2) {
       this.uploadForm = new FormGroup(
         {
-          video: new FormControl('', Validators.required),
-          thumbnail: new FormControl('', Validators.required),
-          title: new FormControl('', Validators.required),
-          description: new FormControl('', Validators.required)
+          video: new FormControl(''),
+          thumbnail: new FormControl(''),
+          title: new FormControl(''),
+          description: new FormControl('')
         }
       )
  }
@@ -130,5 +132,84 @@ export class VideotarComponent {
     const regex = /[?&]v=([^&#]*)/i;
     const match = regex.exec(url);
     return match ? match[1] : null;
+  }
+
+  onFileSelected(event: any) {
+    this.video = event.target.files[0];
+  }
+
+  /*onUpload(){
+    console.log("szar");
+    if(this.video && this.uploadForm.valid){
+      const formData = new FormData();
+      formData.append('file', this.video, this.video.name);
+      const data = {
+        data: {
+          type: "media--video",
+          attributes: {
+            "status": true,
+            "name": this.uploadForm.get('title')?.value
+          },
+          field_media_video_file: {
+            data: {
+              meta: {
+                "description": this.uploadForm.get('description')?.value
+              }
+            }
+          }
+        }
+      }
+      this.fooldalService.createMedia(data).subscribe((response) => {
+        if(response){
+          for(const [key, value] of Object.entries(response)){
+            if(key === 'data'){
+              this.fooldalService.sendFile(formData, this.video?.name as string, value.id).subscribe((res) => {
+                console.log(res);
+              });
+            }
+          }
+        }
+      });
+    }  
+  }*/
+  async onUpload() {
+    if (this.video && this.uploadForm.valid) {
+      console.log(this.video);
+      const formData = new FormData();
+      formData.append('file', this.video, this.video.name);
+      console.log(formData);
+      const data = {
+        data: {
+          type: "media--video",
+          attributes: {
+            "status": true,
+            "name": this.uploadForm.get('title')?.value
+          },
+          field_media_video_file: {
+            data: {
+              meta: {
+                "description": this.uploadForm.get('description')?.value
+              }
+            }
+          }
+        }
+      }
+      try{
+        const createMedia = await this.fooldalService.createMedia(data).toPromise();
+        if(createMedia){
+          for (const [key, value] of Object.entries(createMedia)) {
+            if (key === "data") {
+              const sendFile = await this.fooldalService.sendFile(formData, this.video?.name as string, value.id).toPromise();
+              console.log(sendFile);
+             /* const createThumbnail = await this.fooldalService.createThumbnail(thumbnailData, this.thumbnail.name as string, value.id).toPromise();
+              console.log(createThumbnail);*/
+            }
+          }
+        }
+      }catch(error){
+        console.error('Error uploading media:', error);
+      }
+      
+    }
   }
 }

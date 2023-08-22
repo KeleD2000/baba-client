@@ -24,10 +24,7 @@ export class VideoPlayerComponent {
 
   ngOnInit() {
     this.player = videojs(this.target.nativeElement, this.options, function onPlayerReady() {
-      console.log('onPlayerReady', this);
       this.one("loadedmetadata", () => {
-        console.log(this.tech);
-
         const qualitySelector = document.createElement('select');
         qualitySelector.style.background = 'transparent';
         qualitySelector.style.border = 'none';

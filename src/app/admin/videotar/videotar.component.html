@@ -51,11 +51,11 @@
     </div>
 </div>
 <div class="overlay" *ngIf="showModal"></div>
-<form [formGroup]="uploadForm">
-    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        id="exampleModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    id="exampleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form [formGroup]="uploadForm" (ngSubmit)="onUpload()">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Feltöltéshez szükséges adatok</h5>
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
@@ -63,11 +63,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
                     <div class="mb-3">
                         <label for="video">Videó feltöltése:</label>
                         <br>
-                        <input type="file" id="video" name="video" class="form-control"
-                            accept="video/mp4,video/x-m4v,video/*" formControlName="video">
+                        <input (change)="onFileSelected($event)" type="file" id="video" name="video" class="form-control"
+                            accept="video/mp4" formControlName="video">
                     </div>
                     <div class="mb-3">
                         <label for="thumbnail">Előnézeti kép feltöltése:</label>
@@ -78,20 +79,23 @@
                     <div class="mb-3">
                         <label for="title">Videó címe:</label>
                         <br>
-                        <input type="text" class="form-control form-control-sm" id="title" name="title" formControlName="title">
+                        <input type="text" class="form-control form-control-sm" id="title" name="title"
+                            formControlName="title">
                     </div>
                     <div class="mb-3">
                         <label for="description">Videó leírása:</label>
                         <br>
-                        <textarea style="resize: none;" class="form-control" id="description" formControlName="description"></textarea>
+                        <textarea style="resize: none;" class="form-control" id="description"
+                            formControlName="description"></textarea>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"
                         (click)="closeModal()">Bezárás</button>
-                    <button type="button" class="btn btn-primary">Feltöltés</button>
+                    <button type="submit" class="btn btn-primary">Feltöltés</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</form>
+</div>

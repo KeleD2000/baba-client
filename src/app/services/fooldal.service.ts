@@ -48,4 +48,25 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`,{ headers });
   }
 
+  createMedia(data: any) {
+    const auth = btoa('admin:c');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: 'Basic ' + auth
+    });
+    return this.http.post(`${this.baseUrl}/jsonapi/media/video`, data, { headers });
+  }
+
+  sendFile(data: FormData, filename: string, id: string) {
+    const auth = btoa('admin:c');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/octet-stream',
+      'Accept' : 'application/vnd.api+json',
+      'Content-Disposition' : 'file; filename="'+ filename +'"',
+      Authorization: 'Basic ' + auth
+    });
+
+    return this.http.post(`${this.baseUrl}/jsonapi/media/video/` + id + '/field_media_video_file' , data, { headers });
+  }
+
 }
