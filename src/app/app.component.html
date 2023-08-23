@@ -17,7 +17,7 @@
             [ngClass]="{'active': isActiveMenu(menu.href)}">{{ menu.title }}</a>
           <a class="navlink active-login" style="font-size: 14px;" routerLink="/signin" *ngIf="!loggedUser">Bejelentkezés</a>
           <label class="dropdown" *ngIf="loggedUser">
-            <div class="dd-button navlink">
+            <div class="dd-button navlink" style="font-size: 14px;">
              {{loggedUser.current_user.name}}
             </div>
             <input type="checkbox" class="dd-input" id="test">
