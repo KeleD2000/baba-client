@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { SharedModule } from './shared/shared.module';
 import { AngularFireModule } from '@angular/fire/compat';
+import { NotFoundComponent } from './auth/not-found/not-found.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSwXraHIkw4DG5uRRsfD_FFqAhMWG5X_w",
@@ -27,7 +28,8 @@ const firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

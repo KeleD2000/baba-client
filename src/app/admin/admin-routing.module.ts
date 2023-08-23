@@ -6,6 +6,7 @@ import { AuthGuard } from '../authguards/admin.guard';
 
 const routes: Routes = [
     {path: 'avidi', component: VideotarComponent, /*canActivate: [AuthGuard]*/}
+    
 ];
 
 @NgModule({

@@ -122,7 +122,7 @@ export class AppComponent {
     }
   }
   getClassForRoute(route: any): string{
-    if(route === "/avidi"){
+    if(route === "/admin/avidi"){
       return "container-fluid";
     }else{
       return "container";

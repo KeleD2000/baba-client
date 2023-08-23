@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class FooldalService {
-  private baseUrl= "http://baba.jrdatashu.win";
+  private baseUrl= "https://baba.jrdatashu.win";
 
   getBaseUrl(){
     return this.baseUrl;

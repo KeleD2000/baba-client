@@ -11,7 +11,7 @@ import { Address } from '../models/Address';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl= "http://baba.jrdatashu.win";
+  private baseUrl= "https://baba.jrdatashu.win";
   
  constructor(private http: HttpClient, private router: Router) { 
   
