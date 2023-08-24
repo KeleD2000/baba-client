@@ -43,6 +43,9 @@
     .column{
         width: 100% !important;
     }
+    iframe{
+        width: 90% !important;
+    }
   }
 
 .iframe-container{
