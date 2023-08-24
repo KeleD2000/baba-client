@@ -46,6 +46,19 @@ export class AuthService {
     return login;
   }
 
+  isAdmin(): boolean{
+    const authenticated = this.isAuthenticated();
+    if(authenticated){
+      const json = JSON.parse(authenticated);
+      if(json.current_user.roles){
+        if(json.current_user.roles.includes("administrator")){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   logout(logouttoken: string, csrftoken: string){
     localStorage.removeItem('login');
     const requestBody = {};

@@ -3,7 +3,7 @@
 @import '~typeface-roboto';
 @import '~typeface-roboto-condensed';
 
-*{
+* {
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
 }
@@ -11,4 +11,11 @@
 .no-scroll {
     overflow: hidden !important;
 }
-  
+
+.error-message {
+    font-size: 0.8rem;
+    color: #F54D9F;
+    /*text-transform: uppercase;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);*/
+    font-style: italic;
+}

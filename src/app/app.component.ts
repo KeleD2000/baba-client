@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FooldalService } from './services/fooldal.service';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import {NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { AuthService } from './services/auth.service';
 import { Subscription } from 'rxjs';
@@ -25,7 +25,6 @@ export class AppComponent {
   showNavbar: boolean = false;
   isNavbarCollapsed = false;
   faBars = faBars;
-  faFB = faFacebook;
   isMenuOpen = false;
   showImage: boolean = true;
   spinner: boolean = false;
@@ -34,16 +33,17 @@ export class AppComponent {
   loggedUser: any;
   private loggedInUserSubscription?: Subscription;
   currentRoute?: string;
+  isAdmin?: boolean;
 
   constructor(private fooldalService: FooldalService,
     private router: Router,
     private authService: AuthService,
     private userService: UserService) {
-      this.router.events.subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          this.currentRoute = event.url;
-        }
-      });
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.url;
+      }
+    });
   }
 
 
@@ -54,11 +54,6 @@ export class AppComponent {
   onScroll() {
     this.showNavbar = window.scrollY > 0;
   }
-
-  isActiveMenu(menuPath: string) {
-    return this.router.isActive(menuPath, true);
-  }
-
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
@@ -94,10 +89,11 @@ export class AppComponent {
     });
 
     const isAuthenticated = this.authService.isAuthenticated();
-    console.log(isAuthenticated);
     if (isAuthenticated) {
       this.loggedUser = JSON.parse(isAuthenticated);
     }
+
+    this.isAdmin = this.authService.isAdmin();
   }
 
   ngOnDestroy() {
@@ -105,30 +101,16 @@ export class AppComponent {
     this.loggedInUserSubscription?.unsubscribe();
   }
 
-  Logout() {
-    const token = localStorage.getItem('login');
-    if (token) {
-      var login = JSON.parse(token);
-      this.authService.fetchCsrfToken().subscribe((csrfToken: string) => {
-        if (csrfToken) {
-          console.log(csrfToken);
-          this.authService.logout(login.logout_token, csrfToken).subscribe(logout => {
-            console.log(logout);
-          });
-        }
-      }, (error) => {
-        console.log('Hiba történt: ', error);
-      });
+  getClassForRoute(route: any): string {
+    if (route != "/admin/videotar") {
+      return "max-width-600";
     }
-  }
-  getClassForRoute(route: any): string{
-    if(route === "/admin/avidi"){
-      return "container-fluid";
-    }else{
-      return "container";
-    }
+    return "";
   }
 
-
+  isNotFoundRoute(): boolean {
+    return this.currentRoute === '/not-found'; // Adj meg a valódi 'not-found' útvonalat
+  }
+  
 }
 

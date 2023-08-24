@@ -9,12 +9,22 @@ import { FooldalModule } from './fooldal/fooldal.module';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HtmlconvertService } from './services/htmlconvert.service';
-import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
-import { AuthModule } from './auth/auth.module';
+
 import { AdminModule } from './admin/admin.module';
 import { SharedModule } from './shared/shared.module';
 import { AngularFireModule } from '@angular/fire/compat';
-import { NotFoundComponent } from './auth/not-found/not-found.component';
+
+import { FooterComponent } from './components/footer/footer.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { HeaderComponent } from './components/header/header.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SigninComponent } from './components/signin/signin.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { AdatkezelesComponent } from './components/adatkezeles/adatkezeles.component';
+import { AszfComponent } from './components/aszf/aszf.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSwXraHIkw4DG5uRRsfD_FFqAhMWG5X_w",
@@ -29,7 +39,14 @@ const firebaseConfig = {
   declarations: [
     AppComponent,
     LoadingSpinnerComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    HeaderComponent,
+    FooterComponent,
+    SigninComponent,
+    SignupComponent,
+    ResetPasswordComponent,
+    AdatkezelesComponent,
+    AszfComponent
   ],
   imports: [
     BrowserModule,
@@ -38,9 +55,10 @@ const firebaseConfig = {
     HttpClientModule,
     RouterModule,
     FontAwesomeModule,
-    AuthModule,
     AdminModule,
     SharedModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(firebaseConfig)
   ],
   providers: [HtmlconvertService],

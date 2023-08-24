@@ -1,0 +1,49 @@
+<footer class="footer">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-6">
+          <h3>Kapcsolat </h3>
+          <div>
+            Balogh Erika E.V.
+          </div>
+          <div>
+            adószám: vmi szám.
+          </div>
+        </div>
+        <div class="col-lg-6 text-end">
+          <div> <a class="footera afooter" (click)="openModal()"><fa-icon [icon]="faFB"></fa-icon></a></div>
+          <div><a class="footera afooter" href="http://www.babafeszkelo.hu/gdpr">ÁSZF</a></div>
+          <div><a class="footera afooter" href="http://babafeszkelo.hu/aszf">Adatkezelés</a></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <span>powered by:<a class="footera" href="https://datastep.solutions/">Datastep Hungary Kft.</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="overlay" *ngIf="showModal"></div>
+<div class="modal fade modalc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    id="exampleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Facebook</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+                        (click)="closeModal()">
+                    </button>
+                </div>
+                <div class="modal-body">
+                  <div>Fontos személyes adataid védelme, ezért tudatosan nem használjuk a facebookot.</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                        (click)="closeModal()">Bezárás</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+  
+  </footer>

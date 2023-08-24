@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-12 py-3">
-      <form [formGroup]="loginForm">
+      <form [formGroup]="loginForm" class="col-sm-6" style="margin: 0 auto;">
         <div class="mb-3">
           <label class="form-label">Felhasználó név</label>
           <input formControlName="username" type="text" class="form-control">
@@ -20,6 +20,9 @@
         </div>
         <div class="mb-3">
           <label routerLink="/resetpassword">Elfelejtette a jelszavát</label>
+        </div>
+        <div class="mb-3" *ngIf="loginError && showLoginAlert" [@fadeInOut]>
+          <p class="alert alert-danger">{{loginError}}</p>
         </div>
         <button type="button" class="btn btn-primary c" (click)="onSubmit()">Bejelentkezés</button>
         <!--<button type="button" class="btn btn-primary pe-2 reg c" routerLink="/signup">Regisztráció</button> -->
