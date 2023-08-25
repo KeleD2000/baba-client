@@ -20,6 +20,7 @@
             </div>
             <input type="checkbox" class="dd-input" id="test">
             <ul class="dd-menu">
+              <li *ngIf="!isAdmin" routerLink="/elofizetes">Előfizetések</li>
               <li *ngIf="isAdmin" routerLink="/admin/videotar">Videotéka</li>
               <li (click)="Logout()">Kijelentkezés</li>
             </ul>

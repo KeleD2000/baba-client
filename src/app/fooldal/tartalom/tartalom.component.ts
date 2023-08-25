@@ -33,11 +33,13 @@ export class TartalomComponent {
       for(const [key, value] of Object.entries(i)){
         if(Array.isArray(value)){
           for(const [k,v] of Object.entries(value)){
+            console.log(k,v);
             //console.log(v.path.alias);
             if(v.title === 'Főoldal'){
               this.fooldalService.getFooldal(v.id).subscribe((page) =>{
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
+                    console.log(value.field_paragraphs);
                     if(value.field_paragraphs[k].field_content !== undefined){
                      // console.log(value.field_paragraphs[k].field_content.value);
                       const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);

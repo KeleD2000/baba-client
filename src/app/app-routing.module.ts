@@ -13,9 +13,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { AdatkezelesComponent } from './components/adatkezeles/adatkezeles.component';
 import { AszfComponent } from './components/aszf/aszf.component';
-
-
-
+import { ElofizetesModule } from './elofizetes/elofizetes.module';
 
 const routes: Routes = [
   {path: '', loadChildren: () => FooldalModule},
@@ -32,6 +30,7 @@ const routes: Routes = [
   {path: 'rolam', loadChildren: () => RolamModule},
   {path: 'videotar', loadChildren:() => VideotarModule},
   {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), /*canActivate: [AdminGuard]*/},
+  {path: 'elofizetes', loadChildren: () => ElofizetesModule},
   {path: '**', redirectTo: "not-found", pathMatch: "full"}
 ];
 

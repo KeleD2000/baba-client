@@ -25,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { AdatkezelesComponent } from './components/adatkezeles/adatkezeles.component';
 import { AszfComponent } from './components/aszf/aszf.component';
+import { ElofizetesModule } from './elofizetes/elofizetes.module';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSwXraHIkw4DG5uRRsfD_FFqAhMWG5X_w",
@@ -59,6 +60,7 @@ const firebaseConfig = {
     SharedModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    ElofizetesModule,
     AngularFireModule.initializeApp(firebaseConfig)
   ],
   providers: [HtmlconvertService],

@@ -60,6 +60,12 @@ a {
     list-style-type: none;
 }
 
+@media (max-width: 991px){
+    .dd-menu{
+        left: 0px;
+    }
+}
+
 .dd-input+.dd-menu {
     display: none;
 }

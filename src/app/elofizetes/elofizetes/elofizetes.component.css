@@ -1,0 +1,12 @@
+.bcolor{
+    background-color: #E6009F;
+    color: white;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.card{
+    border-radius: 5px;
+    border: 2px solid #0A606F;
+}

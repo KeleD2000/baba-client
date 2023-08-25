@@ -44,7 +44,7 @@ export class SigninComponent {
           console.log(loggedIn);
           this.userService.setLoggedInUser(loggedIn);
           localStorage.setItem("login", JSON.stringify(loggedIn));
-          this.route.navigateByUrl('/fooldal');
+          this.route.navigateByUrl('/elofizetes');
         }
       },error =>{
         this.showLoginAlert = true;
