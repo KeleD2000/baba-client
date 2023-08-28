@@ -25,7 +25,7 @@ export class FooldalService {
   }
 
   getFooldal(id: string){
-    return this.http.get(`${this.baseUrl}/jsonapi/node/page/` + id);
+    return this.http.get(`${this.baseUrl}/jsonapi/node/page/` + id + `?include=field_paragraphs.field_image_full.field_media_image`);
   }
 
   getPhotos(id: string, media: string, image: string){

@@ -47,6 +47,12 @@
 
 .p-text{
     padding: 10px;
+    text-align: center;
+    
+}
+
+.li-text{
+    padding: 10px;
 }
 
 .d-flex{

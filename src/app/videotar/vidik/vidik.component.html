@@ -40,10 +40,10 @@
 </div>
 <div class="d-flex mb-3 mt-3 flex-md-row flex-column">
     <div *ngFor="let contents of content; index as i" class="d-flex align-items-center justify-content-center" [ngClass]="{'w-50 column': i == 8 || i == 9}">
-        <div class="p-text" *ngIf="i === 8">
+        <div class="li-text" *ngIf="i === 8">
             <div [innerHTML]="contents"></div>
         </div>
-        <div class="p-text" *ngIf="i === 9">
+        <div *ngIf="i === 9">
             <img class="img-left2" [src]="getPhotos(i)">
         </div>
     </div>

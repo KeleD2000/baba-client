@@ -1,6 +1,6 @@
 .app-container {
   display: grid;
-  grid-template-rows: auto 1fr auto; /* Fő tartalom és lábléc méretei */
+  grid-template-rows: auto 1fr auto; 
   min-height: 100vh;
 }
 
@@ -8,5 +8,5 @@
 .sticky-header {
   position: sticky;
   top: 0;
-  z-index: 1000; /* Ezt az értéket szükség esetén módosíthatod */
+  z-index: 1000; 
 }
