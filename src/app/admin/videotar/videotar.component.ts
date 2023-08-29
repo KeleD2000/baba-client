@@ -177,7 +177,6 @@ export class VideotarComponent {
       console.log(this.video);
       const formData = new FormData();
       formData.append('file', this.video, this.video.name);
-      console.log(formData);
       const data = {
         data: {
           type: "media--video",

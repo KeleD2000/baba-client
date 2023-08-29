@@ -59,14 +59,15 @@ export class FooldalService {
 
   sendFile(data: FormData, filename: string, id: string) {
     const auth = btoa('admin:c');
+    const encodedFilename = encodeURIComponent(filename);
     const headers = new HttpHeaders({
       'Content-Type': 'application/octet-stream',
       'Accept' : 'application/vnd.api+json',
-      'Content-Disposition' : 'file; filename="'+ filename +'"',
+      'Content-Disposition' : 'file; filename="'+ encodedFilename +'"',
       Authorization: 'Basic ' + auth
     });
 
-    return this.http.post(`${this.baseUrl}/jsonapi/media/video/` + id + '/field_media_video_file' , data, { headers });
+    return this.http.post(`${this.baseUrl}/jsonapi/media/video/` + id + '/field_media_video_file' , data.get('file'), { headers });
   }
 
 }

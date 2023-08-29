@@ -29,7 +29,7 @@ const routes: Routes = [
   {path: 'foglalkozasok-budapesten', loadChildren: () => FoglalkozasokbpModule},
   {path: 'rolam', loadChildren: () => RolamModule},
   {path: 'videotar', loadChildren:() => VideotarModule},
-  {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), /*canActivate: [AdminGuard]*/},
+  {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [AdminGuard]},
   {path: 'elofizetes', loadChildren: () => ElofizetesModule},
   {path: '**', redirectTo: "not-found", pathMatch: "full"}
 ];
