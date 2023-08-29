@@ -24,8 +24,24 @@ export class FooldalService {
     
   }
 
-  getFooldal(id: string){
+  /*getFooldal(id: string){
     return this.http.get(`${this.baseUrl}/jsonapi/node/page/` + id + `?include=field_paragraphs.field_image_full.field_media_image`);
+  }*/
+
+  getFooldal(id: string){
+
+    // Define your headers
+    const headers = new HttpHeaders({
+      //'X-CSRF-Token': '6IjndErFylRc84oYGRh5XkvKinrjCaPCFFp1lD7pMGc',
+      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+    });
+
+    // Include the headers in the options object
+    const httpOptions = {
+      headers: headers,
+    };
+
+    return this.http.get(`${this.baseUrl}/jsonapi/node/page/` + id, httpOptions);
   }
 
   getPhotos(id: string, media: string, image: string){

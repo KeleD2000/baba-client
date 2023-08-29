@@ -11,7 +11,8 @@ import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 })
 export class TartalomComponent {
   content: any[] = [];
-
+  fullPhotos: any[] = [];
+  halfPhotos: any[] = [];
 
   getPhotos(i: any){
     switch(i){
@@ -33,13 +34,21 @@ export class TartalomComponent {
       for(const [key, value] of Object.entries(i)){
         if(Array.isArray(value)){
           for(const [k,v] of Object.entries(value)){
-            console.log(k,v);
+            //console.log(k,v);
             //console.log(v.path.alias);
             if(v.title === 'Főoldal'){
               this.fooldalService.getFooldal(v.id).subscribe((page) =>{
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
-                    console.log(value.field_paragraphs);
+                    //console.log(value.field_paragraphs[k]);
+                    if(value.field_paragraphs[k].type === 'paragraph--image_full'){
+                      this.fullPhotos.push(value.field_paragraphs[k].field_image_full.field_media_image.uri.url);
+                      console.log(this.fullPhotos);
+                    }
+                    if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
+                      this.halfPhotos.push(value.field_paragraphs[k].field_image_inline.field_media_image.uri.url)
+                      console.log(this.halfPhotos);
+                    }
                     if(value.field_paragraphs[k].field_content !== undefined){
                      // console.log(value.field_paragraphs[k].field_content.value);
                       const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);

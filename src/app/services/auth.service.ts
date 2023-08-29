@@ -11,17 +11,17 @@ import { Address } from '../models/Address';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl= "https://baba.jrdatashu.win";
-  
- constructor(private http: HttpClient, private router: Router) { 
-  
+  private baseUrl = "https://baba.jrdatashu.win";
+
+  constructor(private http: HttpClient, private router: Router) {
+
   }
 
-  login(user: Login){
+  login(user: Login) {
     return this.http.post<User>(`${this.baseUrl}/user/login?_format=json`, user);
   }
 
-  register(userData: Register){
+  register(userData: Register) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/user/register?_format=json`, userData, httpOptions);
   }
 
-  registerAddress(userAddress: Address){
+  registerAddress(userAddress: Address) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -41,17 +41,17 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/user/register?_format=json`, userAddress, httpOptions);
   }
 
-  isAuthenticated(){
+  isAuthenticated() {
     const login = localStorage.getItem('login');
     return login;
   }
 
-  isAdmin(): boolean{
+  isAdmin(): boolean {
     const authenticated = this.isAuthenticated();
-    if(authenticated){
+    if (authenticated) {
       const json = JSON.parse(authenticated);
-      if(json.current_user.roles){
-        if(json.current_user.roles.includes("administrator")){
+      if (json.current_user.roles) {
+        if (json.current_user.roles.includes("administrator")) {
           return true;
         }
       }
@@ -59,22 +59,28 @@ export class AuthService {
     return false;
   }
 
-  logout(logouttoken: string, csrftoken: string){
+  logout(logouttoken: string, csrftoken: string) {
     localStorage.removeItem('login');
     const requestBody = {};
     console.log(csrftoken);
-      const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrftoken
-      });
-     return this.http.post(`${this.baseUrl}/user/logout?_format=json`, requestBody, {headers, params:{token: logouttoken}});
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json', //x-www-form-urlencoded
+      'X-CSRF-Token': csrftoken,
+      //'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+    });
+    // Include the headers in the options object
+    const httpOptions = {
+      headers: headers,
+      //params: {_format: 'json', token: csrftoken, csrf_token: csrftoken}
+    };
+    return this.http.get(`${this.baseUrl}/api/logout`, httpOptions);
   }
 
-   fetchCsrfToken() : Observable<string> {
-    return this.http.get<string>(`${this.baseUrl}/session/token`, {responseType: 'text' as 'json'});
+  fetchCsrfToken(): Observable<string> {
+    return this.http.get<string>(`${this.baseUrl}/session/token`, { responseType: 'text' as 'json' });
   }
 
-  resetPassword(email: string){
+  resetPassword(email: string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'

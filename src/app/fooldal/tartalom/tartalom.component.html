@@ -1,19 +1,23 @@
-<div *ngFor="let contents of content; index as i">
-    <ng-container *ngIf="i <= 4">
-        <ng-container *ngIf="contents === undefined; else elseBlock">
-            <img class="img" [src]="getPhotos(i)">
+<div *ngFor="let contents of content; index as i" >
+    <div *ngFor="let photo of fullPhotos">
+        <ng-container *ngIf="i <= 4">
+            <ng-container *ngIf="contents === undefined; else elseBlock">
+                <img class="img" [src]="getPhotos(i)">
+            </ng-container>
+            <ng-template #elseBlock>
+                <div class="mb-3 mt-3" [innerHTML]="contents"></div>
+            </ng-template>
         </ng-container>
-        <ng-template #elseBlock>
-            <div class="mb-3 mt-3" [innerHTML]="contents"></div>
-        </ng-template>
-    </ng-container>
+    </div>
 </div>
 <div class="d-flex mb-3 mt-3 flex-md-row flex-column">
     <div *ngFor="let contents of content; index as i">
         <div class="p-text" *ngIf="i === 5">
             <div [innerHTML]="contents"></div>
         </div>
-        <div *ngIf="i === 6"> <img class="img-left1" [src]="getPhotos(i)" alt=""></div>
+        <div *ngIf="i === 6"> 
+            <img class="img-left1" [src]="getPhotos(i)" alt="">
+        </div>
     </div>
 </div>
 <div *ngFor="let contents of content; index as i">

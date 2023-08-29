@@ -36,6 +36,7 @@ export class BabafeszkeloComponent {
               this.fooldalService.getFooldal(page.id).subscribe((page) =>{
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
+                    console.log(value.field_paragraphs);
                     if(value.field_paragraphs[k].field_content !== undefined){
                       const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
                       this.content.push(paragraph_value);
