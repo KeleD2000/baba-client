@@ -44,7 +44,7 @@ export class SigninComponent {
           console.log(loggedIn);
           this.userService.setLoggedInUser(loggedIn);
           localStorage.setItem("login", JSON.stringify(loggedIn));
-          this.route.navigateByUrl('/elofizetes');
+          window.location.reload();
         }
       },error =>{
         this.showLoginAlert = true;
@@ -54,6 +54,12 @@ export class SigninComponent {
         }, 3000);
       });
     }
+    if(this.authService.isAdmin() === true){
+      this.route.navigateByUrl('/admin/videotar');
+    }else{
+      this.route.navigateByUrl('/elofizetes');
+    }
+
   }
 
 }
