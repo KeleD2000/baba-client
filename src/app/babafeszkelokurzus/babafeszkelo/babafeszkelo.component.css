@@ -13,6 +13,7 @@
 
 :host ::ng-deep .MsoWhite{
     color:white;
+    text-align: center;
 }
 
 :host ::ng-deep .MsoLineHeight{
@@ -50,11 +51,12 @@
     text-align: center;
 }
 
-.d-flex{
+.background{
     background-color: #0A606F;
-    display: flex;
-    justify-content: center;
-    align-items: center;   
+}
+
+.p-10{
+    padding: 10px;
 }
 
 @media screen and (max-width: 768px) {

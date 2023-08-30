@@ -13,6 +13,7 @@
 
 :host ::ng-deep .MsoWhite{
     color:white;
+    text-align: center;
 }
 
 .img{
@@ -40,16 +41,17 @@
     
 }
 
+.p-10{
+    padding: 10px;
+}
+
 .p-text{
     padding: 10px;
     text-align: center;
 }
 
-.d-flex{
+.background{
     background-color: #0A606F;
-    display: flex;
-    justify-content: center;
-    align-items: center;  
 }
 
 @media screen and (max-width: 768px) {

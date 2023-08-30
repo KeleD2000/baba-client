@@ -1,41 +1,20 @@
-<div *ngFor="let contents of content; index as i">
-    <ng-container *ngIf="i <= 13">
-        <ng-container *ngIf="contents === undefined; else elseBlock">
-            <img class="img" [src]="getPhotos(i)">
-        </ng-container>
-        <ng-template #elseBlock>
-            <div class="mb-3 mt-3" [innerHTML]="contents"></div>
-        </ng-template>
+<div class="row mb-3" [ngClass]="{'background align-items-center': content.img_url && content.content}" *ngFor="let content of content">
+    <ng-container *ngIf="content.img_url && content.content">
+        <div class="col-lg-6">
+            <img class="img p-10" *ngIf="content.img_layout == 'img-left'" [src]="content.img_url" alt="" srcset="">
+            <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-right'"></div>
+        </div>
+        <div class="col-lg-6">
+            <img class="img p-10" *ngIf="content.img_layout == 'img-right'" [src]="content.img_url" alt="" srcset="">
+            <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-left'"></div>
+        </div>
     </ng-container>
-</div>
-<div class="d-flex mb-3 mt-3 flex-md-row flex-column">
-    <div *ngFor="let contents of content; index as i" [ngClass]="{'w-50 column': i == 14 || i == 15}">
-        <div *ngIf="i === 14">
-            <img class="img-right" [src]="getPhotos(i)">
+    <ng-container *ngIf="content.content && !content.img_url">
+        <div class="col-lg-12">
+            <div [innerHTML]="content.content"></div>
         </div>
-        <div class="p-text" *ngIf="i === 15">
-            <div [innerHTML]="contents"></div>
-        </div>
-    </div>
-</div>
-<div *ngFor="let contents of content; index as i">
-    <ng-container *ngIf="i > 15 && i < 19">
-        <ng-container *ngIf="contents === undefined; else elseBlock">
-            <img class="img" [src]="getPhotos(i)">
-        </ng-container>
-        <ng-template #elseBlock>
-            <div [innerHTML]="contents">
-            </div>
-        </ng-template>
     </ng-container>
-</div>
-<div class="d-flex mb-3 mt-3 flex-md-row flex-column">
-    <div *ngFor="let contents of content; index as i">
-        <div class="p-text" *ngIf="i === 19">
-            <div [innerHTML]="contents"></div>
-        </div>
-        <div *ngIf="i === 20">
-            <img class="img-left2"  [src]="getPhotos(i)">
-        </div>
-    </div>
+    <ng-container *ngIf="!content.content && content.img_url">
+        <img class="img" [src]="content.img_url" alt="">
+    </ng-container>
 </div>

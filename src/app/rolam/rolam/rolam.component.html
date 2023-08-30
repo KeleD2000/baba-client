@@ -1,46 +1,25 @@
-
-  <!--  <div class="p-1 row" *ngFor="let contents of content; index as i">
-        <ng-container *ngIf="i<=3">
-            <ng-container *ngIf="contents === undefined; else elseBlock">
-                <img class="img" [src]="getPhotos(i)">
-            </ng-container>
-            <ng-template #elseBlock>
-                <div class="mb-3 mt-3 col-lg-12 col-md-8 col-sm-6" [innerHTML]="contents"></div>
-            </ng-template>
-        </ng-container>
-    </div>
-
-
-<div class="iframe-container" *ngFor="let contents of content; index as i">
-    <ng-container *ngIf="i == 4">
-        <iframe class="p-3" width="560" height="315" src="https://www.youtube.com/embed/auMllD0l_m4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="row mb-3" [ngClass]="{'background align-items-center': content.img_url && content.content}" *ngFor="let content of content">
+    <ng-container *ngIf="content.img_url && content.content">
+        <div class="col-lg-6">
+            <img class="img p-10" *ngIf="content.img_layout == 'img-left'" [src]="content.img_url" alt="" srcset="">
+            <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-right'"></div>
+        </div>
+        <div class="col-lg-6">
+            <img class="img p-10" *ngIf="content.img_layout == 'img-right'" [src]="content.img_url" alt="" srcset="">
+            <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-left'"></div>
+        </div>
     </ng-container>
-</div>
-<div *ngFor="let contents of content; index as i">
-    <ng-container *ngIf="i == 5">
-        <img class="img pb-3" [src]="getPhotos(i)">
+    <ng-container *ngIf="content.content && !content.img_url">
+        <div class="col-lg-12">
+            <div [innerHTML]="content.content"></div>
+        </div>
     </ng-container>
-</div>-->
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12" *ngFor="let contents of content; index as i">
-        <ng-container *ngIf="i <= 3">
-            <div *ngIf="contents === undefined; else elseBlock">
-                <img [src]="getPhotos(i)" class="img" alt="">
-            </div>
-            <ng-template #elseBlock>
-                <div class="mb-3 mt-3" [innerHTML]="contents"></div>
-            </ng-template>
-        </ng-container>
-    </div>
-
-    <div class="iframe-container col-lg-12 col-md-12 col-sm-12" *ngFor="let contents of content; index as i">
-        <ng-container *ngIf="i == 4">
-            <iframe class="p-3" width="560" height="315" src="https://www.youtube.com/embed/auMllD0l_m4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </ng-container>
-    </div>
-    <div *ngFor="let contents of content; index as i">
-        <ng-container *ngIf="i == 5">
-            <img class="img pb-3" [src]="getPhotos(i)">
-        </ng-container>
-    </div>
+    <ng-container *ngIf="!content.content && content.img_url">
+        <img class="img" [src]="content.img_url" alt="">
+    </ng-container>
+    <ng-container *ngIf="content.youtube_video && !content.img_url && !content.content">
+        <div class="col-lg-12 text-center">
+            <iframe class="iframe-size" [src]="content.youtube_video | safe : 'resourceUrl'" frameborder="0"></iframe>
+        </div>
+    </ng-container>
 </div>

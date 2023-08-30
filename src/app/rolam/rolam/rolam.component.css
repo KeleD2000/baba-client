@@ -34,9 +34,13 @@
     padding: 10px;
 }
 
-.d-flex{
-    background-color: #0A606F;
-    
+.iframe-size{
+    width: 540px;
+    height: 320px;
+}
+
+.p-10{
+    padding: 10px;
 }
 
 @media screen and (max-width: 768px) {

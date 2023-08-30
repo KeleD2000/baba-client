@@ -11,23 +11,8 @@ import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 })
 export class TartalomComponent {
   content: any[] = [];
-  fullPhotos: any[] = [];
-  halfPhotos: any[] = [];
-
-  getPhotos(i: any){
-    switch(i){
-      case 0 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/Logo_WhiteBIGbackground_main.png";
-      case 2 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/1Fooldal1.jpeg";
-      case 6 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/1Fooldal4_k.jpg"; 
-      case 11 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/1Fooldal2_k.jpg";
-      case 13 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/1Fooldal3_k.jpg";
-      default: return '';
-    }
-  }
-
-  constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService){
-    
-  }
+  baseUrl: string = "https://baba.jrdatashu.win";
+  constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService){}
 
   ngOnInit(){
     this.fooldalService.getId().subscribe((i) => {
@@ -40,26 +25,21 @@ export class TartalomComponent {
               this.fooldalService.getFooldal(v.id).subscribe((page) =>{
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
-                    //console.log(value.field_paragraphs[k]);
+                    console.log(value.field_paragraphs[k]);
+                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: ""};
                     if(value.field_paragraphs[k].type === 'paragraph--image_full'){
-                      this.fullPhotos.push(value.field_paragraphs[k].field_image_full.field_media_image.uri.url);
-                      console.log(this.fullPhotos);
-                    }
-                    if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
-                      this.halfPhotos.push(value.field_paragraphs[k].field_image_inline.field_media_image.uri.url)
-                      console.log(this.halfPhotos);
-                    }
-                    if(value.field_paragraphs[k].field_content !== undefined){
-                     // console.log(value.field_paragraphs[k].field_content.value);
-                      const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
-                      this.content.push(paragraph_value);
-                      if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
-                        var kk = Number(k);
-                        this.content.splice(kk+=2, 0, undefined);
+                      obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
+                    }else if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
+                      obj.content = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
+                      obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_inline.field_media_image.uri.url;
+                      obj.img_layout = value.field_paragraphs[k].field_layout;
+                    }else if(value.field_paragraphs[k].type === 'paragraph--text'){
+                      if(value.field_paragraphs[k].field_content !== undefined){
+                        const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
+                        obj.content = paragraph_value;
                       }
-                    }else{
-                      this.content.push(undefined);
                     }
+                    this.content.push(obj);
                   }
                 }
               });
@@ -68,25 +48,7 @@ export class TartalomComponent {
         }
       }
     });
+    console.log(this.content);
   }
-
-  /*
-  ngOnInit(){
-        //texts
-        this.fooldalService.getTexts().subscribe((texts) => {
-          for(const [key, value] of Object.entries(texts)){
-            if(Array.isArray(value)){
-              for(const [k,v] of Object.entries(value)){
-                if(Number(k) > 0 && Number(k) < 2){
-                   const elsobekezdes = this.htmlconvertService.convertToHtml(v.attributes.field_content.value);
-                   this.elsob = elsobekezdes;
-                }
-          
-              }
-            }
-          }
-        });
-  }
-*/
 }
 

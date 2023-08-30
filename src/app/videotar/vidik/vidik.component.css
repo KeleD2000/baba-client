@@ -13,11 +13,16 @@
 
 :host ::ng-deep .MsoWhite{
     color:white;
+    text-align: center;
 }
 
 :host ::ng-deep .MsoLineHeight{
     text-align: justify;
     line-height: 1rem;
+}
+
+:host ::ng-deep .MsoWhiteLeftText{
+    color: white;
 }
 
 .img{
@@ -55,11 +60,17 @@
     padding: 10px;
 }
 
-.d-flex{
+.background{
     background-color: #0A606F;
-    display: flex;
-    justify-content: center;
-    align-items: center;  
+}
+
+.p-10{
+    padding: 10px;
+}
+
+.iframe-size{
+    width: 540px;
+    height: 320px;
 }
 
 @media screen and (max-width: 768px) {

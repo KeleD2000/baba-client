@@ -58,7 +58,7 @@ export class AppComponent {
   ngOnInit() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.showImage = this.router.url !== '/fooldal';
+        this.showImage = this.router.url === '/fooldal';
       }
     });
 

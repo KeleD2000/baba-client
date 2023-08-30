@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import { SafeHtml } from '@angular/platform-browser';
 import { Page } from 'src/app/models/Page';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
@@ -10,19 +11,13 @@ import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 })
 export class RolamComponent {
   content: any[] = [];
+  baseUrl: string = "https://baba.jrdatashu.win";
+  constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService){}
 
-  getPhotos(i: any){
-    switch(i){
-      case 0 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/6Rolam1.jpeg";
-      case 2 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/6Rolam4.JPG";
-      case 4 : return "https://www.youtube.com/embed/auMllD0l_m4";
-      case 5 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/6Rolam2.jpeg";
-      default : return '';
-    }
-  }
-
-  constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService){
-
+  extractVideoId(url: string): string | null {
+    const regex = /[?&]v=([^&#]*)/i;
+    const match = regex.exec(url);
+    return match ? match[1] : null;
   }
 
   ngOnInit(){
@@ -30,17 +25,30 @@ export class RolamComponent {
       for(const [key, value] of Object.entries(i)){
         if(Array.isArray(value)){
           for(const [k,v] of Object.entries(value)){
-            const page: Page = {page: v.title, id: v.id};
-            if(page.page === 'Rólam'){
-              this.fooldalService.getFooldal(page.id).subscribe((page) =>{
+            //console.log(k,v);
+            //console.log(v.path.alias);
+            if(v.title === 'Rólam'){
+              this.fooldalService.getFooldal(v.id).subscribe((page) =>{
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
-                    if(value.field_paragraphs[k].field_content !== undefined){
-                      const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
-                      this.content.push(paragraph_value);
-                    }else{
-                      this.content.push(undefined);
+                    console.log(value.field_paragraphs[k]);
+                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: "", youtube_video: "" };
+                    if(value.field_paragraphs[k].type === 'paragraph--image_full'){
+                      obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
+                    }else if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
+                      obj.content = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
+                      obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_inline.field_media_image.uri.url;
+                      obj.img_layout = value.field_paragraphs[k].field_layout;
+                    }else if(value.field_paragraphs[k].type === 'paragraph--text'){
+                      if(value.field_paragraphs[k].field_content !== undefined){
+                        const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
+                        obj.content = paragraph_value;
+                      }
+                    }else if(value.field_paragraphs[k].type === 'paragraph--youtube_video'){
+                      const videoId = this.extractVideoId(value.field_paragraphs[k].field_youtube_video.field_media_oembed_video);
+                      obj.youtube_video = "https://www.youtube.com/embed/"+ videoId
                     }
+                    this.content.push(obj);
                   }
                 }
               });
@@ -48,9 +56,7 @@ export class RolamComponent {
           }
         }
       }
-      console.log(this.content);
     });
+    console.log(this.content);
   }
-
-
 }

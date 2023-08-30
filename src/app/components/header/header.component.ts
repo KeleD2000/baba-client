@@ -28,8 +28,7 @@ export class HeaderComponent {
       var login = JSON.parse(token);
       this.authService.fetchCsrfToken().subscribe((csrfToken: string) => {
         if (csrfToken) {
-          console.log(csrfToken);
-          this.router.navigateByUrl("/fooldal");
+          window.location.reload();
           this.authService.logout(login.logout_token, csrfToken).subscribe(logout => {
             console.log(logout);
           });
@@ -38,5 +37,6 @@ export class HeaderComponent {
         console.log('Hiba történt: ', error);
       });
     }
+    this.router.navigateByUrl("/fooldal");
   }
 }

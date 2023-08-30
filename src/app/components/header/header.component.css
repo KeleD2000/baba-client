@@ -124,3 +124,7 @@ a {
     color: white;
     background-color: #0A606F;
   }
+
+  .show-image{
+    display: none;
+  }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SafeHtml } from '@angular/platform-browser';
 import { Page } from 'src/app/models/Page';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
@@ -10,43 +11,36 @@ import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
   styleUrls: ['./babafeszkelo.component.css']
 })
 export class BabafeszkeloComponent {
-
   content: any[] = [];
-
-  getPhotos(i: any){
-    switch(i){
-      case 0 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/2BFkurzus3.jpg";
-      case 4 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/2BFkurzus4.jpg";
-      case 13 : return "http://baba.jrdatashu.win/sites/default/files/2023-07/2BFkurzus1.jpeg";
-      default: return '';
-    }
-  }
-
-  constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService){
-    
-  }
+  baseUrl: string = "https://baba.jrdatashu.win";
+  constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService){}
 
   ngOnInit(){
     this.fooldalService.getId().subscribe((i) => {
       for(const [key, value] of Object.entries(i)){
         if(Array.isArray(value)){
           for(const [k,v] of Object.entries(value)){
-            const page: Page = {page: v.title, id: v.id};
-            if(page.page === 'Babafészkelő kurzus'){
-              this.fooldalService.getFooldal(page.id).subscribe((page) =>{
+            //console.log(k,v);
+            //console.log(v.path.alias);
+            if(v.title === 'Babafészkelő kurzus'){
+              this.fooldalService.getFooldal(v.id).subscribe((page) =>{
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
-                    console.log(value.field_paragraphs);
-                    if(value.field_paragraphs[k].field_content !== undefined){
-                      const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
-                      this.content.push(paragraph_value);
-                      if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
-                        var kk = Number(k);
-                        this.content.splice(kk+=2, 0, undefined);
+                    console.log(value.field_paragraphs[k]);
+                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: ""};
+                    if(value.field_paragraphs[k].type === 'paragraph--image_full'){
+                      obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
+                    }else if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
+                      obj.content = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
+                      obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_inline.field_media_image.uri.url;
+                      obj.img_layout = value.field_paragraphs[k].field_layout;
+                    }else if(value.field_paragraphs[k].type === 'paragraph--text'){
+                      if(value.field_paragraphs[k].field_content !== undefined){
+                        const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
+                        obj.content = paragraph_value;
                       }
-                    }else{
-                      this.content.push(undefined);
                     }
+                    this.content.push(obj);
                   }
                 }
               });
