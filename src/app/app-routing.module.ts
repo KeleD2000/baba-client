@@ -26,7 +26,7 @@ const routes: Routes = [
   {path: 'fooldal', loadChildren: () => FooldalModule},
   {path: 'babafeszkelo-kurzus', loadChildren: () => BabafeszkelokurzusModule},
   {path: 'lombikra-felkeszito-kurzus', loadChildren: () => LombikrafelkeszitokurzusModule},
-  {path: 'foglalkozasok-budapesten', loadChildren: () => FoglalkozasokbpModule},
+  {path: 'foglalkozasok-teremben', loadChildren: () => FoglalkozasokbpModule},
   {path: 'rolam', loadChildren: () => RolamModule},
   {path: 'videotar', loadChildren:() => VideotarModule},
   {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [AdminGuard]},

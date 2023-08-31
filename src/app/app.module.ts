@@ -27,6 +27,7 @@ import { AdatkezelesComponent } from './components/adatkezeles/adatkezeles.compo
 import { AszfComponent } from './components/aszf/aszf.component';
 import { ElofizetesModule } from './elofizetes/elofizetes.module';
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyBSwXraHIkw4DG5uRRsfD_FFqAhMWG5X_w",
   authDomain: "babafeszkelo-51994.firebaseapp.com",
@@ -56,7 +57,7 @@ const firebaseConfig = {
     HttpClientModule,
     RouterModule,
     FontAwesomeModule,
-    AdminModule,
+
     SharedModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

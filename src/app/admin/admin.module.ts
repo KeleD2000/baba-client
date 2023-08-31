@@ -10,13 +10,15 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-spinner.component';
 
 library.add(faTrash);
 
 @NgModule({
   declarations: [
     VideotarComponent,
-    SafePipe
+    SafePipe,
+    LoadingSpinnerComponent
   ],
   imports: [
     CommonModule,

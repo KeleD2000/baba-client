@@ -2,18 +2,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VidikComponent } from './vidik/vidik.component';
 import { VideotarRoutingModule } from './videotar-routing.module';
-import { SafePipe } from '../pipes/safe.pipe';
+import { VidisafePipe } from '../pipes/vidisafe.pipe';
+
 
 
 
 @NgModule({
   declarations: [
     VidikComponent,
-    SafePipe
+    VidisafePipe
   ],
   imports: [
     CommonModule,
-    VideotarRoutingModule
+    VideotarRoutingModule,
   ]
 })
 export class VideotarModule { }

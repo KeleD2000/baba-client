@@ -46,6 +46,19 @@ export class AuthService {
     return login;
   }
 
+  getAuthenticatedUserID(){
+    const login = localStorage.getItem('login');
+    if(login){
+      var json = JSON.parse(login);
+      return json.current_user.uid;
+    }
+    return undefined;
+  }
+
+  getUserId(uid: string){
+    return this.http.get(`${this.baseUrl}/jsonapi/user/user?filter[uid][value]=${uid}`);
+  }
+
   isAdmin(): boolean {
     const authenticated = this.isAuthenticated();
     if (authenticated) {
