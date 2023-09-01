@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class VideotarComponent {
   categories: any[] = [];
   faTrash = faTrash;
+  errorMessage : string = '';
 
   showModal: boolean = false;
 
@@ -26,6 +27,8 @@ export class VideotarComponent {
   uploadCategorieId: any;
   loggedUuid: any;
   spinner: boolean = false;
+  videoFormatError? : string;
+  thumbnailFormatError?: string;
 
   constructor(private fooldalService: FooldalService,
     private htmlconvetrService: HtmlconvertService,
@@ -33,10 +36,10 @@ export class VideotarComponent {
     private renderer: Renderer2) {
     this.uploadForm = new FormGroup(
       {
-        video: new FormControl(''),
-        thumbnail: new FormControl(''),
-        title: new FormControl(''),
-        description: new FormControl('')
+        video: new FormControl('', [Validators.required]),
+        thumbnail: new FormControl('', [Validators.required]),
+        title: new FormControl('', [Validators.required]),
+        description: new FormControl('', [Validators.required])
       }
     )
   }
@@ -169,12 +172,42 @@ export class VideotarComponent {
 
   onFileSelected(event: any) {
     this.video = event.target.files[0];
+    if(!this.fileFormatValidator(this.video.name)){
+      this.videoFormatError = "A fájl formátum csak .mp4 lehet!";
+    }else {
+      this.videoFormatError = ''
+    }
+  }
+
+  fileFormatValidator(fileName: any): boolean {
+    const validFormats = ['mp4', 'jpg'];
+    if (fileName) {
+      const fileExtension = fileName.split('.').pop().toLowerCase();
+      if (validFormats.includes(fileExtension)) {
+        return true
+      }
+    }
+    return false;
   }
 
   onThumbnaiLSelected(event: any) {
     this.thumbnail = event.target.files[0];
+    if(!this.fileFormatValidator(this.thumbnail.name)){
+      this.thumbnailFormatError = "A fájl formátum csak .jpg lehet!";
+    }else {
+      this.thumbnailFormatError = '';
+    }
   }
+
   async onUpload() {
+    if(!this.fileFormatValidator(this.video.name)){
+      this.videoFormatError = "A fájl formátum csak .mp4 lehet!";
+      return;
+    }
+    if(!this.fileFormatValidator(this.thumbnail.name)){
+      this.thumbnailFormatError = "A fájl formátum csak .jpg lehet!";
+      return;
+    }
     if (this.video && this.thumbnail && this.uploadForm.valid) {
       console.log(this.video);
       console.log(this.thumbnail);

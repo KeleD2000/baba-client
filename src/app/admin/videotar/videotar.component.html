@@ -50,24 +50,42 @@
                         <br>
                         <input (change)="onFileSelected($event)" type="file" id="video" name="video"
                             class="form-control" accept="video/mp4" formControlName="video">
+                            <div *ngIf="uploadForm.get('video')?.errors?.['required'] && (uploadForm.get('video')?.touched || uploadForm.get('video')?.dirty)" class="error-message">
+                                Videó feltöltése kötelező
+                            </div>
+                            <div class="error-message" *ngIf="videoFormatError">
+                                {{ videoFormatError }}
+                            </div>
                     </div>
                     <div class="mb-3">
                         <label for="thumbnail">Előnézeti kép feltöltése:</label>
                         <br>
                         <input type="file" (change)="onThumbnaiLSelected($event)" id="thumbnail" class="form-control" name="thumbnail"
-                            accept="image/png, image/jpeg" formControlName="thumbnail">
+                            accept="image/jpeg" formControlName="thumbnail">
+                            <div *ngIf="uploadForm.get('thumbnail')?.errors?.['required'] && (uploadForm.get('thumbnail')?.touched || uploadForm.get('thumbnail')?.dirty)" class="error-message">
+                                Előnézeti kép feltöltése kötelező
+                            </div>
+                            <div class="error-message" *ngIf="thumbnailFormatError">
+                                {{ thumbnailFormatError }}
+                            </div>
                     </div>
                     <div class="mb-3">
                         <label for="title">Videó címe:</label>
                         <br>
                         <input type="text" class="form-control form-control-sm" id="title" name="title"
                             formControlName="title">
+                            <div *ngIf="uploadForm.get('title')?.errors?.['required'] && (uploadForm.get('title')?.dirty || uploadForm.get('title')?.touched)" class="error-message" >
+                                Videó címe megadása kötelező
+                            </div>
                     </div>
                     <div class="mb-3">
                         <label for="description">Videó leírása:</label>
                         <br>
                         <textarea style="resize: none;" class="form-control" id="description"
                             formControlName="description"></textarea>
+                            <div *ngIf="uploadForm.get('description')?.errors?.['required'] && (uploadForm.get('description')?.dirty || uploadForm.get('description')?.touched)" class="error-message">
+                                Videó leírása megadása kötelező
+                            </div>
                     </div>
 
                 </div>
