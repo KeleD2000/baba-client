@@ -15,9 +15,6 @@
     outline: none;
     box-shadow: none;
     border: none;
-    position: absolute;
-    right: 0px;
-    top: 0px;
 }
 
 a {
@@ -29,6 +26,9 @@ a {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
+.logo-bg{
+    background-color: white;
+}
 
 /* Dropdown */
 
@@ -97,7 +97,11 @@ a {
 }
 
 .menu-logo {
-    width: 80px;
+    width: 140px;
+}
+
+.menu-pos{
+    margin-left: 5rem;
 }
 
 .navlink:hover {

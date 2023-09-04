@@ -22,4 +22,7 @@
             <iframe class="iframe-size" [src]="content.youtube_video | vidisafe : 'resourceUrl'" frameborder="0"></iframe>
         </div>
     </ng-container>
+    <ng-container *ngIf="content.text_condensed && !content.youtube_video && !content.img_url && !content.content ">
+        <div [innerHTML]="content.text_condensed" [ngClass]="{'text-con' : isTextCondensed}"></div>
+    </ng-container>
 </div>

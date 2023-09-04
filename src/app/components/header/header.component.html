@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+<!--<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
     <div class="container-fluid">
       <div id="imageContainer" [ngClass]="{'show-image': showImage, 'hide-image': !showImage}">
         <a routerLink="/fooldal">
@@ -29,3 +29,41 @@
       </div>
     </div>
   </nav>
+-->
+
+<div class="container-fluid">
+  <div class="row">
+    <div id="imageContainer" class="text-center logo-bg" [ngClass]="{'show-image': showImage, 'hide-image': !showImage}">
+      <a routerLink="/fooldal">
+        <img class="menu-logo" src="assets/menulogo.png" alt="Kép megjelenítés">
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav mx-auto"> <!-- mx-auto középre igazítja a menüt -->
+          <a class="navlink" *ngFor="let menu of menus" style="font-size: 14px;" [routerLink]="menu.href"
+            [ngClass]="{'active': isActiveMenu(menu.href)}">{{ menu.title }}</a>
+          <a class="navlink active-login" style="font-size: 14px;" routerLink="/signin" *ngIf="!loggedUser">Bejelentkezés</a>
+          <label class="dropdown" *ngIf="loggedUser">
+            <div class="dd-button navlink" style="font-size: 14px;">
+             {{loggedUser.current_user.name}}
+            </div>
+            <input type="checkbox" class="dd-input" id="test">
+            <ul class="dd-menu">
+              <li *ngIf="!isAdmin" routerLink="/elofizetes">Előfizetések</li>
+              <li *ngIf="isAdmin" routerLink="/admin/videotar">Videotéka</li>
+              <li (click)="Logout()">Kijelentkezés</li>
+            </ul>
+          </label>        
+        </div>
+      </div>
+      </nav>
+  </div>
+</div>

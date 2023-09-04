@@ -28,6 +28,9 @@ button.btn.btn-primary.button-style{
     border:none;
 }
 
+.text-con *{
+    font-family: 'Roboto Condensed', sans-serif;
+}
 
 
 .error-message {
