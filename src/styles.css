@@ -11,6 +11,25 @@
     overflow: hidden !important;
 }
 
+.footerstyle * {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.button-style * {
+    background-color: #F54D9F;
+    border-radius: 10px;
+    color: white;
+    font-size: 40px;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+button.btn.btn-primary.button-style{
+    background-color: #F54D9F;
+    border:none;
+}
+
+
+
 .error-message {
     font-size: 0.8rem;
     color: #F54D9F;

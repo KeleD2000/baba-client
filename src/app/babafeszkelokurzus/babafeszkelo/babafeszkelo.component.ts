@@ -26,8 +26,8 @@ export class BabafeszkeloComponent {
               this.fooldalService.getFooldal(v.id).subscribe((page) =>{
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
-                    console.log(value.field_paragraphs[k]);
-                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: ""};
+                    console.log(value.field_paragraphs);
+                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: "", button_content: "" as SafeHtml};
                     if(value.field_paragraphs[k].type === 'paragraph--image_full'){
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
                     }else if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
@@ -39,6 +39,9 @@ export class BabafeszkeloComponent {
                         const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
                         obj.content = paragraph_value;
                       }
+                    }else if(value.field_paragraphs[k].type === 'paragraph--button'){
+                      const button_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
+                      obj.button_content = button_value;
                     }
                     this.content.push(obj);
                   }

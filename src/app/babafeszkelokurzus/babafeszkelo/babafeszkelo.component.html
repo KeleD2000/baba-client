@@ -17,4 +17,9 @@
     <ng-container *ngIf="!content.content && content.img_url">
         <img class="img" [src]="content.img_url" alt="">
     </ng-container>
+    <ng-container *ngIf="content.button_content && !content.content && !content.img_url">
+        <div class="text-center">
+            <button type="button" class="btn btn-primary button-style" [innerHTML]="content.button_content"></button>
+        </div>
+    </ng-container>
 </div>
