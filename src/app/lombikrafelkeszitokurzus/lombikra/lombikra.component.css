@@ -16,6 +16,12 @@
     text-align: center;
 }
 
+:host ::ng-deep .MsoPink{
+    font-size: 24px;
+    color: #F54D9F;
+    text-align: center;
+}
+
 .img{
     width: 100%;
     height: auto;

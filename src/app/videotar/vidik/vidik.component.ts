@@ -13,6 +13,7 @@ export class VidikComponent {
   content: any[] = [];
   baseUrl: string = "https://baba.jrdatashu.win";
   isTextCondensed: boolean = false;
+  isTextBackgroundGreen: boolean = false;
 
   constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService){}
 
@@ -34,7 +35,7 @@ export class VidikComponent {
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
                     console.log(value.field_paragraphs);
-                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: "", youtube_video: "", text_condensed: "" as SafeHtml };
+                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: "", youtube_video: "", text_condensed: "" as SafeHtml, button_content: "" as SafeHtml, text_highlighted_content: "" as SafeHtml };
                     if(value.field_paragraphs[k].type === 'paragraph--image_full'){
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
                     }else if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
@@ -56,7 +57,18 @@ export class VidikComponent {
                         this.isTextCondensed = true;
                       }else{
                         this.isTextCondensed = false;
-                      }
+                      } 
+                    }else if(value.field_paragraphs[k].type === 'paragraph--button'){
+                      const button_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
+                      obj.button_content = button_value;
+                    }else if(value.field_paragraphs[k].type === 'paragraph--text_highlighted'){
+                      const highlighted_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
+                      obj.text_highlighted_content = highlighted_value;
+                      if(obj.text_highlighted_content){
+                        this.isTextBackgroundGreen = true;
+                      }else{
+                        this.isTextBackgroundGreen = false;
+                      } 
                     }
                     this.content.push(obj);
                   }

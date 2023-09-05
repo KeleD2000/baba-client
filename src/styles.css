@@ -32,6 +32,13 @@ button.btn.btn-primary.button-style{
     font-family: 'Roboto Condensed', sans-serif;
 }
 
+.bgGreen * {
+    background-color: #CEDFE2;
+    color: #0A606F;
+    font-size: 18px;
+    white-space: pre-line;
+}
+
 
 .error-message {
     font-size: 0.8rem;

@@ -33,6 +33,15 @@
     
 }
 
+.text-container{
+    height: auto;
+}
+
+.containerr {
+    display: flex;
+    align-items: flex-start; /* Ez beállítja a tartalmat a tartály tetejére igazításra */
+  }
+
 .img-left2{
     width: 100%;
     height: auto;
