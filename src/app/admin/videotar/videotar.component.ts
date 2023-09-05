@@ -240,8 +240,7 @@ export class VideotarComponent {
           id: "",
           attributes: {
             status: true,
-            name: this.uploadForm.get('title')?.value,
-            field_length: "10:56"
+            name: this.uploadForm.get('title')?.value
           },
           relationships: {
             field_thumbnail: {

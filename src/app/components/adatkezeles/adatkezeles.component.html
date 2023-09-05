@@ -1,1 +1,31 @@
-<p>adatkezeles works!</p>
+<div class="row mb-3" [ngClass]="{'background align-items-center': content.img_url && content.content}" *ngFor="let content of content">
+    <ng-container *ngIf="content.img_url && content.content">
+        <div class="col-lg-6">
+            <img class="img p-10" *ngIf="content.img_layout == 'img-left'" [src]="content.img_url" alt="" srcset="">
+            <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-right'"></div>
+        </div>
+        <div class="col-lg-6">
+            <img class="img p-10" *ngIf="content.img_layout == 'img-right'" [src]="content.img_url" alt="" srcset="">
+            <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-left'"></div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="content.content && !content.img_url">
+        <div class="col-lg-12">
+            <div [innerHTML]="content.content"></div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!content.content && content.img_url">
+        <img class="img" [src]="content.img_url" alt="">
+    </ng-container>
+    <ng-container *ngIf="content.button_content && !content.content && !content.img_url">
+        <div class="text-center">
+            <button type="button" class="btn btn-primary button-style" [innerHTML]="content.button_content"></button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
+        <div [innerHTML]="content.text_condensed" [ngClass]="{'text-con' : isTextCondensed}"></div>
+    </ng-container>
+    <ng-container *ngIf="content.text_highlighted_content && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
+        <div [innerHTML]="content.text_highlighted_content" [ngClass]="{'bgGreen' : isTextBackgroundGreen}"></div>
+    </ng-container>
+</div>
