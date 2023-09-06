@@ -1,11 +1,31 @@
-<!--<div>
-  <video  id="my-video" class="video-js vjs-default-skin" controls preload="auto">
-    <source src="http://baba.jrdatashu.win/sites/default/files/2023-08/BF1_a_15mn_0.mp4" type="video/mp4">
-  </video>
-</div>-->
-
-
-<app-video-player class="m-3" [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: 'https://images.unsplash.com/photo-1691456614896-589ffa30f950?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', sources: [{ src: 'https://baba.jrdatashu.win/sites/default/files/2023-08/BF1_c_30mn.mp4', type: 'video/mp4' , label: 'Basic' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/1080p//BF1_c_30mn.mp4', type: 'video/mp4' , label: '1080p' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/720p//BF1_c_30mn.mp4', type: 'video/mp4' , label: '720p' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/360p//BF1_c_30mn.mp4', type: 'video/mp4' , label: '360p' }]}"></app-video-player>
-<app-video-player class="m-3" [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: 'https://images.unsplash.com/photo-1691456614896-589ffa30f950?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', sources: [{ src: 'https://baba.jrdatashu.win/sites/default/files/2023-08/B_short2_20mn.mp4', type: 'video/mp4' , label: 'Basic' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/1080p//B_short2_20mn.mp4', type: 'video/mp4' , label: '1080p' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/720p//B_short2_20mn.mp4', type: 'video/mp4' , label: '720p' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/360p//B_short2_20mn.mp4', type: 'video/mp4' , label: '360p' }]}"></app-video-player>
-<app-video-player class="m-3" [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: 'https://images.unsplash.com/photo-1691456614896-589ffa30f950?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', sources: [{ src: 'https://baba.jrdatashu.win/sites/default/files/2023-08/BF1a_15mnTheory_2K_8Mbps.mp4', type: 'video/mp4' , label: 'Basic' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/1080p//BF1a_15mnTheory_2K_8Mbps.mp4', type: 'video/mp4' , label: '1080p' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/720p//BF1a_15mnTheory_2K_8Mbps.mp4', type: 'video/mp4' , label: '720p' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/360p//BF1a_15mnTheory_2K_8Mbps.mp4', type: 'video/mp4' , label: '360p' }]}"></app-video-player>
-<app-video-player class="m-3" [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: 'https://images.unsplash.com/photo-1691456614896-589ffa30f950?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', sources: [{ src: 'https://baba.jrdatashu.win/sites/default/files/2023-08/BF1c_30mnPratik_2K_8Mbps.mp4', type: 'video/mp4' , label: 'Basic' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/1080p//BF1c_30mnPratik_2K_8Mbps.mp4', type: 'video/mp4' , label: '1080p' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/720p//BF1c_30mnPratik_2K_8Mbps.mp4', type: 'video/mp4' , label: '720p' }, { src: 'https://baba.jrdatashu.win/sites/default/files/converted_videos/360p//BF1c_30mnPratik_2K_8Mbps.mp4', type: 'video/mp4' , label: '360p' }]}"></app-video-player>
+<div class="row mb-3" [ngClass]="{'background align-items-center': content.img_url && content.content}" *ngFor="let content of content">
+  <ng-container *ngIf="content.img_url && content.content">
+      <div class="col-lg-6">
+          <img class="img p-10" *ngIf="content.img_layout == 'img-left'" [src]="content.img_url" alt="" srcset="">
+          <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-right'"></div>
+      </div>
+      <div class="col-lg-6">
+          <img class="img p-10" *ngIf="content.img_layout == 'img-right'" [src]="content.img_url" alt="" srcset="">
+          <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-left'"></div>
+      </div>
+  </ng-container>
+  <ng-container *ngIf="content.content && !content.img_url">
+      <div class="col-lg-12">
+          <div [innerHTML]="content.content"></div>
+      </div>
+  </ng-container>
+  <ng-container *ngIf="!content.content && content.img_url">
+      <img class="img" [src]="content.img_url" alt="">
+  </ng-container>
+  <ng-container *ngIf="content.button_content && !content.content && !content.img_url">
+      <div class="text-center">
+          <button type="button" class="btn btn-primary button-style" [innerHTML]="content.button_content"></button>
+      </div>
+  </ng-container>
+  <ng-container *ngIf="content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
+      <div [innerHTML]="content.text_condensed" [ngClass]="{'text-con' : isTextCondensed}"></div>
+  </ng-container>
+  <ng-container *ngIf="content.text_highlighted_content && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
+      <div [innerHTML]="content.text_highlighted_content" [ngClass]="{'bgGreen' : isTextBackgroundGreen}"></div>
+  </ng-container>
+</div>

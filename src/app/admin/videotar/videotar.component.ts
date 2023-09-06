@@ -109,7 +109,7 @@ export class VideotarComponent {
       id: categorie_id,
       title: cat.name,
       description: description,
-      rotation: [] as {id: string, title: string; weight: string; videos: { url: string, iframe: boolean, video_title: string, description: string }[] }[],
+      rotation: [] as {id: string, title: string; weight: string; videos: { url: string, iframe: boolean, video_title: string, description: string, thumbnail: string }[] }[],
     };
   }
 
@@ -133,7 +133,6 @@ export class VideotarComponent {
 
   populateVideos(obj: any): void {
     this.fooldalService.getVideos().subscribe(videoData => {
-
       for (const [key, videos] of Object.entries(videoData)) {
         if (key === "data") {
           for (const k in videos) {
@@ -142,10 +141,15 @@ export class VideotarComponent {
               const findedRotation = obj.rotation.find((i: any) => i.title === video.field_rotation.name);
               if(findedRotation){
                 if(video.field_video[0].type === "paragraph--video"){
+                  console.log(video);
                   if(video.field_video[0].field_video.field_media_video_file != undefined){
-                    console.log(video.field_video[0].field_video.field_media_video_file.uri.url);
                     const baseUrl = this.fooldalService.getBaseUrl();
-                    findedRotation.videos.push({ url: baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url, iframe: false, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value) });
+                    var thumbnail;
+                    if(video.field_video[0].field_video.field_thumbnail != undefined){
+                      //Ha van thumbnail
+                      thumbnail = baseUrl + video.field_video[0].field_video.field_thumbnail.thumbnail.uri.url;
+                    }
+                    findedRotation.videos.push({ url: baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url, iframe: false, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value), thumbnail: thumbnail });
                   }
                 }else if(video.field_video[0].type === "paragraph--youtube_video"){
                   //youtube video

@@ -12,6 +12,8 @@ import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 export class FbpComponent {
   content: any[] = [];
   baseUrl: string = "https://baba.jrdatashu.win";
+  isTextCondensed: boolean = false;
+  isTextBackgroundGreen: boolean = false;
 
   constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService) { }
 
@@ -24,7 +26,7 @@ export class FbpComponent {
               this.fooldalService.getFooldal(v.id).subscribe((page) => {
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
-                    console.log(value.field_paragraphs[k]);
+                    console.log(value.field_paragraphs);
                     const obj = {content: '' as SafeHtml, img_url:"", img_layout: "", video_url:""}
                     if(value.field_paragraphs[k].type === 'paragraph--image_full'){
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
@@ -38,7 +40,7 @@ export class FbpComponent {
                         obj.content = paragraph_value;
                       }
                     }else if(value.field_paragraphs[k].type === 'paragraph--video'){
-                      obj.video_url = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url;
+                      //obj.video_url = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url;
                     }
                     this.content.push(obj);
                                         

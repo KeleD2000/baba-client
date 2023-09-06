@@ -18,7 +18,7 @@
                         allowfullscreen></iframe>
                     <ng-template #elseBlock>
                         <app-video-player style="padding-top: 15px;"
-                            [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: 'https://images.unsplash.com/photo-1691456614896-589ffa30f950?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80', sources: [{ src: video.url, type: 'video/mp4' , label: '1080p' },{ src: video.url, type: 'video/mp4' , label: '720p' }, { src: video.url, type: 'video/mp4' , label: '360p' }]}">
+                            [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: video.thumbnail, sources: [{ src: video.url, type: 'video/mp4' , label: '1080p' },{ src: video.url, type: 'video/mp4' , label: '720p' }, { src: video.url, type: 'video/mp4' , label: '360p' }]}">
                         </app-video-player>
                     </ng-template>
                     <div [innerHTML]="video.description" class="card-text"></div>

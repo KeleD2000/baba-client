@@ -1,5 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, switchMap } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,11 +9,13 @@ import { Injectable } from '@angular/core';
 export class FooldalService {
   private baseUrl= "https://baba.jrdatashu.win";
 
+
   getBaseUrl(){
     return this.baseUrl;
   }
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient,
+    private authService: AuthService) { 
 
   }
 
@@ -56,12 +60,13 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/taxonomy_term/rotation`);
   }
 
-  getVideos(){
-    const auth = btoa('admin:c');
-    const headers = new HttpHeaders({
-      Authorization: 'Basic ' + auth
-    });
-    return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`,{ headers });
+  getToken() : Observable<string> {
+   return this.http.get<string>(`${this.baseUrl}/session/token`, {responseType: 'text' as 'json'});
+  }
+
+  
+  getVideos() {
+    return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`);
   }
 
   createMediaVideo(data: any) {

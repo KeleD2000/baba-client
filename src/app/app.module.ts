@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +26,9 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { AdatkezelesComponent } from './components/adatkezeles/adatkezeles.component';
 import { AszfComponent } from './components/aszf/aszf.component';
 import { ElofizetesModule } from './elofizetes/elofizetes.module';
+import { CsrfInterceptorService } from './csrf-interceptor';
+import { KurzusModule } from './kurzus/kurzus.module';
+
 
 
 const firebaseConfig = {
@@ -57,14 +60,21 @@ const firebaseConfig = {
     HttpClientModule,
     RouterModule,
     FontAwesomeModule,
-
+    KurzusModule,
     SharedModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ElofizetesModule,
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [HtmlconvertService],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CsrfInterceptorService,
+      multi: true,
+    },
+    HtmlconvertService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

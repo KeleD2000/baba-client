@@ -56,8 +56,14 @@ export class AuthService {
   }
 
   getUserId(uid: string){
-    return this.http.get(`${this.baseUrl}/jsonapi/user/user?filter[uid][value]=${uid}`);
+    const auth = btoa('admin:c');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: 'Basic ' + auth
+    });
+    return this.http.get(`${this.baseUrl}/jsonapi/user/user?filter[uid][value]=${uid}`, {headers});
   }
+
 
   isAdmin(): boolean {
     const authenticated = this.isAuthenticated();
