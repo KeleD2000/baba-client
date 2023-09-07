@@ -47,7 +47,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav mx-auto"> <!-- mx-auto középre igazítja a menüt -->
+        <div class="navbar-nav mx-auto">
           <a class="navlink" *ngFor="let menu of menus" style="font-size: 14px;" [routerLink]="menu.href"
             [ngClass]="{'active': isActiveMenu(menu.href)}">{{ menu.title }}</a>
           <a class="navlink active-login" style="font-size: 14px;" routerLink="/signin" *ngIf="!loggedUser">Bejelentkezés</a>
@@ -58,7 +58,6 @@
             <input type="checkbox" class="dd-input" id="test">
             <ul class="dd-menu">
               <li *ngIf="!isAdmin" routerLink="/elofizetes">Előfizetések</li>
-              <li *ngIf="!isAdmin" routerLink="/kurzusok">Kurzusok</li>
               <li *ngIf="isAdmin" routerLink="/admin/videotar">Videotéka</li>
               <li (click)="Logout()">Kijelentkezés</li>
             </ul>

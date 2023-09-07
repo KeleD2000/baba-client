@@ -1,5 +1,10 @@
-<div class="container">
-    <p class="text-center">Minden elérhető kurzus</p>
+<div class="text-center">
+    <p class="p-pos">Elérhető kurzusaink:</p>
+</div>
+<div class="container text-center" *ngFor="let cT of courseTitle">
+    <ng-container>
+        <div class="mb-1">{{cT}}</div>
+    </ng-container>
 </div>
 <div id="kurzusaim">
     <h3>Kurzusaim</h3>
@@ -15,7 +20,7 @@
                             <div class="card-body">
                                 <p class="card-text">Hozzáférés vége: dátum</p>
                             </div>
-                            <button class="btn bcolor mt-3">Irány a kurzus</button>
+                            <button class="btn bcolor mt-3" routerLink="/kurzusok">Irány a kurzus</button>
                         </div>
                     </div>
                 </div>
@@ -30,7 +35,7 @@
                             <div class="card-body">
                                 <p class="card-text">Hozzáférés vége: dátum</p>
                             </div>
-                            <button class="btn bcolor mt-3">Irány a kurzus</button>
+                            <button class="btn bcolor mt-3" routerLink="/kurzusok">Irány a kurzus</button>
                         </div>
                     </div>
                 </div>

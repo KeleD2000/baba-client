@@ -64,6 +64,10 @@ export class FooldalService {
    return this.http.get<string>(`${this.baseUrl}/session/token`, {responseType: 'text' as 'json'});
   }
 
+  getCourses(){
+    return this.http.get(`${this.baseUrl}/jsonapi/course/course`);
+  }
+
   
   getVideos() {
     return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`);
