@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Renderer2, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { FooldalService } from 'src/app/services/fooldal.service';
@@ -15,7 +15,7 @@ export class TartalomComponent {
   isTextCondensed: boolean = false;
   isTextBackgroundGreen: boolean = false;
 
-  constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService){}
+  constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService, private sanitizer: DomSanitizer){}
 
   ngOnInit(){
     this.fooldalService.getId().subscribe((i) => {
@@ -50,8 +50,11 @@ export class TartalomComponent {
                         this.isTextCondensed = false;
                       } 
                     }else if(value.field_paragraphs[k].type === 'paragraph--button'){
-                      const button_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
-                      obj.button_content = button_value;
+                      const button_value = value.field_paragraphs[k].field_content.value;
+                      const buttonValueAsText: string = this.sanitizer.sanitize(SecurityContext.HTML, button_value) || '';
+                      const buttonContentWithoutPTags = buttonValueAsText.replace(/<\/?p[^>]*>/g, '');
+                      const buttonContentTrimmed = buttonContentWithoutPTags.trim();
+                      obj.button_content = this.sanitizer.bypassSecurityTrustHtml(buttonContentTrimmed);
                     }else if(value.field_paragraphs[k].type === 'paragraph--text_highlighted'){
                       const highlighted_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
                       obj.text_highlighted_content = highlighted_value;
