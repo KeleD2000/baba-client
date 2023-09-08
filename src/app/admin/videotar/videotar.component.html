@@ -8,9 +8,11 @@
             <div class="justify-content-center row divbgcolor m-1">{{rotation.title}}</div>
             <div class="card mb-2" *ngFor="let video of rotation.videos">
                 <div class="card-body">
-                    <h5 class="card-title">{{video.title}}</h5>
+                    <p class="card-title card-t">{{video.title}}</p>
                     <div class="position-absolute top-15 right-10">
-                        <fa-icon [icon]="faTrash" style="color: red; cursor: pointer;"></fa-icon>
+                        <button class="del-button" (click)="deleteVideos(video.id)">
+                            <fa-icon [icon]="faTrash" style="color: red; cursor: pointer;"></fa-icon>
+                        </button>
                     </div>
                     <iframe *ngIf="video.iframe; else elseBlock" class="p-3" width="200"
                         [src]="video.url | safe : 'resourceUrl'" frameborder="0"
@@ -39,7 +41,7 @@
             <form [formGroup]="uploadForm" (ngSubmit)="onUpload()">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Feltöltéshez szükséges adatok</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+                    <button type="button" *ngIf="!upload" class="btn-close" data-dismiss="modal" aria-label="Close"
                         (click)="closeModal()">
                     </button>
                 </div>
@@ -50,49 +52,57 @@
                         <br>
                         <input (change)="onFileSelected($event)" type="file" id="video" name="video"
                             class="form-control" accept="video/mp4" formControlName="video">
-                            <div *ngIf="uploadForm.get('video')?.errors?.['required'] && (uploadForm.get('video')?.touched || uploadForm.get('video')?.dirty)" class="error-message">
-                                Videó feltöltése kötelező
-                            </div>
-                            <div class="error-message" *ngIf="videoFormatError">
-                                {{ videoFormatError }}
-                            </div>
+                        <div *ngIf="uploadForm.get('video')?.errors?.['required'] && (uploadForm.get('video')?.touched || uploadForm.get('video')?.dirty)"
+                            class="error-message">
+                            Videó feltöltése kötelező
+                        </div>
+                        <div class="error-message" *ngIf="videoFormatError">
+                            {{ videoFormatError }}
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="thumbnail">Előnézeti kép feltöltése:</label>
                         <br>
-                        <input type="file" (change)="onThumbnaiLSelected($event)" id="thumbnail" class="form-control" name="thumbnail"
-                            accept="image/jpeg" formControlName="thumbnail">
-                            <div *ngIf="uploadForm.get('thumbnail')?.errors?.['required'] && (uploadForm.get('thumbnail')?.touched || uploadForm.get('thumbnail')?.dirty)" class="error-message">
-                                Előnézeti kép feltöltése kötelező
-                            </div>
-                            <div class="error-message" *ngIf="thumbnailFormatError">
-                                {{ thumbnailFormatError }}
-                            </div>
+                        <input type="file" (change)="onThumbnaiLSelected($event)" id="thumbnail" class="form-control"
+                            name="thumbnail" accept="image/jpeg" formControlName="thumbnail">
+                        <div *ngIf="uploadForm.get('thumbnail')?.errors?.['required'] && (uploadForm.get('thumbnail')?.touched || uploadForm.get('thumbnail')?.dirty)"
+                            class="error-message">
+                            Előnézeti kép feltöltése kötelező
+                        </div>
+                        <div class="error-message" *ngIf="thumbnailFormatError">
+                            {{ thumbnailFormatError }}
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="title">Videó címe:</label>
                         <br>
                         <input type="text" class="form-control form-control-sm" id="title" name="title"
                             formControlName="title">
-                            <div *ngIf="uploadForm.get('title')?.errors?.['required'] && (uploadForm.get('title')?.dirty || uploadForm.get('title')?.touched)" class="error-message" >
-                                Videó címe megadása kötelező
-                            </div>
+                        <div *ngIf="uploadForm.get('title')?.errors?.['required'] && (uploadForm.get('title')?.dirty || uploadForm.get('title')?.touched)"
+                            class="error-message">
+                            Videó címe megadása kötelező
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="description">Videó leírása:</label>
                         <br>
                         <textarea style="resize: none;" class="form-control" id="description"
                             formControlName="description"></textarea>
-                            <div *ngIf="uploadForm.get('description')?.errors?.['required'] && (uploadForm.get('description')?.dirty || uploadForm.get('description')?.touched)" class="error-message">
-                                Videó leírása megadása kötelező
-                            </div>
+                        <div *ngIf="uploadForm.get('description')?.errors?.['required'] && (uploadForm.get('description')?.dirty || uploadForm.get('description')?.touched)"
+                            class="error-message">
+                            Videó leírása megadása kötelező
+                        </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    <button *ngIf="!upload" type="button" class="btn btn-secondary" data-dismiss="modal"
                         (click)="closeModal()">Bezárás</button>
-                    <button type="submit" class="btn btn-primary">Feltöltés</button>
+                        <button *ngIf="upload" class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                            Feltöltés
+                          </button>
+                    <button *ngIf="!upload" type="submit" class="btn btn-primary">Feltöltés</button>
                 </div>
             </form>
         </div>

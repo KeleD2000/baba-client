@@ -1,8 +1,8 @@
 <app-loading-spinner *ngIf="spinner"></app-loading-spinner>
 <div *ngIf="!spinner" class="app-container">
-  <app-header *ngIf="!isNotFoundRoute()" [menus]="menus" [isAdmin]="isAdmin" [loggedUser]="loggedUser" [showImage]="showImage" class="sticky-header"></app-header>
+  <app-header *ngIf="isNotFoundRoute()" [menus]="menus" [isAdmin]="isAdmin" [loggedUser]="loggedUser" [showImage]="showImage" class="sticky-header"></app-header>
   <div [ngClass]="getClassForRoute(currentRoute)" class="container contentwidth">
     <router-outlet></router-outlet>
   </div>
-  <app-footer *ngIf="!isNotFoundRoute()"></app-footer>
+  <app-footer *ngIf="isNotFoundRoute()"></app-footer>
 </div>

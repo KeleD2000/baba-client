@@ -29,7 +29,7 @@ export class VideotarComponent {
   spinner: boolean = false;
   videoFormatError? : string;
   thumbnailFormatError?: string;
-
+  upload: boolean = false;
   constructor(private fooldalService: FooldalService,
     private htmlconvetrService: HtmlconvertService,
     private authService: AuthService,
@@ -109,7 +109,7 @@ export class VideotarComponent {
       id: categorie_id,
       title: cat.name,
       description: description,
-      rotation: [] as {id: string, title: string; weight: string; videos: { url: string, iframe: boolean, video_title: string, description: string, thumbnail: string }[] }[],
+      rotation: [] as {id: string, title: string; weight: string; videos: { id: string, url: string, iframe: boolean, video_title: string, description: string, thumbnail: string }[] }[],
     };
   }
 
@@ -141,7 +141,7 @@ export class VideotarComponent {
               const findedRotation = obj.rotation.find((i: any) => i.title === video.field_rotation.name);
               if(findedRotation){
                 if(video.field_video[0].type === "paragraph--video"){
-                  console.log(video);
+                 // console.log(video);
                   if(video.field_video[0].field_video.field_media_video_file != undefined){
                     const baseUrl = this.fooldalService.getBaseUrl();
                     var thumbnail;
@@ -149,12 +149,12 @@ export class VideotarComponent {
                       //Ha van thumbnail
                       thumbnail = baseUrl + video.field_video[0].field_video.field_thumbnail.thumbnail.uri.url;
                     }
-                    findedRotation.videos.push({ url: baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url, iframe: false, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value), thumbnail: thumbnail });
+                    findedRotation.videos.push({id: video.id, url: baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url, iframe: false, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value), thumbnail: thumbnail });
                   }
                 }else if(video.field_video[0].type === "paragraph--youtube_video"){
                   //youtube video
                   const videoId = this.extractVideoId(video.field_video[0].field_youtube_video.field_media_oembed_video);
-                  findedRotation.videos.push({ url: "https://www.youtube.com/embed/" + videoId, iframe: true, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value) });
+                  findedRotation.videos.push({id: video.id, url: "https://www.youtube.com/embed/" + videoId, iframe: true, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value) });
                 }
               }
             }
@@ -203,6 +203,15 @@ export class VideotarComponent {
     }
   }
 
+  deleteVideos(videoId: string){
+    console.log(videoId);
+    this.fooldalService.deleteVideos(videoId).subscribe(response =>{
+      console.log(response);
+      this.categories = [];
+      this.populateCategory();
+    });
+  }
+
   async onUpload() {
     if(!this.fileFormatValidator(this.video.name)){
       this.videoFormatError = "A fájl formátum csak .mp4 lehet!";
@@ -215,6 +224,7 @@ export class VideotarComponent {
     if (this.video && this.thumbnail && this.uploadForm.valid) {
       console.log(this.video);
       console.log(this.thumbnail);
+      this.upload = true;
       const formData = new FormData();
       formData.append('file', this.video, this.video.name);
       const thumbnailFormData = new FormData();
@@ -352,8 +362,12 @@ export class VideotarComponent {
         const videoStore = await this.fooldalService.sendVideoStore(videoStoreData).toPromise();
         console.log(videoStore);
         if(videoStore){
+          this.upload = false;
+          this.closeModal();
+          this.uploadForm.reset();
           this.categories = [];
           this.populateCategory();
+
         }
         
       } catch (error) {

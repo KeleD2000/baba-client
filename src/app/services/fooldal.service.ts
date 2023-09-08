@@ -68,9 +68,17 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/course/course`);
   }
 
-  
   getVideos() {
     return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`);
+  }
+
+  deleteVideos(id: string){
+    const auth = btoa('admin:c');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: 'Basic ' + auth
+    });
+    return this.http.delete(`${this.baseUrl}/jsonapi/node/videostore/` + id);
   }
 
   createMediaVideo(data: any) {

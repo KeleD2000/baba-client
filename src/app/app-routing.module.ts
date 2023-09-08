@@ -33,7 +33,7 @@ const routes: Routes = [
   {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [AdminGuard]},
   {path: 'elofizetes', loadChildren: () => ElofizetesModule},
   {path: 'kurzusok', loadChildren: () => KurzusModule},
-  {path: '**', redirectTo: "not-found", pathMatch: "full"}
+  {path: '**', redirectTo: "not-found"}
 ];
 
 @NgModule({

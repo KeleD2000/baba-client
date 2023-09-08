@@ -109,7 +109,9 @@ export class AppComponent {
   }
 
   isNotFoundRoute(): boolean {
-    return this.currentRoute === '/not-found'; // Adj meg a valódi 'not-found' útvonalat
+
+    return this.currentRoute !== '/not-found'; // Adj meg a valódi 'not-found' útvonalat
+    
   }
   
 }

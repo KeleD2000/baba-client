@@ -24,3 +24,14 @@
 .modal {
     z-index: 9999;
 }
+
+.card-t{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.del-button{
+    border: none;
+    background: none;
+    cursor: pointer
+}
