@@ -15,6 +15,7 @@ import { AdatkezelesComponent } from './components/adatkezeles/adatkezeles.compo
 import { AszfComponent } from './components/aszf/aszf.component';
 import { ElofizetesModule } from './elofizetes/elofizetes.module';
 import { KurzusModule } from './kurzus/kurzus.module';
+import { RefreshComponent } from './components/refresh/refresh.component';
 
 const routes: Routes = [
   {path: '', loadChildren: () => FooldalModule},
@@ -33,7 +34,9 @@ const routes: Routes = [
   {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [AdminGuard]},
   {path: 'elofizetes', loadChildren: () => ElofizetesModule},
   {path: 'kurzusok', loadChildren: () => KurzusModule},
-  {path: '**', redirectTo: "not-found"}
+  {path: 'not-found', component: NotFoundComponent},
+  {path: 'refresh', component: RefreshComponent},
+  {path: '**', component: RefreshComponent}
 ];
 
 @NgModule({
