@@ -17,8 +17,11 @@ export class AuthService {
 
   }
 
-  login(user: Login) {
-    return this.http.post<User>(`${this.baseUrl}/user/login?_format=json`, user);
+  login(formData: FormData) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+    return this.http.post<User>(`${this.baseUrl}/user/login?_format=json`, formData, {headers});
   }
 
   register(userData: Register) {
@@ -37,7 +40,6 @@ export class AuthService {
         'Content-Type': 'application/json'
       })
     };
-
     return this.http.post(`${this.baseUrl}/user/register?_format=json`, userAddress, httpOptions);
   }
 

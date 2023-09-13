@@ -168,6 +168,9 @@ export class FooldalService {
   }
 
   getApiKey(){
-    
+    const header = new HttpHeaders({
+      'X-CSRF-Token' : 'amE7ouD21eJ4JZ2gEyrtzOzMuTxmAO8uxY1kZ2BL6Jk'
+    });
+    return this.http.get(`${this.baseUrl}/api/key-auth`);
   }
 }

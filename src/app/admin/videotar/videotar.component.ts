@@ -141,20 +141,18 @@ export class VideotarComponent {
               const findedRotation = obj.rotation.find((i: any) => i.title === video.field_rotation.name);
               if (findedRotation) {
                 if (video.field_video[0].type === "paragraph--video") {
-                  console.log(video.field_video[0].field_video.field_media_video_file );
+                  console.log(video.field_video[0]);
                   if (video.field_video[0].field_video.field_media_video_file != undefined) {
-                    if (video.field_video[0].field_video.field_media_video_file.uri != undefined && video.field_video[0].field_video.field_media_video_file.uri.url != undefined) {
                       const baseUrl = this.fooldalService.getBaseUrl();
-                      var video_url = video.field_video[0].field_video.field_media_video_file.uri.url;
-
+                      var video_url = baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url;
                       var thumbnail;
-                      if (video.field_video[0].field_video.field_thumbnail != undefined) {
+                      
+                      if (video.field_video[0].field_video.field_thumbnail.field_media_image.uri != undefined ) {
                         //Ha van thumbnail
-                        thumbnail = baseUrl + video.field_video[0].field_video.field_thumbnail.thumbnail.uri.url;
+                        thumbnail = baseUrl + video.field_video[0].field_video.field_thumbnail.field_media_image.uri.url;
                       }
-                      findedRotation.videos.push({ id: video.id, url: baseUrl + video_url, iframe: false, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value), thumbnail: thumbnail });
+                      findedRotation.videos.push({ id: video.id, url: video_url, iframe: false, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value), thumbnail: thumbnail });
                     }
-                  }
                 } else if (video.field_video[0].type === "paragraph--youtube_video") {
                   //youtube video
                   const videoId = this.extractVideoId(video.field_video[0].field_youtube_video.field_media_oembed_video);

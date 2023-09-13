@@ -22,7 +22,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
                     console.log(apiKey.data[0].id);
                     const headers = {
                       'X-CSRF-Token': token,
-                      'api-key': /*apiKey.data[0].id as string*/ '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+                      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
                     };
                     const modifiedRequest = request.clone({
                       setHeaders: headers,
