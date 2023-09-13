@@ -14,7 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class VideotarComponent {
   categories: any[] = [];
   faTrash = faTrash;
-  errorMessage : string = '';
+  errorMessage: string = '';
 
   showModal: boolean = false;
 
@@ -27,7 +27,7 @@ export class VideotarComponent {
   uploadCategorieId: any;
   loggedUuid: any;
   spinner: boolean = false;
-  videoFormatError? : string;
+  videoFormatError?: string;
   thumbnailFormatError?: string;
   upload: boolean = false;
   constructor(private fooldalService: FooldalService,
@@ -69,11 +69,11 @@ export class VideotarComponent {
   ngOnInit() {
     this.populateCategory();
     const loggedUserId = this.authService.getAuthenticatedUserID();
-    this.authService.getUserId(loggedUserId).subscribe(response =>{
-      if(response){
-        for(const[key, value] of Object.entries(response)){
-          if(key === "data"){
-            for(var k in value){
+    this.authService.getUserId(loggedUserId).subscribe(response => {
+      if (response) {
+        for (const [key, value] of Object.entries(response)) {
+          if (key === "data") {
+            for (var k in value) {
               this.loggedUuid = value[k].id;
             }
           }
@@ -82,13 +82,13 @@ export class VideotarComponent {
     });
   }
 
-  populateCategory(){
+  populateCategory() {
     this.fooldalService.getCatNames().subscribe(catData => {
       for (const [key, value] of Object.entries(catData)) {
         for (const k in value) {
           for (const j in value[k]) {
             const cat = value[k][j];
-           // console.log(cat);
+            // console.log(cat);
             if (cat.name !== undefined) {
               const obj = this.createCategoryObject(cat, value[k].id);
               this.populateRotation(obj);
@@ -109,7 +109,7 @@ export class VideotarComponent {
       id: categorie_id,
       title: cat.name,
       description: description,
-      rotation: [] as {id: string, title: string; weight: string; videos: { id: string, url: string, iframe: boolean, video_title: string, description: string, thumbnail: string }[] }[],
+      rotation: [] as { id: string, title: string; weight: string; videos: { id: string, url: string, iframe: boolean, video_title: string, description: string, thumbnail: string }[] }[],
     };
   }
 
@@ -139,22 +139,26 @@ export class VideotarComponent {
             const video = videos[k];
             if (video.field_category.name === obj.title && Array.isArray(video.field_video)) {
               const findedRotation = obj.rotation.find((i: any) => i.title === video.field_rotation.name);
-              if(findedRotation){
-                if(video.field_video[0].type === "paragraph--video"){
-                 // console.log(video);
-                  if(video.field_video[0].field_video.field_media_video_file != undefined){
-                    const baseUrl = this.fooldalService.getBaseUrl();
-                    var thumbnail;
-                    if(video.field_video[0].field_video.field_thumbnail != undefined){
-                      //Ha van thumbnail
-                      thumbnail = baseUrl + video.field_video[0].field_video.field_thumbnail.thumbnail.uri.url;
+              if (findedRotation) {
+                if (video.field_video[0].type === "paragraph--video") {
+                  console.log(video.field_video[0].field_video.field_media_video_file );
+                  if (video.field_video[0].field_video.field_media_video_file != undefined) {
+                    if (video.field_video[0].field_video.field_media_video_file.uri != undefined && video.field_video[0].field_video.field_media_video_file.uri.url != undefined) {
+                      const baseUrl = this.fooldalService.getBaseUrl();
+                      var video_url = video.field_video[0].field_video.field_media_video_file.uri.url;
+
+                      var thumbnail;
+                      if (video.field_video[0].field_video.field_thumbnail != undefined) {
+                        //Ha van thumbnail
+                        thumbnail = baseUrl + video.field_video[0].field_video.field_thumbnail.thumbnail.uri.url;
+                      }
+                      findedRotation.videos.push({ id: video.id, url: baseUrl + video_url, iframe: false, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value), thumbnail: thumbnail });
                     }
-                    findedRotation.videos.push({id: video.id, url: baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url, iframe: false, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value), thumbnail: thumbnail });
                   }
-                }else if(video.field_video[0].type === "paragraph--youtube_video"){
+                } else if (video.field_video[0].type === "paragraph--youtube_video") {
                   //youtube video
                   const videoId = this.extractVideoId(video.field_video[0].field_youtube_video.field_media_oembed_video);
-                  findedRotation.videos.push({id: video.id, url: "https://www.youtube.com/embed/" + videoId, iframe: true, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value) });
+                  findedRotation.videos.push({ id: video.id, url: "https://www.youtube.com/embed/" + videoId, iframe: true, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value) });
                 }
               }
             }
@@ -176,9 +180,9 @@ export class VideotarComponent {
 
   onFileSelected(event: any) {
     this.video = event.target.files[0];
-    if(!this.fileFormatValidator(this.video.name)){
+    if (!this.fileFormatValidator(this.video.name)) {
       this.videoFormatError = "A fájl formátum csak .mp4 lehet!";
-    }else {
+    } else {
       this.videoFormatError = ''
     }
   }
@@ -196,16 +200,16 @@ export class VideotarComponent {
 
   onThumbnaiLSelected(event: any) {
     this.thumbnail = event.target.files[0];
-    if(!this.fileFormatValidator(this.thumbnail.name)){
+    if (!this.fileFormatValidator(this.thumbnail.name)) {
       this.thumbnailFormatError = "A fájl formátum csak .jpg lehet!";
-    }else {
+    } else {
       this.thumbnailFormatError = '';
     }
   }
 
-  deleteVideos(videoId: string){
+  deleteVideos(videoId: string) {
     console.log(videoId);
-    this.fooldalService.deleteVideos(videoId).subscribe(response =>{
+    this.fooldalService.deleteVideos(videoId).subscribe(response => {
       console.log(response);
       this.categories = [];
       this.populateCategory();
@@ -213,11 +217,11 @@ export class VideotarComponent {
   }
 
   async onUpload() {
-    if(!this.fileFormatValidator(this.video.name)){
+    if (!this.fileFormatValidator(this.video.name)) {
       this.videoFormatError = "A fájl formátum csak .mp4 lehet!";
       return;
     }
-    if(!this.fileFormatValidator(this.thumbnail.name)){
+    if (!this.fileFormatValidator(this.thumbnail.name)) {
       this.thumbnailFormatError = "A fájl formátum csak .jpg lehet!";
       return;
     }
@@ -311,7 +315,7 @@ export class VideotarComponent {
               status: true,
               title: this.uploadForm.get('title')?.value,
               body: {
-                value: "<p>" +this.uploadForm.get('description')?.value + "</p>",
+                value: "<p>" + this.uploadForm.get('description')?.value + "</p>",
                 format: "basic_html",
                 summary: "string"
               },
@@ -350,9 +354,9 @@ export class VideotarComponent {
           }
         }
         const paragraph = await this.fooldalService.createVideoParagraph(paragraphData).toPromise();
-        if(paragraph){
-          for(const[key, value] of Object.entries(paragraph)){
-            if(key === "data"){
+        if (paragraph) {
+          for (const [key, value] of Object.entries(paragraph)) {
+            if (key === "data") {
               videoStoreData.data.relationships.field_video.data[0].id = value.id;
               videoStoreData.data.relationships.field_video.data[0].meta.target_revision_id = value.attributes.drupal_internal__revision_id;
             }
@@ -361,7 +365,7 @@ export class VideotarComponent {
         videoStoreData.data.relationships.uid.data.id = this.loggedUuid;
         const videoStore = await this.fooldalService.sendVideoStore(videoStoreData).toPromise();
         console.log(videoStore);
-        if(videoStore){
+        if (videoStore) {
           this.upload = false;
           this.closeModal();
           this.uploadForm.reset();
@@ -369,7 +373,7 @@ export class VideotarComponent {
           this.populateCategory();
 
         }
-        
+
       } catch (error) {
         console.error('Error uploading media:', error);
       }

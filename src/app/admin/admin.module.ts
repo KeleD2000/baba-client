@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VideotarComponent } from './videotar/videotar.component';
 import { AdminRoutingModule } from './admin-routing.module';
-import { VideoPlayerComponent } from '../shared/video-player/video-player.component';
 import { SharedModule } from '../shared/shared.module';
 import { SafePipe } from '../pipes/safe.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';

@@ -3,17 +3,19 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'
 import { FooldalRoutingModule } from './fooldal-routing.module';
 import { TartalomComponent } from './tartalom/tartalom.component';
+import { SharedModule } from "../shared/shared.module";
 
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    FooldalRoutingModule
-  ],
-  declarations: [
-    TartalomComponent
-  ],
+    declarations: [
+        TartalomComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FooldalRoutingModule,
+        SharedModule
+    ]
 })
 export class FooldalModule { }

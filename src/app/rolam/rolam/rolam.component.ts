@@ -35,7 +35,7 @@ export class RolamComponent {
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
                     console.log(value.field_paragraphs[k]);
-                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: "", youtube_video: "",text_condensed: "" as SafeHtml, button_content: "" as SafeHtml, text_highlighted_content: "" as SafeHtml};
+                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: "", youtube_video: "",text_condensed: "" as SafeHtml, button_content: "" as SafeHtml, text_highlighted_content: "" as SafeHtml, video:"", video_thumbnail:""};
                     if(value.field_paragraphs[k].type === 'paragraph--image_full'){
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
                     }else if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
@@ -72,6 +72,10 @@ export class RolamComponent {
                       }else{
                         this.isTextBackgroundGreen = false;
                       } 
+                    }else if(value.field_paragraphs[k].type === 'paragraph--video'){
+                      obj.video = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url
+                      obj.video_thumbnail = this.baseUrl + value.field_paragraphs[k].field_video.field_thumbnail.field_media_image.uri.url;
+                      console.log(obj.video_thumbnail);
                     }
                     this.content.push(obj);
                   }

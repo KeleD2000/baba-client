@@ -69,7 +69,12 @@ export class FooldalService {
   }
 
   getVideos() {
-    return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`);
+    const auth = btoa('admin:c');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: 'Basic ' + auth
+    });
+    return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`, {headers});
   }
 
   deleteVideos(id: string){
@@ -78,7 +83,7 @@ export class FooldalService {
       'Content-Type': 'application/vnd.api+json',
       Authorization: 'Basic ' + auth
     });
-    return this.http.delete(`${this.baseUrl}/jsonapi/node/videostore/` + id);
+    return this.http.delete(`${this.baseUrl}/jsonapi/node/videostore/` + id, {headers});
   }
 
   createMediaVideo(data: any) {
@@ -162,4 +167,7 @@ export class FooldalService {
     return this.http.post(`${this.baseUrl}/jsonapi/node/videostore`, data, { headers });
   }
 
+  getApiKey(){
+    
+  }
 }
