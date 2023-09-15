@@ -17,11 +17,8 @@ export class AuthService {
 
   }
 
-  login(formData: FormData) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
-    return this.http.post<User>(`${this.baseUrl}/user/login?_format=json`, formData, {headers});
+  login(user: Login) {
+    return this.http.post<User>(`${this.baseUrl}/user/login?_format=json`, user);
   }
 
   register(userData: Register) {

@@ -33,35 +33,34 @@ export class SigninComponent {
     )
   }
 
-onSubmit() {
-  if (this.loginForm.valid) {
-    const formData = new FormData();
-    formData.append('name', this.loginForm.get('username')?.value);
-    formData.append('pass', this.loginForm.get('password')?.value);
-    formData.append('form_id', 'user_login_form'); // Hozzáadod a form_id változót
-
-    this.authService.login(formData).subscribe((loggedIn) => {
-      if (loggedIn) {
-        console.log(loggedIn);
-        this.userService.setLoggedInUser(loggedIn);
-        localStorage.setItem("login", JSON.stringify(loggedIn));
-        window.location.reload();
+  onSubmit() {
+    if (this.loginForm.valid) {
+      const user: Login = {
+        name: this.loginForm.get('username')?.value,
+        pass: this.loginForm.get('password')?.value
       }
-    }, error => {
-      this.showLoginAlert = true;
-      this.loginError = error.error.message;
-      setTimeout(() => {
-        this.showLoginAlert = false;
-      }, 3000);
-    });
-  }
+      this.authService.login(user).subscribe((loggedIn) => {
+        if (loggedIn) {
+          console.log(loggedIn);
+          this.userService.setLoggedInUser(loggedIn);
+          localStorage.setItem("login", JSON.stringify(loggedIn));
+          window.location.reload();
+        }
+      },error =>{
+        this.showLoginAlert = true;
+        this.loginError = error.error.message;
+        setTimeout(() => {
+          this.showLoginAlert = false;
+        }, 3000);
+      });
+    }
+    if(this.authService.isAdmin()){
+      this.route.navigateByUrl('/admin/videotar');
+    }else{
+      this.route.navigateByUrl('/elofizetes');
+    }
 
-  if (this.authService.isAdmin() === true) {
-    this.route.navigateByUrl('/admin/videotar');
-  } else {
-    this.route.navigateByUrl('/elofizetes');
   }
-}
 
 
 }

@@ -1,5 +1,6 @@
 import { Component, Renderer2 } from '@angular/core';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { faCopyright } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-footer',
@@ -9,6 +10,7 @@ import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 export class FooterComponent {
   faFB = faFacebook;
   showModal: boolean = false;
+  faCopy = faCopyright
 
   constructor(private renderer: Renderer2){
 

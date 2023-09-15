@@ -8,6 +8,8 @@ import { FooldalService } from 'src/app/services/fooldal.service';
 })
 export class ElofizetesComponent {
   courseTitle: any[] = [];
+  courseDateEnd: any[] = [];
+  
 
   constructor(private fooldalService: FooldalService){
 
@@ -15,18 +17,42 @@ export class ElofizetesComponent {
 
   ngOnInit(){
     this.fooldalService.getCourses().subscribe((course) => {
-      for(const [key, value] of Object.entries(course)){
-        //console.log(key,value);
-        if(key === 'data'){
-          //console.log(value);
-          for(var i in value){
-            //console.log(value[i].attributes.title);
-            this.courseTitle.push(value[i].attributes.title);
+      //console.log(course);
+      for(const [key,value] of Object.entries(course)){
+        for(let c in value){
+          for(let v in value[c]){
+            if(v === 'title'){
+              for(let i in value[c][v]){
+                this.courseTitle.push(value[c][v][i].value);
+              }
+            }
+          }
+        }
+      }
+    
+    });
+    
+    this.fooldalService.enrolledUser().subscribe((course) => {
+      for(const [key,value] of Object.entries(course)){
+        for(let c in value){
+          for(let v in value[c]){
+            if(v === 'course_date'){
+              for(let i in value[c][v]){
+                this.courseDateEnd.push(value[c][v][i].end_value);
+                console.log(this.courseDateEnd);
+              }
+            }
+            if(v === 'field_image'){
+              console.log(value[c][v]);
+            }
           }
         }
       }
     });
-    console.log(this.courseTitle);
+    this.fooldalService.nonEnrolledUser().subscribe((user) => {
+      console.log(user);
+    });
+
   }
 
 }

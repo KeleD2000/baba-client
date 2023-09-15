@@ -65,7 +65,7 @@ export class FooldalService {
   }
 
   getCourses(){
-    return this.http.get(`${this.baseUrl}/jsonapi/course/course`);
+    return this.http.get(`${this.baseUrl}/api/courses`);
   }
 
   getVideos() {
@@ -167,10 +167,23 @@ export class FooldalService {
     return this.http.post(`${this.baseUrl}/jsonapi/node/videostore`, data, { headers });
   }
 
-  getApiKey(){
+  /*getApiKey(){
     const header = new HttpHeaders({
       'X-CSRF-Token' : 'amE7ouD21eJ4JZ2gEyrtzOzMuTxmAO8uxY1kZ2BL6Jk'
     });
     return this.http.get(`${this.baseUrl}/api/key-auth`);
+  }
+  */
+
+  enrolledUser(){
+    return this.http.get(`${this.baseUrl}/api/courses?enrolled=1`);
+  }
+
+  nonEnrolledUser(){
+    return this.http.get(`${this.baseUrl}/api/courses?enrolled=0`);
+  }
+
+  enrolledUserOutline(/*cid: string*/){
+    return this.http.get(`${this.baseUrl}/api/courseoutline/1`/* + cid*/)
   }
 }

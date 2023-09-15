@@ -11,7 +11,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
     constructor(private fooldalService: FooldalService, private authService: AuthService) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
         // Ellenőrizd, hogy a kérés a megfelelő szolgáltatás URL-ét tartalmazza-e
-        if (request.url.includes('https://baba.jrdatashu.win/jsonapi/node/videostore')) {
+        if (request.url.includes('https://baba.jrdatashu.win/jsonapi/node/videostore') || request.url.includes('https://baba.jrdatashu.win/api/courseoutline/1')) {
           // Lekérdezzük a CSRF tokent
           return from(this.fooldalService.getToken()).pipe(
             switchMap((token) => {
@@ -19,7 +19,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
               if (uid !== undefined) {
                 return from(this.authService.getUserId(uid)).pipe(
                   switchMap((apiKey: any) => {
-                    console.log(apiKey.data[0].id);
+                 
                     const headers = {
                       'X-CSRF-Token': token,
                       'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
@@ -35,6 +35,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
                     // akkor csak a token-t adjuk hozzá a kéréshez
                     const headers = {
                       'X-CSRF-Token': token,
+                      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
                     };
                     const modifiedRequest = request.clone({
                       setHeaders: headers,
@@ -46,6 +47,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
                 // Ha nincs UID, csak a token-t adjuk hozzá a kéréshez
                 const headers = {
                   'X-CSRF-Token': token,
+                  'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
                 };
                 const modifiedRequest = request.clone({
                   setHeaders: headers,

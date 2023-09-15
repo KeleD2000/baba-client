@@ -1,9 +1,17 @@
+:host ::ng-deep .OutlineElement :hover {
+    background-color: #cedfe2;
+}
+
 .course {
     background-color: #fff;
     margin: 10px;
     padding: 20px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
+}
+
+.container :hover {
+    background-color: #cedfe2;
 }
 
 .course h2 {
@@ -21,6 +29,15 @@
 
 .lesson h3 {
     font-size: 18px;
+}
+
+.course-title{
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.course-desc{
+    cursor: pointer;
 }
 
 

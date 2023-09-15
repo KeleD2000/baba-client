@@ -1,13 +1,20 @@
-<div class="course mb-3">
-  <h2 class="course-title" (click)="toggleLessons()">Kurzus 1</h2>
-  <div class="lessons" [@expandCollapse]="showLessons ? 'expanded' : 'collapsed'">
-    <div class="lesson">
-      <h3>Lecke 1</h3>
-      <p>Lecke tartalma itt.</p>
+<div class="container">
+  <div class="course mb-3" *ngFor="let blockt of block; let i = index">
+    <p class="course-title" (click)="toggleLesson(i)">{{ blockt.blockTitle }}</p>
+    <div class="container">
+      <p class="course-desc" (click)="toggleLesson(i)" [innerHTML]="blockt.blockDesc"></p>
     </div>
-    <div class="lesson">
-      <h3>Lecke 1</h3>
-      <p>Lecke tartalma itt.</p>
+    
+    <div class="lessons" [@expandCollapse]="lessonStates[i] ? 'expanded' : 'collapsed'">
+      <div class="lesson">
+        <h3>Lecke 1</h3>
+        <p>Lecke tartalma itt.</p>
+      </div>
+      <div class="lesson">
+        <h3>Lecke 2</h3>
+        <p>Lecke tartalma itt.</p>
+      </div>
     </div>
   </div>
+  
 </div>
