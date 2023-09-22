@@ -27,8 +27,8 @@ import { AdatkezelesComponent } from './components/adatkezeles/adatkezeles.compo
 import { AszfComponent } from './components/aszf/aszf.component';
 import { ElofizetesModule } from './elofizetes/elofizetes.module';
 import { CsrfInterceptorService } from './csrf-interceptor';
-import { KurzusModule } from './kurzus/kurzus.module';
 import { RefreshComponent } from './components/refresh/refresh.component';
+
 
 
 
@@ -62,7 +62,6 @@ const firebaseConfig = {
     HttpClientModule,
     RouterModule,
     FontAwesomeModule,
-    KurzusModule,
     SharedModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

@@ -1,20 +1,35 @@
 <div class="container">
-  <div class="course mb-3" *ngFor="let blockt of block; let i = index">
-    <p class="course-title" (click)="toggleLesson(i)">{{ blockt.blockTitle }}</p>
-    <div class="container">
-      <p class="course-desc" (click)="toggleLesson(i)" [innerHTML]="blockt.blockDesc"></p>
-    </div>
-    
-    <div class="lessons" [@expandCollapse]="lessonStates[i] ? 'expanded' : 'collapsed'">
-      <div class="lesson">
-        <h3>Lecke 1</h3>
-        <p>Lecke tartalma itt.</p>
+  <ng-container *ngFor="let blockt of block; let i = index" >
+    <div class="course mb-3" *ngIf="blockt.tema_title || blockt.tema_description">
+      <p class="course-title" (click)="toggleLesson(i)" *ngIf="blockt.tema_title">{{ blockt.tema_title }}</p>
+      <div class="container" *ngIf="blockt.tema_description">
+        <p class="course-desc" (click)="toggleLesson(i)" [innerHTML]="blockt.tema_description"></p>
       </div>
-      <div class="lesson">
-        <h3>Lecke 2</h3>
-        <p>Lecke tartalma itt.</p>
+
+      <div class="lessons" [@expandCollapse]="lessonStates[i] ? 'expanded' : 'collapsed'">
+        <div class="lesson" *ngFor="let lesson of blockt.lessons">
+          <div class="lesson-container">
+            <!-- Videó vagy YouTube videó -->
+            <div class="video-container">
+              <!-- App Video Player -->
+              <div *ngIf="lesson.video_url && !lesson.y_video_url">
+                <app-video-player style="padding-top: 15px;"
+                  [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: '', sources: [{ src: lesson.video_url, type: 'video/mp4', label: 'Basic' }, { src: lesson.video_url_1080, type: 'video/mp4', label: '1080p' },{ src: lesson.video_url_720, type: 'video/mp4', label: '720p' }, { src: lesson.video_url_360, type: 'video/mp4', label: '360p' }]}">
+                </app-video-player>
+              </div>
+              <!-- YouTube videó -->
+              <div *ngIf="lesson.y_video_url && !lesson.video_url" class="youtube-video">
+                <iframe [src]="lesson.y_video_url | kurzussafe : 'resourceUrl'" frameborder="0" class="iframe-size"></iframe>
+              </div>
+            </div>
+            <!-- Lecke címe (lesson.lessons_title) és leírása (lesson.lessons_desc) jobb oldalt -->
+            <div class="lesson-info">
+              <h3>{{ lesson.lessons_title }}</h3>
+              <div [innerHTML]="lesson.lessons_desc"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  
+  </ng-container>
 </div>

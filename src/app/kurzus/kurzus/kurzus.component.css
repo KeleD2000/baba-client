@@ -6,7 +6,7 @@
     background-color: #fff;
     margin: 10px;
     padding: 20px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0px 0px 5px;
     border-radius: 5px;
 }
 
@@ -31,13 +31,49 @@
     font-size: 18px;
 }
 
-.course-title{
+.course-title {
     cursor: pointer;
     font-weight: bold;
 }
 
-.course-desc{
+.course-desc {
     cursor: pointer;
 }
 
+.complete {
+    box-shadow: inset 0px 0px 5px #0A606F;
+}
 
+.incomplete {
+    box-shadow: inset 0px 0px 5px #E6009F;
+}
+
+.lesson-container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.video-container {
+    flex: 1;
+    /* A videó terjedjen ki a rendelkezésre álló helyre */
+    margin-right: 20px;
+    /* Távolság a lecke címétől és leírásától */
+}
+
+.lesson-info {
+    flex: 2;
+    /* A lecke címe és leírása terjedjen ki a rendelkezésre álló helyre */
+}
+
+/* A cím és a leírás kisebb betűmérete */
+.lesson-info h3 {
+    font-weight: bold;
+    font-size: 16px;
+    /* Például 16px méretű betűk */
+}
+
+.lesson-info div {
+    margin-top: 10px;
+    font-size: 14px;
+    /* Például 14px méretű betűk a leírásnál */
+}

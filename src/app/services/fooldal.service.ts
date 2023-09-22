@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -63,11 +63,7 @@ export class FooldalService {
   getToken() : Observable<string> {
    return this.http.get<string>(`${this.baseUrl}/session/token`, {responseType: 'text' as 'json'});
   }
-
-  getCourses(){
-    return this.http.get(`${this.baseUrl}/api/courses`);
-  }
-
+  
   getVideos() {
     const auth = btoa('admin:c');
     const headers = new HttpHeaders({
@@ -175,6 +171,36 @@ export class FooldalService {
   }
   */
 
+  getCourses(){
+    return this.http.get(`${this.baseUrl}/api/courses`);
+  }
+
+  getCoursesId() {
+    return this.http.get(`${this.baseUrl}/api/courses`).pipe(
+      map((response: any) => {
+        // Ellenőrizzük, hogy a válasz tartalmazza-e a courses objektumot
+        if (response.courses) {
+          const courses = response.courses;
+          const cids: string[] = [];
+  
+          // Kinyerjük a cid értékeket minden kurzusból és hozzáadjuk a cids tömbhöz
+          for (const courseId in courses) {
+            if (courses.hasOwnProperty(courseId)) {
+              const cid = courses[courseId].cid[0].value;
+              cids.push(cid);
+            }
+          }
+  
+          // Visszaadjuk a cid értékeket
+          return cids;
+        } else {
+          // Hibakezelés, ha nincs megfelelő struktúra az API válaszban
+          throw new Error('Hibás API válasz struktúra');
+        }
+      })
+    );
+  }
+
   enrolledUser(){
     return this.http.get(`${this.baseUrl}/api/courses?enrolled=1`);
   }
@@ -183,7 +209,7 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/api/courses?enrolled=0`);
   }
 
-  enrolledUserOutline(/*cid: string*/){
-    return this.http.get(`${this.baseUrl}/api/courseoutline/1`/* + cid*/)
+  enrolledUserOutline(cid: string){
+    return this.http.get(`${this.baseUrl}/api/courseoutline/${cid}`);
   }
 }
