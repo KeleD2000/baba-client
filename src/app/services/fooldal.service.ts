@@ -178,23 +178,19 @@ export class FooldalService {
   getCoursesId() {
     return this.http.get(`${this.baseUrl}/api/courses`).pipe(
       map((response: any) => {
-        // Ellenőrizzük, hogy a válasz tartalmazza-e a courses objektumot
         if (response.courses) {
           const courses = response.courses;
           const cids: string[] = [];
   
-          // Kinyerjük a cid értékeket minden kurzusból és hozzáadjuk a cids tömbhöz
           for (const courseId in courses) {
             if (courses.hasOwnProperty(courseId)) {
               const cid = courses[courseId].cid[0].value;
               cids.push(cid);
             }
           }
-  
-          // Visszaadjuk a cid értékeket
+          
           return cids;
         } else {
-          // Hibakezelés, ha nincs megfelelő struktúra az API válaszban
           throw new Error('Hibás API válasz struktúra');
         }
       })

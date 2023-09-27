@@ -41,6 +41,12 @@ button.btn.btn-primary.button-style{
     font-family: 'Roboto Condensed', sans-serif;
 }
 
+.c_title *{
+    color: #F54D9F;
+    font-family: 'Roboto Condensed', sans-serif;
+    text-align: center;
+}
+
 
 .error-message {
     font-size: 0.8rem;
@@ -49,3 +55,4 @@ button.btn.btn-primary.button-style{
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);*/
     font-style: italic;
 }
+

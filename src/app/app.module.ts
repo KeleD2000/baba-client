@@ -28,6 +28,7 @@ import { AszfComponent } from './components/aszf/aszf.component';
 import { ElofizetesModule } from './elofizetes/elofizetes.module';
 import { CsrfInterceptorService } from './csrf-interceptor';
 import { RefreshComponent } from './components/refresh/refresh.component';
+import { SharedService } from './services/shared.service';
 
 
 
@@ -74,7 +75,7 @@ const firebaseConfig = {
       useClass: CsrfInterceptorService,
       multi: true,
     },
-    HtmlconvertService,
+    HtmlconvertService, SharedService
   ],
   bootstrap: [AppComponent]
 })

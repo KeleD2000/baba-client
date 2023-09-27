@@ -1,8 +1,11 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 import { SafeHtml } from '@angular/platform-browser';
+import { ElofizetesComponent } from 'src/app/elofizetes/elofizetes/elofizetes.component';
+import { SharedService } from 'src/app/services/shared.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-kurzus',
@@ -20,8 +23,8 @@ export class KurzusComponent {
   block: any[] = [];
   showLessons: boolean = false;
   lessonStates: boolean[] = [];
-  obj_array: any[] = [];
-
+  choosedCourse: any;
+  courseTitle: string = '';
   toggleLesson(index: number): void {
     this.lessonStates[index] = !this.lessonStates[index];
   }
@@ -33,28 +36,40 @@ export class KurzusComponent {
     return match ? match[1] : null;
   }
 
-  constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService) { }
+  constructor(private fooldalService: FooldalService,
+    private htmlconvertService: HtmlconvertService,
+    private shared: SharedService,
+    private router: ActivatedRoute) { }
 
   ngOnInit(): void {
+    
+    this.courseTitle = this.router.snapshot.params['title'];
+    console.log(this.courseTitle);
     this.fooldalService.getCoursesId().subscribe((cids: string[]) => {
       for (const cid of cids) {
         this.fooldalService.enrolledUserOutline(cid).subscribe((out) => {
           for (const [key, v] of Object.entries(out)) {
+            if (v.title != undefined && v.title[0].value != this.router.snapshot.params['title']) {
+              continue;
+            }
             if (key === 'outline') {
+              console.log(key,v);
               for (let i in v) {
                 const obj = {
                   tema_title: "",
                   tema_description: "",
                   completed: false,
-                  lessons: [] as {lessons_title: string, lessons_desc: SafeHtml, y_video_url: string, text: string, 
-                  video_url: string, video_url_360: string, video_url_720: string, video_url_1080: string}[]
-                   
+                  lessons: [] as {
+                    lessons_title: string, lessons_desc: SafeHtml, y_video_url: string, text: string,
+                    video_url: string, video_url_360: string, video_url_720: string, video_url_1080: string
+                  }[]
+
                 };
-              console.log(v[i]);
-                if(v[i].node.hasOwnProperty("title")){
+                //console.log(v[i]);
+                if (v[i].node.hasOwnProperty("title")) {
                   obj.tema_title = v[i].node.title[0].value;
                 }
-                if(v[i].node.hasOwnProperty("body") && v[i].node.body.length > 0){
+                if (v[i].node.hasOwnProperty("body") && v[i].node.body.length > 0) {
                   obj.tema_description = v[i].node.body[0].value;
 
                 }
@@ -73,12 +88,17 @@ export class KurzusComponent {
                       video_url: '',
                       video_url_360: '',
                       video_url_720: '',
-                      video_url_1080: ''
+                      video_url_1080: '',
+                      thumbnail: ''
                     }
                     lesson_obj.lessons_title = v[i].lessons[j].lesson.field_label[0].value;
                     const field_c = this.htmlconvertService.convertToHtml(v[i].lessons[j].lesson.field_content[0].value);
                     lesson_obj.lessons_desc = field_c;
                     const baseUrl = this.fooldalService.getBaseUrl();
+                    if (v[i].lessons[j].thumbnail !== null) {
+                      lesson_obj.thumbnail = baseUrl + v[i].lessons[j].thumbnail
+                    }
+
 
                     if (v[i].lessons[j].video_url !== null && !v[i].lessons[j].video_url.startsWith('/sites')) {
                       const y_video = this.extractVideoId(v[i].lessons[j].video_url);
@@ -107,10 +127,12 @@ export class KurzusComponent {
               }
               console.log(this.block);
             }
+
           }
         });
       }
-    })
+    });
+
   }
 
 

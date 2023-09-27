@@ -33,7 +33,7 @@ const routes: Routes = [
   {path: 'videotar', loadChildren:() => VideotarModule},
   {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [AdminGuard]},
   {path: 'elofizetes', loadChildren: () => ElofizetesModule},
-  {path: 'kurzusok', loadChildren: () => KurzusModule},
+  {path: 'kurzusok/:title', loadChildren: () => KurzusModule},
   {path: 'not-found', component: NotFoundComponent},
   {path: 'refresh', component: RefreshComponent},
   {path: '**', component: RefreshComponent}

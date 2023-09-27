@@ -18,6 +18,9 @@ export class AuthService {
   }
 
   login(user: Login) {
+    const headers = new HttpHeaders({
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+    })
     return this.http.post<User>(`${this.baseUrl}/user/login?_format=json`, user);
   }
 

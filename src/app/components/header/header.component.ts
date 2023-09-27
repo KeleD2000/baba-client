@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { FooldalService } from 'src/app/services/fooldal.service';
 
 
 @Component({
@@ -13,10 +14,12 @@ export class HeaderComponent {
   @Input() loggedUser: any;
   @Input() showImage?: boolean;
   @Input() isAdmin?: boolean;
+  enrolledCourse: string[] = [];
 
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private fooldalService: FooldalService
   ){}
   isActiveMenu(menuPath: string) {
     return this.router.isActive(menuPath, true);
@@ -38,5 +41,21 @@ export class HeaderComponent {
       });
     }
     this.router.navigateByUrl("/fooldal");
+  }
+
+  ngOnInit(){
+    this.fooldalService.enrolledUser().subscribe((t) => {
+      console.log(t);
+      for(const [key, value] of Object.entries(t)){
+        for(let c in value){
+          for(let v in value[c]){
+            if(v === 'title'){
+              this.enrolledCourse.push(value[c][v][0].value);
+              console.log(this.enrolledCourse);
+            }
+          }
+        }
+      }
+    });
   }
 }

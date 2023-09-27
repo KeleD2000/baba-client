@@ -6,8 +6,15 @@
     background-color: #fff;
     margin: 10px;
     padding: 20px;
-    box-shadow: inset 0px 0px 5px;
     border-radius: 5px;
+}
+
+.course.completed-true {
+    box-shadow: inset 0px 0px 5px #0A606F;
+}
+
+.course.completed-false {
+    box-shadow: inset 0px 0px 5px #E6009F;
 }
 
 .container :hover {
@@ -77,3 +84,4 @@
     font-size: 14px;
     /* Például 14px méretű betűk a leírásnál */
 }
+
