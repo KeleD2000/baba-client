@@ -11,7 +11,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
     constructor(private fooldalService: FooldalService, private authService: AuthService) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
         // Ellenőrizd, hogy a kérés a megfelelő szolgáltatás URL-ét tartalmazza-e
-        if (request.url.includes('https://baba.jrdatashu.win/jsonapi/node/videostore') || request.url.includes('https://baba.jrdatashu.win/api/courseoutline') || request.url.includes('https://baba.jrdatashu.win/api/courses?enrolled=0') || request.url.includes('https://baba.jrdatashu.win/api/courses?enrolled=1') || request.url.includes('https://baba.jrdatashu.win/jsonapi/path_alias/path_alias') ) {
+        if (request.url.includes('https://baba.jrdatashu.win/jsonapi/node/videostore') || request.url.includes('https://baba.jrdatashu.win/api/courseoutline') || request.url.includes('https://baba.jrdatashu.win/api/courses?enrolled=0') || request.url.includes('https://baba.jrdatashu.win/api/courses?enrolled=1') || request.url.includes('https://baba.jrdatashu.win/jsonapi/path_alias/path_alias') || request.url.includes('https://baba.jrdatashu.win/api/courses')) {
           // Lekérdezzük a CSRF tokent
           return from(this.fooldalService.getToken()).pipe(
             switchMap((token) => {

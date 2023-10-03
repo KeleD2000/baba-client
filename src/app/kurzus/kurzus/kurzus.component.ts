@@ -24,16 +24,22 @@ export class KurzusComponent {
   choosedCourse: any;
   courseTitle: string = '';
   completed: any[] = [];
-  previousCompletedValue: any;
+  lessonColor: string = 'darkgray';
+  private isFirstFalseAfterTrue: boolean = true;
 
-  
- getLessonColor(block: any, index: any) : any{
-  console.log(block.lessons);
-  if(index == 0){
-    return {'color': '#ff000'};
+  getLessonColor(current: boolean): string {
+    if (current === true) {
+      this.isFirstFalseAfterTrue = true;
+      return '#0A606F';
+    } else if (current === false && this.isFirstFalseAfterTrue) {
+      this.isFirstFalseAfterTrue = false;
+      return '#E6009F';
+    } else if (current === false) {
+      return '#808080';
+    } else {
+      return '#808080';
+    }
   }
-}
-
 
   toggleLesson(index: number): void {
     this.lessonStates[index] = !this.lessonStates[index];

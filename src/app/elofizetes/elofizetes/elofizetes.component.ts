@@ -19,7 +19,9 @@ export class ElofizetesComponent {
 
   ngOnInit(){
     this.fooldalService.getCourses().subscribe((course) => {
+      console.log(course);
       for(const [key,value] of Object.entries(course)){
+        console.log(key, value);
         for(let c in value){
           for(let v in value[c]){
             if(v === 'title'){

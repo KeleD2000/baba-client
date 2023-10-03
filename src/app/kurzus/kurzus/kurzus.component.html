@@ -23,7 +23,7 @@
               </div>
             </div>
             <div class="lesson-info">
-              <h3 [ngStyle]="getLessonColor(blockt, k)">{{ lesson.lessons_title }}</h3>
+              <h3 [style.color]="getLessonColor(lesson.completed)">{{ lesson.lessons_title }}</h3>
               <div [innerHTML]="lesson.lessons_desc"></div>
             </div>
           </div>
