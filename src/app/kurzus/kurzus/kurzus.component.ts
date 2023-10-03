@@ -3,9 +3,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 import { SafeHtml } from '@angular/platform-browser';
-import { ElofizetesComponent } from 'src/app/elofizetes/elofizetes/elofizetes.component';
-import { SharedService } from 'src/app/services/shared.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-kurzus',
@@ -25,6 +23,18 @@ export class KurzusComponent {
   lessonStates: boolean[] = [];
   choosedCourse: any;
   courseTitle: string = '';
+  completed: any[] = [];
+  previousCompletedValue: any;
+
+  
+ getLessonColor(block: any, index: any) : any{
+  console.log(block.lessons);
+  if(index == 0){
+    return {'color': '#ff000'};
+  }
+}
+
+
   toggleLesson(index: number): void {
     this.lessonStates[index] = !this.lessonStates[index];
   }
@@ -38,27 +48,26 @@ export class KurzusComponent {
 
   constructor(private fooldalService: FooldalService,
     private htmlconvertService: HtmlconvertService,
-    private shared: SharedService,
     private router: ActivatedRoute) { }
 
+
+
   ngOnInit(): void {
-    
     this.courseTitle = this.router.snapshot.params['title'];
-    console.log(this.courseTitle);
     this.fooldalService.getCoursesId().subscribe((cids: string[]) => {
       for (const cid of cids) {
         this.fooldalService.enrolledUserOutline(cid).subscribe((out) => {
+          //console.log(out);
           for (const [key, v] of Object.entries(out)) {
             if (v.title != undefined && v.title[0].value != this.router.snapshot.params['title']) {
               continue;
             }
+            console.log(key, v);
             if (key === 'outline') {
-              console.log(key,v);
               for (let i in v) {
                 const obj = {
                   tema_title: "",
                   tema_description: "",
-                  completed: false,
                   lessons: [] as {
                     lessons_title: string, lessons_desc: SafeHtml, y_video_url: string, text: string,
                     video_url: string, video_url_360: string, video_url_720: string, video_url_1080: string
@@ -73,16 +82,13 @@ export class KurzusComponent {
                   obj.tema_description = v[i].node.body[0].value;
 
                 }
-                // Ellenőrizzük, hogy v[i].lessons[j].fulfillment.complete tömb létezik és nem üres
-                if (Array.isArray(v[i].fulfillment.complete)) {
-                  obj.completed = v[i].fulfillment.complete.length > 0; // True, ha nem üres
-                }
                 if (Array.isArray(v[i].lessons)) {
                   //console.log(v[i].fulfillment.complete);
                   for (let j in v[i].lessons) {
                     const lesson_obj = {
                       lessons_title: '',
                       lessons_desc: '' as SafeHtml,
+                      completed: false,
                       y_video_url: '',
                       text: '',
                       video_url: '',
@@ -95,6 +101,11 @@ export class KurzusComponent {
                     const field_c = this.htmlconvertService.convertToHtml(v[i].lessons[j].lesson.field_content[0].value);
                     lesson_obj.lessons_desc = field_c;
                     const baseUrl = this.fooldalService.getBaseUrl();
+                    if (Array.isArray(v[i].lessons[j].fulfillment.complete)) {
+                      lesson_obj.completed = v[i].lessons[j].fulfillment.complete.length > 0;
+                    } else {
+                      lesson_obj.completed = false;
+                    }
                     if (v[i].lessons[j].thumbnail !== null) {
                       lesson_obj.thumbnail = baseUrl + v[i].lessons[j].thumbnail
                     }
@@ -125,7 +136,15 @@ export class KurzusComponent {
                 }
                 this.block.push(obj);
               }
-              console.log(this.block);
+              //console.log(this.block);
+              this.block.forEach(element => {
+                //console.log(element.lessons);
+                for(let i in element.lessons){
+                  
+                  this.completed.push(element.lessons[i].completed);
+                  console.log(this.completed);
+                }
+              });
             }
 
           }

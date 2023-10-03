@@ -16,6 +16,8 @@ import { AszfComponent } from './components/aszf/aszf.component';
 import { ElofizetesModule } from './elofizetes/elofizetes.module';
 import { KurzusModule } from './kurzus/kurzus.module';
 import { RefreshComponent } from './components/refresh/refresh.component';
+import { UserModule } from './user/user.module';
+import { KurzusoldalComponent } from './kurzus/kurzusoldal/kurzusoldal.component';
 
 const routes: Routes = [
   {path: '', loadChildren: () => FooldalModule},
@@ -34,6 +36,8 @@ const routes: Routes = [
   {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [AdminGuard]},
   {path: 'elofizetes', loadChildren: () => ElofizetesModule},
   {path: 'kurzusok/:title', loadChildren: () => KurzusModule},
+  {path: ':urlParam', component: KurzusoldalComponent},
+  {path: 'user', loadChildren:() => UserModule},
   {path: 'not-found', component: NotFoundComponent},
   {path: 'refresh', component: RefreshComponent},
   {path: '**', component: RefreshComponent}

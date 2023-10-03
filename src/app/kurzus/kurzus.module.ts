@@ -4,7 +4,8 @@ import { KurzusComponent } from './kurzus/kurzus.component';
 import { KurzusRoutingModule } from './kurzus-routing.modul';
 import { SharedModule } from '../shared/shared.module';
 import { KurzussafePipe } from '../pipes/kurzussafe.pipe';
-import { KurzusadatokComponent } from './kurzusadatok/kurzusadatok.component';
+import { KurzusoldalComponent } from './kurzusoldal/kurzusoldal.component';
+
 
 
 
@@ -13,7 +14,7 @@ import { KurzusadatokComponent } from './kurzusadatok/kurzusadatok.component';
   declarations: [
     KurzusComponent,
     KurzussafePipe,
-    KurzusadatokComponent
+    KurzusoldalComponent
 
   ],
   imports: [

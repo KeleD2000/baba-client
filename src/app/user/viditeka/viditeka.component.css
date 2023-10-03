@@ -1,0 +1,54 @@
+.p_text {
+    color: #F54D9F;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.btn {
+    border: solid 3px #0A606F;
+    color: #0A606F;
+    background-color: transparent;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.btn:hover {
+    background-color: #F54D9F;
+    color: white;
+    border: solid 3px #F54D9F;
+}
+
+.active-button {
+    background-color: #F54D9F;
+    color: white;
+    border: solid 3px #F54D9F;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li:hover{
+    color: #F54D9F;
+    cursor: pointer;
+}
+
+ul li:hover::before{
+    color: #F54D9F;
+}
+
+.icon {
+    font-size: 10px;
+    margin-right: 10px;
+  }
+  
+  .active-icon {
+    color: #F54D9F; /* vagy a kívánt aktív kategória ikonja előtti szín */
+  }
+  
+
+.active-cat{
+    color: #F54D9F;
+}

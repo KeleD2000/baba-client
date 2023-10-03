@@ -208,4 +208,17 @@ export class FooldalService {
   enrolledUserOutline(cid: string){
     return this.http.get(`${this.baseUrl}/api/courseoutline/${cid}`);
   }
+
+  getPage(){
+    return this.http.get(`${this.baseUrl}/jsonapi/node/page`);
+  }
+
+  getPageAlias(){
+    return this.http.get(`${this.baseUrl}/jsonapi/path_alias/path_alias`);
+  }
+
+  getPageFilter(id: number){
+    return this.http.get(`${this.baseUrl}/jsonapi/node/page?filter[drupal_internal__nid]=${id}`);
+  }
+
 }

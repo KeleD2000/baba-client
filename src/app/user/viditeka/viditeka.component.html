@@ -1,0 +1,18 @@
+<div class="container">
+    <p class="p_text">Videótéka</p>
+    <div class="d-flex justify-content-between">
+      <button type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'napi'}" (click)="toggleButtonState('napi')">Napi ajánlat</button>
+      <button type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'kedvenc'}" (click)="toggleButtonState('kedvenc')">Kedvenc videóim</button>
+    </div>
+    <div>
+        <ul>
+            <p class="text-left">Válaszd ki, hol tartasz éppen:</p>
+            <li *ngFor="let cat of objCat; let i = index"
+                [ngClass]="{'active-cat': isCategoryActive(cat)}"
+                (click)="toggleCategory(cat, i)">
+              <span [class.active-icon]="i === activeCategoryIndex"><fa-icon class="icon" [icon]="faCirc"></fa-icon></span> {{ cat.catTitle }} <span [innerHTML]="cat.catDesc"></span>
+            </li>
+          </ul>                     
+    </div>
+  </div>
+  

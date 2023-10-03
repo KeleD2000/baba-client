@@ -61,6 +61,7 @@
             <ul class="dd-menu">
               <li *ngIf="!isAdmin" routerLink="/elofizetes">Előfizetések</li>
               <li *ngIf="isAdmin" routerLink="/admin/videotar">Videotéka</li>
+              <li *ngIf="!isAdmin" routerLink="/viditeka">Videotéka</li>
               <li *ngFor="let enrolledC of enrolledCourse">{{enrolledC}}</li>
               <li (click)="Logout()">Kijelentkezés</li>
             </ul>

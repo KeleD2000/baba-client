@@ -7,18 +7,7 @@
     margin: 10px;
     padding: 20px;
     border-radius: 5px;
-}
-
-.course.completed-true {
-    box-shadow: inset 0px 0px 5px #0A606F;
-}
-
-.course.completed-false {
-    box-shadow: inset 0px 0px 5px #E6009F;
-}
-
-.container :hover {
-    background-color: #cedfe2;
+    border: 3px solid #0A606F;
 }
 
 .course h2 {
@@ -45,14 +34,6 @@
 
 .course-desc {
     cursor: pointer;
-}
-
-.complete {
-    box-shadow: inset 0px 0px 5px #0A606F;
-}
-
-.incomplete {
-    box-shadow: inset 0px 0px 5px #E6009F;
 }
 
 .lesson-container {
@@ -82,6 +63,21 @@
 .lesson-info div {
     margin-top: 10px;
     font-size: 14px;
+    line-height: normal;
     /* Például 14px méretű betűk a leírásnál */
 }
+
+.completed-true{
+    color:#0A606F;
+}
+
+.completed-false-after-true{
+    color: #E6009F;
+}
+
+.completed-false{
+    color: #808080;
+}
+
+
 

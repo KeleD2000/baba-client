@@ -10,7 +10,7 @@ import { faCopyright } from '@fortawesome/free-regular-svg-icons';
 export class FooterComponent {
   faFB = faFacebook;
   showModal: boolean = false;
-  faCopy = faCopyright
+  faCopy = faCopyright;
 
   constructor(private renderer: Renderer2){
 
