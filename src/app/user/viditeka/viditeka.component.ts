@@ -14,6 +14,7 @@ export class ViditekaComponent {
   selectedCategories: any[] = [];
   activeCategoryIndex: number = -1;
   faCirc = faCircle;
+  baseUrl: string = "https://baba.jrdatashu.win";
 
   constructor(private fooldalService: FooldalService, private htmlConvert: HtmlconvertService, private sanitizer: DomSanitizer){
 
@@ -52,20 +53,32 @@ export class ViditekaComponent {
       for (const [key, value] of Object.entries(cat)) {
         if (key === 'data') {
           for (let i in value) {
-            const obj = { catTitle: '', catDesc: '' as SafeHtml };
+            const obj = { catTitle: '', catDesc: '' as SafeHtml, photo_id: '', photo_url: ''};
+            obj.photo_id = value[i].relationships.field_category_image.data.id;
+            console.log(obj.photo_id);
             if (value[i].attributes.description != null) {
               let desc = value[i].attributes.description.value;
-              // Cseréljük a <p> elemeket zárójelekre
               desc = this.replaceParagraphTagsWithBrackets(desc);
               obj.catDesc = this.sanitizer.bypassSecurityTrustHtml(desc);
             }
+          
             obj.catTitle = value[i].attributes.name;
             this.objCat.push(obj);
+            this.fooldalService.catPhotos(obj.photo_id).subscribe(p =>{
+              for(const [key, value] of Object.entries(p)){
+                if(value.attributes != undefined){
+                  console.log(this.baseUrl + value.attributes.uri.url);
+                  obj.photo_url = this.baseUrl + value.attributes.uri.url;
+                }
+              }
+            });
           }
         }
       }
       console.log(this.objCat);
     });
+
+    
   }
   
   replaceParagraphTagsWithBrackets(html: string): string {

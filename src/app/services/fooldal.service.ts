@@ -221,4 +221,11 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/node/page?filter[drupal_internal__nid]=${id}`);
   }
 
+  catPhotos(id: string){
+    const headers = new HttpHeaders({
+      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+    })
+    return this.http.get(`${this.baseUrl}/jsonapi/media/image/` + id + `/field_media_image`, {headers});
+  }
+
 }
