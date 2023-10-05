@@ -30,25 +30,100 @@ ul {
     padding: 0;
 }
 
-li:hover{
+li:hover {
     color: #F54D9F;
     cursor: pointer;
 }
 
-ul li:hover::before{
+ul li:hover::before {
     color: #F54D9F;
 }
 
 .icon {
     font-size: 10px;
     margin-right: 10px;
-  }
-  
-  .active-icon {
-    color: #F54D9F; /* vagy a kívánt aktív kategória ikonja előtti szín */
-  }
-  
+}
 
-.active-cat{
+.active-icon {
+    color: #F54D9F;
+}
+
+
+.active-cat {
+    color: #F54D9F;
+}
+
+.cat-image {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+li:hover .cat-image {
+    display: block;
+    opacity: 1;
+}
+
+li:hover .cat-image span {
+    display: block;
+    opacity: 1;
+    color: black;
+}
+
+.img {
+    width: 100%;
+    height: auto;
+}
+
+.lesson-container {
+    display: flex;
+    align-items: flex-start;
+    position: relative; /* Hozzáadott pozíció: relatív tulajdonság */
+}
+
+.video-container {
+    flex: 1;
+    /* A videó terjedjen ki a rendelkezésre álló helyre */
+    margin-right: 20px;
+    /* Távolság a lecke címétől és leírásától */
+}
+
+.lesson-info {
+    flex: 2;
+    /* A lecke címe és leírása terjedjen ki a rendelkezésre álló helyre */
+}
+
+/* A cím és a leírás kisebb betűmérete */
+.lesson-info h3 {
+    font-weight: bold;
+    font-size: 16px;
+    /* Például 16px méretű betűk */
+}
+
+.lesson-info div {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: normal;
+    /* Például 14px méretű betűk a leírásnál */
+}
+
+.lesson {
+    background-color: #f9f9f9;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+
+}
+
+.lesson h3 {
+    font-size: 18px;
+}
+
+.like-button {
+    position: relative;
+    top: 140px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
     color: #F54D9F;
 }
