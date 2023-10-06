@@ -59,9 +59,10 @@ ul li:hover::before {
     transition: opacity 0.3s ease-in-out;
 }
 
-li:hover .cat-image {
+li:hover .cat-image, .active-cat .cat-image {
     display: block;
     opacity: 1;
+    color: black;
 }
 
 li:hover .cat-image span {
@@ -127,3 +128,22 @@ li:hover .cat-image span {
     cursor: pointer;
     color: #F54D9F;
 }
+
+.truncated-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial; /* Ezt hagyd alapértelmezett értékre állítva */
+    max-height: 100px; /* A videó magasságához igazítsd */
+  }
+
+  .truncated-text + .arrow {
+  display: inline-block; /* vagy bármilyen kijelzési tulajdonság, amely megfelel az igényeidnek */
+}
+
+.icon-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+}
+

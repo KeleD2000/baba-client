@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { faCircle, faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
-import {faHeart as faSolidHeart} from '@fortawesome/free-solid-svg-icons';
+import {faHeart as faSolidHeart, faArrowAltCircleDown, faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 
@@ -16,33 +16,49 @@ export class ViditekaComponent {
   selectedCategories: any[] = [];
   activeCategoryIndex: number = -1;
   faCirc = faCircle;
+  faArrowD = faArrowAltCircleDown;
+  faArrowUp = faArrowAltCircleUp;
   faRegularHeart = faRegularHeart;
   faSolidHeart = faSolidHeart;
   baseUrl: string = "https://baba.jrdatashu.win";
   isLiked = false;
-  isButtonActive: string = '';
+  isArrow = false;
+  isButtonActive: string = 'napi';
 
   constructor(private fooldalService: FooldalService, private htmlConvert: HtmlconvertService, private sanitizer: DomSanitizer) {
 
   }
 
+  handleCategoryClick(event: Event) {
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'LI') {
+      // Itt kezeld a kattintást, csak ha a <li> elemre kattintottak
+      const index = this.objCat.findIndex(cat => cat.catTitle === target.innerText);
+      this.toggleCategory(this.objCat[index], index);
+    }
+  }
+  
+  
+  toggleTextOverflow(vid: any) {
+    vid.isTextOverflow = !vid.isTextOverflow;
+    this.isArrow = !this.isArrow;
+  }  
+
   toggleLike() {
     this.isLiked = !this.isLiked;
   }
 
-  toggleButtonState(button: string) {
-    if (this.isButtonActive === button) {
-      this.isButtonActive = '';
+  toggleButtonState(buttonId: any) {
+    if (this.isButtonActive === buttonId) {
+      this.isButtonActive = ''; 
     } else {
-      this.isButtonActive = button;
+      this.isButtonActive = buttonId;
     }
   }
 
   isCategoryActive(cat: any): boolean {
     return this.isButtonActive === cat.catTitle;
   }
-
-
 
   toggleCategory(cat: any, index: number) {
     if (this.isButtonActive === cat.catTitle) {
@@ -53,7 +69,6 @@ export class ViditekaComponent {
       this.activeCategoryIndex = index;
     }
 
-    // Állapot frissítése az objCat tömbben
     this.objCat.forEach((c, i) => {
       c.isActive = i === this.activeCategoryIndex;
     });
@@ -68,10 +83,10 @@ export class ViditekaComponent {
     cat.isImageVisible = false;
   }
   loadRecommendedVideos() {
-    // Csak az aktív kategória esetén töltse be a videókat
     if (this.activeCategoryIndex >= 0) {
       const selectedCategory = this.objCat[this.activeCategoryIndex];
       this.fooldalService.getCurrentVideos(selectedCategory.tid).subscribe((v) => {
+        console.log(v);
         const objVid = {
           vidTitle: '',
           vidDesc: '' as SafeHtml,
@@ -79,7 +94,9 @@ export class ViditekaComponent {
           video_url_360: '',
           video_url_720: '',
           video_url_1080: '',
-          thumbnail: ''
+          thumbnail: '',
+          isTextOverflow: false,
+          showArrow: false
         }
         for (const [key, value] of Object.entries(v)) {
           objVid.vidTitle = value.videostore.title[0].value;

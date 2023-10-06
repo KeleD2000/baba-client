@@ -7,10 +7,9 @@
       (click)="toggleButtonState('kedvenc')">Kedvenc videóim</button>
   </div>
   <div>
-    <ul>
-      <p class="text-left">Válaszd ki, hol tartasz éppen:</p>
-      <li *ngFor="let cat of objCat; let i = index" [ngClass]="{'active-cat': isCategoryActive(cat)}"
-        (click)="toggleCategory(cat, i)">
+    <p class="text-left">Válaszd ki, hol tartasz éppen:</p>
+    <ul *ngFor="let cat of objCat; let i = index"  [ngClass]="{'active-cat': isCategoryActive(cat)}" (click)="handleCategoryClick($event)">
+      <li (click)="toggleCategory(cat, i);">
         <span [class.active-icon]="i === activeCategoryIndex"><fa-icon class="icon" [icon]="faCirc"></fa-icon></span> {{
         cat.catTitle }}
         <div class="cat-image">
@@ -21,7 +20,8 @@
     </ul>
   </div>
   <div class="text-center">
-    <button type="button" class="btn btn-primary m-4" (click)="loadRecommendedVideos()">Kérem az ajánlott videókat</button>
+    <button type="button" class="btn btn-primary m-4" (click)="loadRecommendedVideos()">Kérem az ajánlott
+      videókat</button>
   </div>
   <div class="lessons">
     <div class="lesson" *ngFor="let vid of objVid; let k = index">
@@ -33,16 +33,23 @@
             </app-video-player>
           </div>
           <div *ngIf="vid.y_video_url && !vid.video_url" class="youtube-video">
-            <iframe [src]="vid.y_video_url" frameborder="0"
-              class="iframe-size"></iframe>
+            <iframe [src]="vid.y_video_url" frameborder="0" class="iframe-size"></iframe>
           </div>
         </div>
         <div class="lesson-info">
           <h3>{{ vid.vidTitle }}</h3>
-          <div [innerHTML]="vid.vidDesc"></div>
+          <div [innerHTML]="vid.vidDesc" [class.truncated-text]="!vid.isTextOverflow"></div>
+          <fa-icon style="    
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding-top: 10px;
+          color:#0A606F;
+          " 
+          [icon]="isArrow ? faArrowUp : faArrowD" (click)="toggleTextOverflow(vid)"></fa-icon>
         </div>
         <button type="button" class="like-button" (click)="toggleLike()">
-          <fa-icon [icon]="isLiked ? faSolidHeart : faRegularHeart"></fa-icon>
+          <fa-icon style="display: flex;" [icon]="isLiked ? faSolidHeart : faRegularHeart"></fa-icon>
         </button>
       </div>
     </div>
