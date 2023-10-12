@@ -59,8 +59,7 @@ ul li:hover::before {
     transition: opacity 0.3s ease-in-out;
 }
 
-li:hover .cat-image,
-.active-cat .cat-image {
+li:hover .cat-image, .active-cat .cat-image {
     display: block;
     opacity: 1;
     color: black;
@@ -80,8 +79,7 @@ li:hover .cat-image span {
 .lesson-container {
     display: flex;
     align-items: flex-start;
-    position: relative;
-    /* Hozzáadott pozíció: relatív tulajdonság */
+    position: relative; /* Hozzáadott pozíció: relatív tulajdonság */
 }
 
 .video-container {
@@ -134,21 +132,9 @@ li:hover .cat-image span {
 .truncated-text {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: initial;
-    max-height: 119px;
-    /* A videó magasságához igazítsd */
-}
+    white-space: initial; 
+    max-height: 119px; /* A videó magasságához igazítsd */
+  }
+  
 
-.hide-icon {
-    display: none;
-}
 
-.arrow {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 10px;
-    color: #0A606F;
-    cursor: pointer;
-
-}

@@ -66,9 +66,9 @@ export class FbpComponent {
                     }else if(value.field_paragraphs[k].type === 'paragraph--video'){
                       obj.video = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url
                       obj.video_thumbnail = this.baseUrl + value.field_paragraphs[k].field_video.field_thumbnail.field_media_image.uri.url;
-                      console.log(obj.video_thumbnail);
                     }
                     this.content.push(obj);
+                    console.log(this.content);
                                         
                   }
                 }

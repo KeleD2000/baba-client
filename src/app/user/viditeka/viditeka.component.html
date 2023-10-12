@@ -1,13 +1,24 @@
 <div class="container">
   <p class="p_text">Videótéka</p>
   <div class="d-flex justify-content-between">
-    <button type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'napi'}"
+    <button [routerLink]="'/user/napi-ajanlat'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'napi'}"
       (click)="toggleButtonState('napi')">Napi ajánlat</button>
-    <button type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'kedvenc'}"
+    <button [routerLink]="'/user/kedvenc-videok'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'kedvenc'}"
       (click)="toggleButtonState('kedvenc')">Kedvenc videóim</button>
   </div>
   <div>
+    <!--
     <p class="text-left">Válaszd ki, hol tartasz éppen:</p>
+    <ul *ngFor="let cat of objCat; let i = index" [ngClass]="{'active-cat': isCategoryActive(cat)}" (click)="toggleCategory(cat, i)">
+      <li (mouseover)="showCatImage(i)" (mouseout)="hideCatImage()">
+        <span [class.active-icon]="i === activeCategoryIndex"><fa-icon class="icon" [icon]="faCirc"></fa-icon></span> {{ cat.catTitle }}
+      </li>
+    </ul>
+    <div *ngIf="activeCategoryIndex >= 0" id="catImageContainer">
+      <img class="img" [src]="objCat[activeCategoryIndex].photo_url" alt="{{ objCat[activeCategoryIndex].catTitle }}">
+      <span [innerHTML]="objCat[activeCategoryIndex].catDesc"></span>
+    </div>
+  -->
     <ul *ngFor="let cat of objCat; let i = index"  [ngClass]="{'active-cat': isCategoryActive(cat)}" (click)="handleCategoryClick($event)">
       <li (click)="toggleCategory(cat, i);">
         <span [class.active-icon]="i === activeCategoryIndex"><fa-icon class="icon" [icon]="faCirc"></fa-icon></span> {{
@@ -17,7 +28,8 @@
           <span [innerHTML]="cat.catDesc"></span>
         </div>
       </li>
-    </ul>
+    </ul>    
+
   </div>
   <div class="text-center">
     <button type="button" class="btn btn-primary m-4" (click)="loadRecommendedVideos()">Kérem az ajánlott
@@ -38,15 +50,12 @@
         </div>
         <div class="lesson-info">
           <h3>{{ vid.vidTitle }}</h3>
-          <div [innerHTML]="vid.vidDesc" [class.truncated-text]="!vid.isTextOverflow"></div>
-          <fa-icon style="    
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding-top: 10px;
-          color:#0A606F;
-          " 
-          [icon]="isArrow ? faArrowUp : faArrowD" (click)="toggleTextOverflow(vid)"></fa-icon>
+          <div [innerHTML]="vid.vidDesc" [class.truncated-text]="vid.isTextOverflow"></div>
+          <fa-icon 
+          class="arrow"
+          [icon]="isArrow ? faArrowUp : faArrowD" 
+          (click)="toggleTextOverflow(vid)"
+          ></fa-icon>          
         </div>
         <button type="button" class="like-button" (click)="toggleLike()">
           <fa-icon style="display: flex;" [icon]="isLiked ? faSolidHeart : faRegularHeart"></fa-icon>

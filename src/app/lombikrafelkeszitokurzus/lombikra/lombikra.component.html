@@ -25,7 +25,8 @@
     <ng-container *ngIf="content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
         <div [innerHTML]="content.text_condensed" [ngClass]="{'text-con' : isTextCondensed}"></div>
     </ng-container>
-    <ng-container *ngIf="content.text_highlighted_content && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
+    <ng-container
+        *ngIf="content.text_highlighted_content && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
         <div [innerHTML]="content.text_highlighted_content" [ngClass]="{'bgGreen' : isTextBackgroundGreen}"></div>
     </ng-container>
     <ng-container *ngIf="content.video && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content && !content.button_content">

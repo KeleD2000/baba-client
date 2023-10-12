@@ -235,4 +235,15 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/api/videostore/current-videos/` + id, {headers});
   }
 
+  getFavoritesVideos(){
+    return this.http.get(`${this.baseUrl}/api/favorite-videos`);
+  }
+
+  likedVideos(data: any){
+    const headers =  new HttpHeaders({
+      "Content-type" : 'application/json'
+    });
+    return this.http.post(`${this.baseUrl}/api/flag-entity`, data, {headers})
+  }
+
 }

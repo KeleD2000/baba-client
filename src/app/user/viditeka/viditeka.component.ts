@@ -5,12 +5,14 @@ import {faHeart as faSolidHeart, faArrowAltCircleDown, faArrowAltCircleUp } from
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 
+
 @Component({
   selector: 'app-viditeka',
   templateUrl: './viditeka.component.html',
   styleUrls: ['./viditeka.component.css']
 })
 export class ViditekaComponent {
+  favoriteVideos: any[] = [];
   objCat: any[] = [];
   objVid: any[] = [];
   selectedCategories: any[] = [];
@@ -21,13 +23,34 @@ export class ViditekaComponent {
   faRegularHeart = faRegularHeart;
   faSolidHeart = faSolidHeart;
   baseUrl: string = "https://baba.jrdatashu.win";
-  isLiked = false;
-  isArrow = false;
+  isLiked: boolean = false;
+  isArrow: boolean = false;
+  isArrowVisible: boolean = false;
   isButtonActive: string = 'napi';
+  likedData: any = {};
+
 
   constructor(private fooldalService: FooldalService, private htmlConvert: HtmlconvertService, private sanitizer: DomSanitizer) {
 
   }
+
+  /*
+  showCatImage(index: number) {
+    this.activeCategoryIndex = index;
+    const catImageContainer = document.getElementById('catImageContainer');
+    if (catImageContainer) {
+      catImageContainer.style.display = 'block';
+    }
+  }
+  
+  hideCatImage() {
+    this.activeCategoryIndex = -1;
+    const catImageContainer = document.getElementById('catImageContainer');
+    if (catImageContainer) {
+      catImageContainer.style.display = 'none';
+    }
+  }
+  */
 
   handleCategoryClick(event: Event) {
     const target = event.target as HTMLElement;
@@ -38,14 +61,39 @@ export class ViditekaComponent {
     }
   }
   
-  
   toggleTextOverflow(vid: any) {
     vid.isTextOverflow = !vid.isTextOverflow;
     this.isArrow = !this.isArrow;
-  }  
-
+  
+    if (vid.isTextOverflow) {
+      this.isArrowVisible = true;
+    } else {
+      this.isArrowVisible = false;
+    }
+  }
+  
   toggleLike() {
     this.isLiked = !this.isLiked;
+    this.fooldalService.getFavoritesVideos().subscribe( v => {
+      this.favoriteVideos.push(v);
+      for(let i in this.favoriteVideos){
+        console.log(this.favoriteVideos[i]);
+        if(this.favoriteVideos[i].length <= 10){
+          this.fooldalService.likedVideos(this.likedData).subscribe( liked => {
+            console.log(this.likedData);
+            console.log(liked);
+          });
+        }else{
+          console.log("Error");
+        }
+      }
+
+    });
+    /*
+    this.fooldalService.likedVideos(this.likedData).subscribe( liked => {
+      console.log(this.likedData);
+      console.log(liked);
+    })*/
   }
 
   toggleButtonState(buttonId: any) {
@@ -82,44 +130,54 @@ export class ViditekaComponent {
   hideImage(cat: any) {
     cat.isImageVisible = false;
   }
+
   loadRecommendedVideos() {
     if (this.activeCategoryIndex >= 0) {
       const selectedCategory = this.objCat[this.activeCategoryIndex];
       this.fooldalService.getCurrentVideos(selectedCategory.tid).subscribe((v) => {
-        console.log(v);
-        const objVid = {
-          vidTitle: '',
-          vidDesc: '' as SafeHtml,
-          video_url: '',
-          video_url_360: '',
-          video_url_720: '',
-          video_url_1080: '',
-          thumbnail: '',
-          isTextOverflow: false,
-          showArrow: false
-        }
-        for (const [key, value] of Object.entries(v)) {
-          objVid.vidTitle = value.videostore.title[0].value;
-          let desc = value.videostore.body[0].value;
-          objVid.vidDesc = this.sanitizer.bypassSecurityTrustHtml(desc);
-          objVid.video_url = this.baseUrl + value.video_url;
-          objVid.video_url_360 = this.baseUrl + value.video_url_360p;
-          objVid.video_url_720 = this.baseUrl + value.video_url_720p;
-          objVid.video_url_1080 = this.baseUrl + value.video_url_1080p;
-          //objVid.thumbnail = this.baseUrl + value.thumbnail;
+  
+        // Ellenőrizzük, hogy van-e videó az adott kategóriához
+        if (v && Object.keys(v).length > 0) {
+          const objVid = {
+            vidTitle: '',
+            vidDesc: '' as SafeHtml,
+            video_url: '',
+            video_url_360: '',
+            video_url_720: '',
+            video_url_1080: '',
+            thumbnail: '',
+            mid: 0,
+            isTextOverflow: true,
+            showArrow: false
+          }
+          for (const [key, value] of Object.entries(v)) {
+            objVid.vidTitle = value.videostore.title[0].value;
+            let desc = value.videostore.body[0].value;
+            objVid.vidDesc = this.sanitizer.bypassSecurityTrustHtml(desc);
+            objVid.video_url = this.baseUrl + value.video_url;
+            objVid.video_url_360 = this.baseUrl + value.video_url_360p;
+            objVid.video_url_720 = this.baseUrl + value.video_url_720p;
+            objVid.video_url_1080 = this.baseUrl + value.video_url_1080p;
+            objVid.mid = value.media.mid[0].value;
+            //objVid.thumbnail = this.baseUrl + value.thumbnail;
 
-        }
+          }
+  
+          this.objVid = [objVid]; // Frissítsd az objVid tömböt
+  
+          this.likedData = {
+            "entity_type": "media",
+            "entity_id": objVid.mid,
+            "flag_id": "favorite_videos"
 
-        if (this.objVid = []) {
-          this.objVid.push(objVid);
+          }
+          console.log(this.objVid);
         } else {
-          this.objVid = [];
+          this.objVid = []; // Nincs videó az adott kategóriához, üres tömb
         }
-        console.log(this.objVid);
       });
     }
   }
-
 
   ngOnInit() {
     this.fooldalService.getCatNames().subscribe(cat => {
@@ -134,7 +192,6 @@ export class ViditekaComponent {
               tid: 0
             };
             obj.photo_id = value[i].relationships.field_category_image.data.id;
-            console.log(obj.photo_id);
             if (value[i].attributes.description != null) {
               let desc = value[i].attributes.description.value;
               obj.catDesc = this.sanitizer.bypassSecurityTrustHtml(desc);
@@ -145,7 +202,6 @@ export class ViditekaComponent {
             this.fooldalService.catPhotos(obj.photo_id).subscribe(p => {
               for (const [key, value] of Object.entries(p)) {
                 if (value.attributes != undefined) {
-                  console.log(this.baseUrl + value.attributes.uri.url);
                   obj.photo_url = this.baseUrl + value.attributes.uri.url;
                 }
               }
@@ -153,8 +209,7 @@ export class ViditekaComponent {
           }
         }
       }
-      console.log(this.objCat);
     });
+    
   }
-
 }

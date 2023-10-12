@@ -1,0 +1,35 @@
+<div class="container">
+  <p class="p_text">Videótéka</p>
+  <div class="d-flex justify-content-between">
+    <button [routerLink]="'/user/napi-ajanlat'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'napi'}"
+      (click)="toggleButtonState('napi')">Napi ajánlat</button>
+    <button [routerLink]="'/user/kedvenc-videok'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'kedvenc'}"
+      (click)="toggleButtonState('kedvenc')">Kedvenc videóim</button>
+  </div>
+  <div class="lessons">
+    <div class="lesson" *ngFor="let fav of favoriteVideos; let k = index">
+      <div class="lesson-container">
+        <div class="video-container">
+          <ng-container *ngIf="fav.video_url && !fav.y_video_url">
+            <div>
+              <app-video-player style="padding-top: 15px;"
+                [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: fav.thumbnail, sources: [{ src: fav.video_url, type: 'video/mp4', label: 'Basic' }, { src: fav.video_url_1080p, type: 'video/mp4', label: '1080p' },{ src: fav.video_url_720p, type: 'video/mp4', label: '720p' }, { src: fav.video_url_360p, type: 'video/mp4', label: '360p' }]}">
+              </app-video-player>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="fav.y_video_url && !fav.video_url">
+            <div class="youtube-video">
+              <iframe [src]="fav.y_video_url | kedvenc : 'resourceUrl'" frameborder="0" class="iframe-size"></iframe>
+            </div>
+          </ng-container>
+        </div>
+        <div class="lesson-info">
+          <h3>{{ fav.name }}</h3>        
+        </div>
+        <button type="button" class="like-button" (click)="toggleLike(fav)">
+          <fa-icon style="display: flex;" [icon]="!fav.isLiked ? faSolidHeart : faRegularHeart"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
