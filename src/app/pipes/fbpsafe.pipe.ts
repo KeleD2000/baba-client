@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeScript, SafeStyle, SafeUrl } from '@angular/platform-browser';
 
 @Pipe({
-  name: 'kurzussafe'
+  name: 'fbpsafe'
 })
-export class KurzussafePipe implements PipeTransform {
+export class FbpsafePipe implements PipeTransform {
   constructor(protected _sanitizer: DomSanitizer) {
   }
   transform(value: string, type: string): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
@@ -23,4 +23,5 @@ export class KurzussafePipe implements PipeTransform {
         return this._sanitizer.bypassSecurityTrustHtml(value);
     }
   }
+
 }

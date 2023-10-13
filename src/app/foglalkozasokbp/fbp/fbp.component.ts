@@ -17,29 +17,35 @@ export class FbpComponent {
 
   constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService, private sanitizer: DomSanitizer) { }
 
-  ngOnInit(){
+  extractVideoId(url: string): string | null {
+    const regex = /[?&]v=([^&#]*)/i;
+    const match = regex.exec(url);
+    return match ? match[1] : null;
+  }
+
+  ngOnInit() {
     this.fooldalService.getId().subscribe((i) => {
-      for(const [key, value] of Object.entries(i)){
-        if(Array.isArray(value)){
-          for(const [k,v] of Object.entries(value)){
-            if(v.title === 'Foglalkozások teremben'){
+      for (const [key, value] of Object.entries(i)) {
+        if (Array.isArray(value)) {
+          for (const [k, v] of Object.entries(value)) {
+            if (v.title === 'Foglalkozások teremben') {
               this.fooldalService.getFooldal(v.id).subscribe((page) => {
-                for(const [key, value] of Object.entries(page)){
-                  for(var k in value.field_paragraphs){
+                for (const [key, value] of Object.entries(page)) {
+                  for (var k in value.field_paragraphs) {
                     console.log(value.field_paragraphs);
-                    const obj = {content: '' as SafeHtml, img_url:"", img_layout: "", video_url:"",text_condensed: "" as SafeHtml, button_content: "" as SafeHtml, text_highlighted_content: "" as SafeHtml, video: "", video_thumbnail: ""}
-                    if(value.field_paragraphs[k].type === 'paragraph--image_full'){
+                    const obj = { content: '' as SafeHtml, youtube_video: "", img_url: "", img_layout: "", video_url: "", text_condensed: "" as SafeHtml, button_content: "" as SafeHtml, text_highlighted_content: "" as SafeHtml, video: "", video_thumbnail: "" }
+                    if (value.field_paragraphs[k].type === 'paragraph--image_full') {
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
-                    }else if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
+                    } else if (value.field_paragraphs[k].type === 'paragraph--image_text_blue') {
                       obj.content = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_inline.field_media_image.uri.url;
                       obj.img_layout = value.field_paragraphs[k].field_layout;
-                    }else if(value.field_paragraphs[k].type === 'paragraph--text'){
-                      if(value.field_paragraphs[k].field_content !== undefined){
+                    } else if (value.field_paragraphs[k].type === 'paragraph--text') {
+                      if (value.field_paragraphs[k].field_content !== undefined) {
                         const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
                         obj.content = paragraph_value;
                       }
-                    }else if(value.field_paragraphs[k].type === 'paragraph--video'){
+                    } else if (value.field_paragraphs[k].type === 'paragraph--video') {
                       //obj.video_url = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url;
                     } else if (value.field_paragraphs[k].type === 'paragraph--text_condensed') {
                       const paragraph_condensed = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
@@ -63,13 +69,16 @@ export class FbpComponent {
                       } else {
                         this.isTextBackgroundGreen = false;
                       }
-                    }else if(value.field_paragraphs[k].type === 'paragraph--video'){
+                    } else if (value.field_paragraphs[k].type === 'paragraph--video') {
                       obj.video = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url
                       obj.video_thumbnail = this.baseUrl + value.field_paragraphs[k].field_video.field_thumbnail.field_media_image.uri.url;
+                    }else if(value.field_paragraphs[k].type === 'paragraph--youtube_video'){
+                      const videoId = this.extractVideoId(value.field_paragraphs[k].field_youtube_video.field_media_oembed_video);
+                      obj.youtube_video = "https://www.youtube.com/embed/"+ videoId
                     }
                     this.content.push(obj);
                     console.log(this.content);
-                                        
+
                   }
                 }
               });

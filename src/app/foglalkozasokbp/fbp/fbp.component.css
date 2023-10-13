@@ -79,3 +79,8 @@
       width: 100% !important;
   }
 }
+
+.iframe-size{
+  width: 540px;
+  height: 320px;
+}

@@ -1,48 +1,67 @@
-<div class="text-center">
-    <p class="p-pos">Elérhető kurzusaink:</p>
-</div>
-<div class="container text-center" *ngFor="let cT of courseTitle">
-    <ng-container>
-        <div class="mb-1">{{cT}}</div>
-    </ng-container>
-</div>
-<div id="kurzusaim">
-    <h3>Kurzusaim</h3>
-    <div class="container" *ngFor="let coursee of courseDetails">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mb-3">
-                    <div class="row no-gutters">
-                        <div class="col-md-2">
-                            <img src="https://via.placeholder.com/150" class="card-img" alt="Image">
-                        </div>
-                        <div class="col-md-10">
-                            <div class="card-body">
-                                <p class="card-text">Hozzáférés vége: dátum</p>
+<div class="container">
+    <div class="text-center">
+        <p class="p-pos">Elérhető kurzusaink:</p>
+    </div>
+    <div id="kurzusaim" *ngIf="loggedUser">
+        <h3>Kurzusaim</h3>
+        <div class="container" *ngFor="let coursee of courseDetails">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-2">
+                                <img src="https://via.placeholder.com/150" class="card-img" alt="Image">
                             </div>
-                            <button class="btn bcolor mt-3"  [routerLink]="'/kurzusok/' + coursee.title">Irány a kurzus</button>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    <p class="card-text">Hozzáférés vége: dátum</p>
+                                </div>
+                                <button class="btn bcolor mt-3" [routerLink]="'/kurzusok/' + coursee.title">Irány a
+                                    kurzus</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div id="erdekel">
-    <h3 class="mt-5">Ez is érdekelhet</h3>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mb-3">
-                    <div class="row no-gutters">
-                        <div class="col-md-2">
-                            <img src="https://via.placeholder.com/150" class="card-img" alt="Image">
+    <div id="erdekel" *ngIf="loggedUser">
+        <h3 class="mt-5">Ez is érdekelhet</h3>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-2">
+                                <img src="https://via.placeholder.com/150" class="card-img" alt="Image">
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    <p class="card-text">leírás</p>
+                                    <p class="card-text">ár</p>
+                                    <p class="card-text">kedvezményes ár</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-10">
-                            <div class="card-body">
-                                <p class="card-text">leírás</p>
-                                <p class="card-text">ár</p>
-                                <p class="card-text">kedvezményes ár</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!loggedUser">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" *ngFor="let c of course">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-2">
+                                <img src="https://via.placeholder.com/150" class="card-img" alt="Image">
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    <p class="card-text">{{ c.title }}</p>
+                                </div>
+                                <button class="btn bcolor mt-3">Előfizetés</button>
                             </div>
                         </div>
                     </div>

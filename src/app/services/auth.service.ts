@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { Register } from '../models/Register';
 import { Address } from '../models/Address';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import { Address } from '../models/Address';
 export class AuthService {
   private baseUrl = "https://baba.jrdatashu.win";
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private userService: UserService) {
 
   }
 
@@ -43,7 +44,7 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/user/register?_format=json`, userAddress, httpOptions);
   }
 
-  isAuthenticated() {
+  isAuthenticated(){
     const login = localStorage.getItem('login');
     return login;
   }

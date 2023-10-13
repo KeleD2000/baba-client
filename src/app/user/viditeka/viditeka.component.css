@@ -131,6 +131,12 @@ li:hover .cat-image span {
     color: #F54D9F;
 }
 
+@media screen and (max-width: 991px){
+    .like-button{
+        top: 110px  !important;
+    }
+}
+
 .truncated-text {
     overflow: hidden;
     text-overflow: ellipsis;

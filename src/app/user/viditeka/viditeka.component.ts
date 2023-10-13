@@ -34,7 +34,7 @@ export class ViditekaComponent {
 
   }
 
-  /*
+  
   showCatImage(index: number) {
     this.activeCategoryIndex = index;
     const catImageContainer = document.getElementById('catImageContainer');
@@ -50,7 +50,7 @@ export class ViditekaComponent {
       catImageContainer.style.display = 'none';
     }
   }
-  */
+  
 
   handleCategoryClick(event: Event) {
     const target = event.target as HTMLElement;
@@ -151,6 +151,7 @@ export class ViditekaComponent {
             showArrow: false
           }
           for (const [key, value] of Object.entries(v)) {
+            console.log(value);
             objVid.vidTitle = value.videostore.title[0].value;
             let desc = value.videostore.body[0].value;
             objVid.vidDesc = this.sanitizer.bypassSecurityTrustHtml(desc);
