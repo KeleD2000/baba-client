@@ -44,23 +44,35 @@ export class SigninComponent {
           console.log(loggedIn);
           this.userService.setLoggedInUser(loggedIn);
           localStorage.setItem("login", JSON.stringify(loggedIn));
-          window.location.reload();
+          // Ha a bejelentkezés sikeres, akkor irányítsd át a felhasználót az "elofizetes" oldalra.
+          if (this.authService.isAdmin()) {
+            this.route.navigateByUrl('/admin/videotar');
+          } else {
+            this.route.navigateByUrl('/elofizetes');
+          }
         }
-      },error =>{
+      }, error => {
         this.showLoginAlert = true;
+        console.log(error.error.message);
         this.loginError = error.error.message;
         setTimeout(() => {
           this.showLoginAlert = false;
         }, 3000);
       });
+    } else {
+      if (this.loginForm.get('username')?.hasError('required')) {
+        this.loginError = 'Felhasználó név megadása kötelező.';
+      } else if (this.loginForm.get('password')?.hasError('required')) {
+        this.loginError = 'Jelszó megadása kötelező.';
+      }
+  
+      this.showLoginAlert = true;
+      setTimeout(() => {
+        this.showLoginAlert = false;
+      }, 3000);
     }
-    if(this.authService.isAdmin()){
-      this.route.navigateByUrl('/admin/videotar');
-    }else{
-      this.route.navigateByUrl('/elofizetes');
-    }
-
   }
+  
 
 
 }

@@ -93,6 +93,7 @@ li:hover .cat-image span {
 
 .lesson-info {
     flex: 2;
+    cursor: pointer;
     /* A lecke címe és leírása terjedjen ki a rendelkezésre álló helyre */
 }
 
@@ -137,24 +138,16 @@ li:hover .cat-image span {
     }
 }
 
-.truncated-text {
+.read-more-button{
+    color:#F54D9F;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+
+  .truncated-text {
+    max-height: 115px; /* A videó magasságához igazítsd */
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: initial;
-    max-height: 119px;
-    /* A videó magasságához igazítsd */
-}
-
-.hide-icon {
-    display: none;
-}
-
-.arrow {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 10px;
-    color: #0A606F;
-    cursor: pointer;
-
-}
+    white-space: normal;
+  }

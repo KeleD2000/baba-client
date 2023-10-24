@@ -8,7 +8,7 @@ import { KedvencVideokComponent } from './kedvenc-videok/kedvenc-videok.componen
 
 
 const routes: Routes = [
-    {path: 'napi-ajanlat' , component: ViditekaComponent},
+    {path: 'videotar_elofizetett' , component: ViditekaComponent},
     {path: 'kedvenc-videok', component: KedvencVideokComponent}
 
 ];

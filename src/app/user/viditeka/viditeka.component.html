@@ -1,7 +1,7 @@
 <div class="container">
   <p class="p_text">Videótéka</p>
   <div class="d-flex justify-content-between">
-    <button [routerLink]="'/user/napi-ajanlat'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'napi'}"
+    <button [routerLink]="'/user/videotar_elofizetett'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'napi'}"
       (click)="toggleButtonState('napi')">Napi ajánlat</button>
     <button [routerLink]="'/user/kedvenc-videok'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'kedvenc'}"
       (click)="toggleButtonState('kedvenc')">Kedvenc videóim</button>
@@ -15,8 +15,10 @@
     </ul>
     <div *ngIf="activeCategoryIndex >= 0" id="catImageContainer">
       <img class="img" [src]="objCat[activeCategoryIndex].photo_url" alt="{{ objCat[activeCategoryIndex].catTitle }}">
-      <span [innerHTML]="objCat[activeCategoryIndex].catDesc"></span>
-    </div>
+      <span >{{partialCatDesc}}</span>
+      <span [innerHTML]="showFullCatDesc ? objCat[activeCategoryIndex].catDesc : partialCatDesc"></span>
+      <button type="button" class="read-more-button" (click)="toggleShowFullCatDesc()">Tovább</button>
+    </div>       
    <!--
     <ul *ngFor="let cat of objCat; let i = index"  [ngClass]="{'active-cat': isCategoryActive(cat)}" (click)="handleCategoryClick($event)">
       <li (click)="toggleCategory(cat, i);">
@@ -49,13 +51,9 @@
         </div>
         <div class="lesson-info">
           <h3>{{ vid.vidTitle }}</h3>
-          <div [innerHTML]="vid.vidDesc" [class.truncated-text]="vid.isTextOverflow"></div>
-          <fa-icon 
-          class="arrow"
-          [icon]="isArrow ? faArrowUp : faArrowD" 
-          (click)="toggleTextOverflow(vid)"
-          ></fa-icon>          
-        </div>
+          <div [innerHTML]="vid.vidDesc" [class.truncated-text]="vid.isTextOverflow"></div>    
+          <p class="read-more-button text-center" *ngIf="isTextOverflowing(vid.vidDesc)" (click)="toggleTextOverflow(vid)">{{ vid.isTextOverflow ? 'TOVÁBB' : 'KEVESEBB' }}</p>
+        </div>       
         <button type="button" class="like-button" (click)="toggleLike()">
           <fa-icon style="display: flex;" [icon]="isLiked ? faSolidHeart : faRegularHeart"></fa-icon>
         </button>

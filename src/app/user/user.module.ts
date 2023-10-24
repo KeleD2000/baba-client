@@ -6,18 +6,21 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedModule } from '../shared/shared.module';
 import { KedvencVideokComponent } from './kedvenc-videok/kedvenc-videok.component';
 import { KedvencPipe } from '../pipes/kedvenc.pipe';
+import { TruncatedPipe } from '../pipes/truncated.pipe';
 
 @NgModule({
   declarations: [
     ViditekaComponent,
     KedvencVideokComponent,
-    KedvencPipe
+    KedvencPipe,
+    TruncatedPipe
   ],
   imports: [
     CommonModule,
     UserRoutingModule,
     FontAwesomeModule,
     SharedModule
+
   ]
 })
 export class UserModule { }

@@ -37,7 +37,7 @@ const routes: Routes = [
   {path: 'elofizetes', loadChildren: () => ElofizetesModule},
   {path: 'kurzusok/:title', loadChildren: () => KurzusModule},
   {path: ':urlParam', component: KurzusoldalComponent},
-  {path: 'user', loadChildren:() => UserModule},
+  {path: 'user', loadChildren:() => import('./user/user.module').then(u =>u.UserModule)},
   {path: 'not-found', component: NotFoundComponent},
   {path: 'refresh', component: RefreshComponent},
   {path: '**', component: RefreshComponent}

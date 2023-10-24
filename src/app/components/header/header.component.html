@@ -54,15 +54,14 @@
           <a class="navlink active-login" style="font-size: 14px;" routerLink="/signin"
             *ngIf="!loggedUser">Bejelentkezés</a>
           <label class="dropdown" *ngIf="loggedUser">
-            <div class="dd-button navlink" style="font-size: 14px;">
+            <div class="dd-button navlink">
               {{loggedUser.current_user.name}}
             </div>
             <input type="checkbox" class="dd-input" id="test">
             <ul class="dd-menu">
-              <li *ngIf="!isAdmin" routerLink="/elofizetes">Előfizetések</li>
               <li *ngIf="isAdmin" routerLink="/admin/videotar">Videotéka</li>
-              <li *ngIf="!isAdmin" routerLink="/user/viditeka">Videotéka</li>
-              <li *ngFor="let enrolledC of enrolledCourse">{{enrolledC}}</li>
+              <li *ngIf="!isAdmin" routerLink="/user/videotar_elofizetett">Videotéka</li>
+              <li *ngFor="let enrolledC of enrolledCourse" [routerLink]="'/kurzusok/' + enrolledC.title">{{enrolledC.title}}</li>
               <li (click)="Logout()">Kijelentkezés</li>
             </ul>
           </label>

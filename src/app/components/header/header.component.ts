@@ -14,7 +14,7 @@ export class HeaderComponent {
   @Input() loggedUser: any;
   @Input() showImage?: boolean;
   @Input() isAdmin?: boolean;
-  enrolledCourse: string[] = [];
+  enrolledCourse: any[] = [];
 
   constructor(
     private router: Router,
@@ -46,14 +46,27 @@ export class HeaderComponent {
   ngOnInit(){
     this.fooldalService.enrolledUser().subscribe((t) => {
       for(const [key, value] of Object.entries(t)){
+        const obj = {
+          title : "",
+          cid: 0
+        }
         for(let c in value){
           for(let v in value[c]){
             if(v === 'title'){
-              this.enrolledCourse.push(value[c][v][0].value);
+              obj.title = value[c][v][0].value;
             }
+            if(v === 'cid'){
+              obj.cid = value[c][v][0].value;
+            }
+            
           }
         }
+        if(obj.title !== ''){
+          this.enrolledCourse.push(obj)
+        }
+        
       }
+
     });
   }
 }

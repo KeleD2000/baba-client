@@ -67,6 +67,17 @@
     /* Például 14px méretű betűk a leírásnál */
 }
 
+.truncated-text {
+    max-height: 118px;
+    /* A videó magasságához igazítsd */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
 
-
-
+.read-more-button{
+    color:#F54D9F;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-align: right;
+  }

@@ -26,6 +26,22 @@ export class KurzusComponent {
   completed: any[] = [];
   lessonColor: string = 'darkgray';
   private isFirstFalseAfterTrue: boolean = true;
+  
+
+  toggleTextOverflow(lesson: any) {
+    lesson.isTextOverflow = !lesson.isTextOverflow;
+  
+  }
+  
+  isTextOverflowing(lesson: any) {
+    const textContainer = document.createElement('div');
+    textContainer.innerHTML = lesson.lessons_desc;
+    document.body.appendChild(textContainer);
+    const isOverflowing = textContainer.scrollHeight > 118;
+    document.body.removeChild(textContainer);
+    return isOverflowing;
+  }
+  
 
   getLessonColor(current: boolean): string {
     if (current === true) {
@@ -101,7 +117,8 @@ export class KurzusComponent {
                       video_url_360: '',
                       video_url_720: '',
                       video_url_1080: '',
-                      thumbnail: ''
+                      thumbnail: '',
+                      isTextOverflow: true,
                     }
                     lesson_obj.lessons_title = v[i].lessons[j].lesson.field_label[0].value;
                     const field_c = this.htmlconvertService.convertToHtml(v[i].lessons[j].lesson.field_content[0].value);
@@ -141,14 +158,15 @@ export class KurzusComponent {
                   //console.log(this.block);
                 }
                 this.block.push(obj);
+                
               }
+              console.log(this.block);
               //console.log(this.block);
               this.block.forEach(element => {
                 //console.log(element.lessons);
                 for(let i in element.lessons){
                   
                   this.completed.push(element.lessons[i].completed);
-                  console.log(this.completed);
                 }
               });
             }

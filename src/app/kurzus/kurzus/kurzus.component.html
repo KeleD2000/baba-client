@@ -22,10 +22,11 @@
                   class="iframe-size"></iframe>
               </div>
             </div>
-            <div class="lesson-info">
+            <div class="lesson-info" #lessonInfo>
               <h3 [style.color]="getLessonColor(lesson.completed)">{{ lesson.lessons_title }}</h3>
-              <div [innerHTML]="lesson.lessons_desc"></div>
-            </div>
+              <div [innerHTML]="lesson.lessons_desc" [class.truncated-text]="lesson.isTextOverflow"></div>
+              <p class="read-more-button text-right" *ngIf="isTextOverflowing(lesson)" (click)="toggleTextOverflow(lesson)">{{ lesson.isTextOverflow ? 'TOVÁBB' : 'KEVESEBB' }}</p>
+            </div>                                  
           </div>
         </div>
       </div>

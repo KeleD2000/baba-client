@@ -16,3 +16,7 @@
     font-family: 'Roboto Condensed', sans-serif;
     color: #0A606F;
 }
+
+.card-body{
+    margin-bottom: 50px;
+}

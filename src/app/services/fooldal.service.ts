@@ -243,7 +243,11 @@ export class FooldalService {
     const headers =  new HttpHeaders({
       "Content-type" : 'application/json'
     });
-    return this.http.post(`${this.baseUrl}/api/flag-entity`, data, {headers})
+    return this.http.post(`${this.baseUrl}/api/flag-entity`, data, {headers});
+  }
+
+  enrolledCourseLicens(){
+    return this.http.get(`${this.baseUrl}/jsonapi/licenses/role`);
   }
 
 }

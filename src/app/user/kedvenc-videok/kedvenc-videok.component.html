@@ -1,7 +1,7 @@
 <div class="container">
   <p class="p_text">Videótéka</p>
   <div class="d-flex justify-content-between">
-    <button [routerLink]="'/user/napi-ajanlat'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'napi'}"
+    <button [routerLink]="'/user/videotar_elofizetett'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'napi'}"
       (click)="toggleButtonState('napi')">Napi ajánlat</button>
     <button [routerLink]="'/user/kedvenc-videok'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'kedvenc'}"
       (click)="toggleButtonState('kedvenc')">Kedvenc videóim</button>
