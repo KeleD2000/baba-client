@@ -1,22 +1,45 @@
-.bcolor{
+.bcolor {
     background-color: #E6009F;
     color: white;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
-.card{
-    border-radius: 5px;
-    border: 2px solid #0A606F;
+.card {
+    border: none;
+
 }
 
-.p-pos{
+.p-pos {
     font-size: 24px;
     font-family: 'Roboto Condensed', sans-serif;
-    color: #0A606F;
+    color: #E6009F;
 }
 
-.card-body{
+.card-body {
     margin-bottom: 50px;
+    padding: 5px;
+}
+
+.card-title {
+    color: white;
+    background-color: #0A606F;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+
+}
+
+.card-body:not(:last-child) {
+    border-bottom: 1.5px solid #00F8F2;
+    padding-bottom: 45px;
+}
+
+
+.card-text-name {
+    color: #0A606F;
+    font-size: 18px;
+}
+
+.card-div {
+    width: 80%;
 }

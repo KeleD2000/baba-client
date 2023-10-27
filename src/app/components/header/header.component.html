@@ -59,11 +59,11 @@
             </div>
             <input type="checkbox" class="dd-input" id="test">
             <ul class="dd-menu">
-              <li *ngIf="isAdmin" routerLink="/admin/videotar">Videotéka</li>
-              <li *ngIf="!isAdmin" routerLink="/user/videotar_elofizetett">Videotéka</li>
+              <li *ngIf="isAdmin && subscriber" routerLink="/admin/videotar">Videotéka</li>
+              <li *ngIf="!isAdmin && subscriber" routerLink="/user/videotar_elofizetett">Videotéka</li>
               <li *ngFor="let enrolledC of enrolledCourse" [routerLink]="'/kurzusok/' + enrolledC.title">{{enrolledC.title}}</li>
               <li (click)="Logout()">Kijelentkezés</li>
-            </ul>
+            </ul>            
           </label>
         </div>
       </div>

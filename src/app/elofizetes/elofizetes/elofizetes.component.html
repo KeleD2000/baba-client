@@ -1,21 +1,42 @@
 <div class="container">
     <div class="text-center">
-        <p class="p-pos">Elérhető kurzusaink:</p>
+        <p class="p-pos">Előfizetés </p>
     </div>
-    <div id="kurzusaim" *ngIf="loggedUser">
-        <h3>Kurzusaim</h3>
+    <div id="kurzusaim" *ngIf="loggedUser && active">
         <div class="container" *ngFor="let coursee of courseDetails">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-3">
-                        <div class="row no-gutters">
-                            <div class="col-md-10">
+                        <div>
+                            <div class="card-div mx-auto">
+                                <p class="card-title p-2">Aktív előfizetéseim</p>
                                 <div class="card-body" *ngFor="let courseexpires of courseDetailsExpires">
-                                    <p class="card-text">{{coursee.title}}</p>
-                                    <p class="card-text">Program elérhetősége: {{courseexpires.end_date}}</p>
+                                    <p class="card-text-name">{{courseexpires.title}}</p>
+                                    <p class="card-text pt-1">Hozzáférés vége: {{courseexpires.end_date}}</p>
+                                    <div class="text-end">
+                                        <button class="btn bcolor mt-3"
+                                            [routerLink]="'/kurzusok/' + coursee.title">Foglalkozások
+                                            <br>megnyitása</button>
+                                    </div>
                                 </div>
-                                <button class="btn bcolor mt-3" [routerLink]="'/kurzusok/' + coursee.title">Irány a
-                                    kurzus</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="kurzusaim" *ngIf="loggedUser && !active">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div>
+                            <div class="card-div mx-auto">
+                                <p class="card-title p-2">Aktív előfizetéseim</p>
+                                <div class="card-body">
+                                    <p class="card-text-name">Jelenleg nincs előfizetésed.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -24,41 +45,25 @@
         </div>
     </div>
     <div id="erdekel" *ngIf="loggedUser">
-        <h3 class="mt-5">Ez is érdekelhet</h3>
         <div class="container" *ngFor="let courseNon of courseNonEnrollmentDetails">
-          <div class="row" *ngIf="courseNonEnrollmentsDetailsExpires.length > 0">
-            <div class="col-md-12">
-              <div class="card mb-3">
-                <div class="row no-gutters">
-                  <div class="col-md-10">
-                    <div class="card-body">
-                      <div *ngFor="let courseNonExpires of courseNonEnrollmentsDetailsExpires">
-                        <p class="card-text">{{ courseNon.title }}</p>
-                        <p class="card-text" [innerHTML]="courseNonExpires.describe"></p>
-                        <p class="card-text">Ár: {{ courseNonExpires.price }}</p>
-                        <p class="card-text">Kedvezméynes ár: {{ courseNonExpires.discount_price }}</p>
-                      </div>
-                      <button class="btn bcolor mt-3">Előfizetés</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-    <div *ngIf="!loggedUser">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12" *ngFor="let c of course">
+            <div class="row" *ngIf="courseNonEnrollmentsDetailsExpires.length > 0">
+                <div class="col-md-12">
                     <div class="card mb-3">
                         <div class="row no-gutters">
-                            <div class="col-md-10">
-                                <div class="card-body">
-                                    <p class="card-text">{{ c.title }}</p>
+                            <div class="card-div mx-auto">
+                                <p class="card-title p-2">Ez is érdekelhet</p>
+                                <div class="card-body"
+                                    *ngFor="let courseNonExpires of courseNonEnrollmentsDetailsExpires">
+                                    <p class="card-text-name">{{ courseNonExpires.title }}</p>
+                                    <p class="card-text" [innerHTML]="courseNonExpires.describe"></p>
+                                    <p *ngIf="courseNonExpires.price" class="card-text">Lista ár: {{ courseNonExpires.price }}</p>
+                                    <p class="card-text">Ár: {{ courseNonExpires.discount_price }}</p>
+                                    <p class="card-text">Előfizetés hossza: {{courseNonExpires.month}}
+                                    </p>
+                                    <div class="text-end">
+                                        <button class="btn bcolor mt-3">Előfizetek</button>
+                                    </div>
                                 </div>
-                                <button class="btn bcolor mt-3">Előfizetés</button>
                             </div>
                         </div>
                     </div>
@@ -66,4 +71,27 @@
             </div>
         </div>
     </div>
-</div>
+    <div *ngIf="!loggedUser">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div>
+                            <div class="card-div mx-auto">
+                                <div class="card-body" *ngFor="let product of products">
+                                    <p class="card-text-name">{{ product.title }}</p>
+                                    <p *ngIf="product.list_price" class="card-text">Lista ár: {{product.list_price}}</p>
+                                    <p class="card-text">Ár: {{product.price}}</p>
+                                    <p class="card-text">Előfizetés hossza: {{product.month}} 
+                                    <div class="text-end">
+                                        <button class="btn bcolor mt-3">Előfizetek</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>

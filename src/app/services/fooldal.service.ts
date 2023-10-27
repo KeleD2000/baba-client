@@ -250,4 +250,15 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/licenses/role`);
   }
 
+  getAllUsers(){
+    const headers = new HttpHeaders({
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+    })
+    return this.http.get(`${this.baseUrl}/jsonapi/user/user`, {headers});
+  }
+
+  getAllProducts(){
+    return this.http.get(`${this.baseUrl}/jsonapi/products/default`);
+  }
+
 }

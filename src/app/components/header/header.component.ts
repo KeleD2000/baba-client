@@ -15,6 +15,7 @@ export class HeaderComponent {
   @Input() showImage?: boolean;
   @Input() isAdmin?: boolean;
   enrolledCourse: any[] = [];
+  subscriber: boolean = false;
 
   constructor(
     private router: Router,
@@ -44,6 +45,53 @@ export class HeaderComponent {
   }
 
   ngOnInit(){
+    this.fooldalService.getAllUsers().subscribe(s => {
+      for (const [key, value] of Object.entries(s)) {
+        if (key === 'data') {
+          for (let i in value) {
+            const user = {
+              name: '',
+              roles: ''
+            };
+            user.name = value[i].attributes.name;
+            for (let j in value[i].relationships) {
+              for (let k in value[i].relationships.roles.data) {
+                if (value[i].relationships.roles.data[k].meta.drupal_internal__target_id) {
+                  user.roles = value[i].relationships.roles.data[k].meta.drupal_internal__target_id;
+                }
+              }
+            }
+            if (localStorage.getItem('login')) {
+              // Olvassa ki a 'login' kulcs alatt tárolt JSON adatot
+              const loginData = JSON.parse(localStorage.getItem('login') || '');
+
+              // Ellenőrizze, hogy az adatok tartalmaznak-e 'name' mezőt
+              if (loginData && loginData.current_user && loginData.current_user.name) {
+                const name = loginData.current_user.name;
+                console.log('Felhasználó neve:', name);
+                console.log(user.name);
+                console.log(user.roles);
+                if (name === user.name) {
+                  if (user.roles === 'subscriber') {
+                    console.log("Név megegyezik és a felhasználó feliratkozó.");
+                    this.subscriber = true;
+                  } else {
+                    console.log("Név megegyezik, de a felhasználó nem feliratkozó.");
+                    this.subscriber = false;
+                  }
+                  break; // Kilépés a ciklusból
+                }
+              } else {
+                //console.log('A login adatok nem tartalmazzák a felhasználó nevét.');
+              }
+            } else {
+              //console.log('A "login" kulcs nem található a localStorage-ban.');
+            }
+          }
+        }
+      }
+    });
+
     this.fooldalService.enrolledUser().subscribe((t) => {
       for(const [key, value] of Object.entries(t)){
         const obj = {
