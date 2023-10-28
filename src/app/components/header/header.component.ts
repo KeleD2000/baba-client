@@ -42,6 +42,7 @@ export class HeaderComponent {
       });
     }
     this.router.navigateByUrl("/fooldal");
+    localStorage.removeItem('product');
   }
 
   ngOnInit(){

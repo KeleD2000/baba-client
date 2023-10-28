@@ -7,9 +7,9 @@
 </div>
 <div>
     <p class="cart-content">Kosár tartalma</p>
-    <div class="mb-2">
-        <span class="course-name">Kurzus neve</span>
-        <span class="course-price">Kurzus ára</span>
+    <div class="mb-2" *ngFor="let product of toPayProduct">
+        <span class="course-name">{{product.title}}</span>
+        <span class="course-price">{{product.price}}</span>
     </div>
 
     <div class="flex-container mb-2">
