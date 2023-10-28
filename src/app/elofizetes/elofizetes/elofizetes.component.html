@@ -45,7 +45,7 @@
         </div>
     </div>
     <div id="erdekel" *ngIf="loggedUser">
-        <div class="container" *ngFor="let courseNon of courseNonEnrollmentDetails">
+        <div class="container">
             <div class="row" *ngIf="courseNonEnrollmentsDetailsExpires.length > 0">
                 <div class="col-md-12">
                     <div class="card mb-3">
@@ -61,7 +61,7 @@
                                     <p class="card-text">Előfizetés hossza: {{courseNonExpires.month}}
                                     </p>
                                     <div class="text-end">
-                                        <button class="btn bcolor mt-3">Előfizetek</button>
+                                        <button class="btn bcolor mt-3" (click)="addCart(courseNonExpires.type, courseNonExpires.type_id)">Előfizetek</button>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                     <p class="card-text">Ár: {{product.price}}</p>
                                     <p class="card-text">Előfizetés hossza: {{product.month}} 
                                     <div class="text-end">
-                                        <button class="btn bcolor mt-3">Előfizetek</button>
+                                        <button routerLink="/fizetes" class="btn bcolor mt-3" (click)="addCart(product.type, product.type_id)">Előfizetek</button>
                                     </div>
                                 </div>
                             </div>

@@ -34,7 +34,7 @@ const routes: Routes = [
   {path: 'rolam', loadChildren: () => RolamModule},
   {path: 'videotar', loadChildren:() => VideotarModule},
   {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [AdminGuard]},
-  {path: 'elofizetes', loadChildren: () => ElofizetesModule},
+  {path: '', loadChildren: () => import('./elofizetes/elofizetes.module').then(e => e.ElofizetesModule)},
   {path: 'kurzusok/:title', loadChildren: () => KurzusModule},
   {path: ':urlParam', component: KurzusoldalComponent},
   {path: 'user', loadChildren:() => import('./user/user.module').then(u =>u.UserModule)},

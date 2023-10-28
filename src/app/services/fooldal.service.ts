@@ -261,4 +261,12 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/products/default`);
   }
 
+  addItemToCart(data: any){
+    const headers = new HttpHeaders({
+      'Accept' : 'application/vnd.api+json',
+      'Content-Type' : 'application/vnd.api+json'
+    });
+    return this.http.post(`${this.baseUrl}/jsonapi/cart/add`, data, {headers});
+  }
+
 }

@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Login } from 'src/app/models/Login';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
@@ -24,7 +24,7 @@ export class SigninComponent {
   loginError?: string;
   showLoginAlert: boolean = false;
 
-  constructor(private authService: AuthService, private route: Router, private userService: UserService) {
+  constructor(private authService: AuthService, private route: Router, private userService: UserService, private activedRoute: ActivatedRoute) {
     this.loginForm = new FormGroup(
       {
         username: new FormControl('', [Validators.required]),
@@ -44,8 +44,11 @@ export class SigninComponent {
           console.log(loggedIn);
           this.userService.setLoggedInUser(loggedIn);
           localStorage.setItem("login", JSON.stringify(loggedIn));
-          // Ha a bejelentkezés sikeres, akkor irányítsd át a felhasználót az "elofizetes" oldalra.
-          if (this.authService.isAdmin()) {
+          console.log(this.activedRoute.snapshot.queryParams['from'])
+          if (this.activedRoute.snapshot.queryParams['from'] === 'elofizetes') {
+            console.log("JÓ?")
+            this.route.navigateByUrl('/fizetes');
+          } else if (this.authService.isAdmin()) {
             this.route.navigateByUrl('/admin/videotar');
           } else {
             this.route.navigateByUrl('/elofizetes');

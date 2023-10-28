@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { FooldalService } from 'src/app/services/fooldal.service';
@@ -22,10 +23,36 @@ export class ElofizetesComponent {
   products: any[] = [];
   private loggedInUserSubscription?: Subscription;
   loggedUser: any;
+  postDataProducts: any = {};
   active: boolean = false;
 
 
-  constructor(private fooldalService: FooldalService, private shared: SharedService, private htmlconvertService: HtmlconvertService, private authService: AuthService) {
+  constructor(private fooldalService: FooldalService, private shared: SharedService, private htmlconvertService: HtmlconvertService, private authService: AuthService, private router: Router) {
+
+  }
+
+  addCart(type: any, id: any){
+    this.postDataProducts = {
+      "data" : [
+        {
+          "type" : type,
+          "id" : id,
+          "meta" : {
+            "quantity" : 1,
+            "combine" : true
+          }
+        }
+      ]
+    }
+    this.fooldalService.addItemToCart(this.postDataProducts).subscribe( p => {
+      console.log(p);
+      if (localStorage.getItem('login')) {
+        this.router.navigate(['/fizetes']);
+      } else {
+        this.router.navigate(['/signin'], { queryParams: { from: 'elofizetes' } });
+
+      }
+    })
 
   }
 
@@ -141,8 +168,14 @@ export class ElofizetesComponent {
               title: '',
               month: '',
               list_price: '',
-              price: ''
+              price: '',
+              type: '',
+              type_id:''
             };
+            if(value[i].variations.length > 0){
+              objProduct.type = value[i].variations[0].type;
+              objProduct.type_id = value[i].variations[0].id;
+            }
 
             for (let j in value[i].variations[0]) {
               const regex = /(.+?) - (\d+ hónap)/;
@@ -199,11 +232,14 @@ export class ElofizetesComponent {
                   describe: '' as SafeHtml,
                   price: '',
                   discount_price: '',
-                  month : ''
+                  month : '',
+                  type: '',
+                  type_id: ''
   
                 };
+                obj.type = value[i].product_variation.product_id.variations[0].type;
+                obj.type_id = value[i].product_variation.product_id.variations[0].id;
                 obj.uuid = value[i].product_variation.product_id.field_course.id;
-                console.log(value[i].product_variation.product_id.variations[0].title);
                   const regex = /(.+?) - (\d+ hónap)/;
                   const founded = value[i].product_variation.product_id.variations[0].title.match(regex);
                   if (founded) {
