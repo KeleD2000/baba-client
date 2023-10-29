@@ -1,8 +1,8 @@
 <div class="wrapper">
     <div class="arrow-steps clearfix">
-        <div class="step current"> <span>Adatok</span> </div>
-        <div class="step"> <span>Összegzés</span> </div>
-        <div class="step"> <span> Végelegesítés</span> </div>
+        <div class="step"> <span>Adatok</span> </div>
+        <div class="step current"> <span>Összegzés</span> </div>
+        <div class="step"> <span> Véglegesítés</span> </div>
     </div>
 </div>
 <div *ngFor="let profile of profileCustomer">
@@ -11,21 +11,24 @@
         <span class="course-name">{{product.title}}</span>
         <span class="course-price">{{product.price}}</span>
     </div>
-
     <div class="flex-container mb-2">
         <span>Kedvezményes kupon</span>
-        <input class="course" type="text">
-        <button class="btn btn-primary">Kupon érvényesítés</button>
+        <span style="margin-left: 140px;">kupon neve</span>
+        <span style="margin-left: 210px;">-15.000Ft</span>
+    </div>
+    <div class="flex-container mb-2">
+        <span style="margin-right: 515px;">Fizetendő</span>
+        <span>Ár</span>
     </div>
     <div class="line p-3"></div>
     <p class="cart-content">Számlázási adatok</p>
     <div class="flex-container mb-3">
         <span style="margin-right: 60px;">Név</span>
-        <input [(ngModel)]="profile.name" type="text"  style="width: 575px;">
+        <input [(ngModel)]="profile.name" type="text" style="width: 575px;">
     </div>
     <div class="flex-container mb-3">
         <span style="margin-right: 59px;">Cím</span>
-        <input [(ngModel)]="profile.country"  type="text">
+        <input [(ngModel)]="profile.country" type="text">
         <input style="width: 375px; margin-left: 10px;" type="text">
     </div>
     <div class="flex-container mb-3">
@@ -38,7 +41,19 @@
         <span style="margin-right: 43px;">E-mail</span>
         <input [(ngModel)]="profile.email" style="width: 575px" type="text">
     </div>
+    <div class="line p-3"></div>
+    <div class="container">
+        <p class="cart-content">Fizetési mód</p>
+        <div class="flex-container m-2">
+            <div class="pink-circle" [ngClass]="{ 'pink-fill': isPinkFill1 }" (click)="toggleColors(1)"></div>
+            <img src="assets/simplepay.png">
+        </div>
+        <div class="flex-container m-2">
+            <div class="pink-circle" [ngClass]="{ 'pink-fill': isPinkFill2 }" (click)="toggleColors(2)"></div>
+            <img src="assets/paypal.png">
+        </div>
+    </div>
     <div class="d-flex justify-content-center">
-        <button routerLink="/osszegzes" class="btn btn-primary m-3 p-2">Összegzés</button>
+        <button class="btn btn-primary m-3">Fizetés</button>
     </div>
 </div>

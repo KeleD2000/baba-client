@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FooldalService } from 'src/app/services/fooldal.service';
 
 @Component({
-  selector: 'app-fizetes',
-  templateUrl: './fizetes.component.html',
-  styleUrls: ['./fizetes.component.css']
+  selector: 'app-sikertelen-kurzus',
+  templateUrl: './sikertelen-kurzus.component.html',
+  styleUrls: ['./sikertelen-kurzus.component.css']
 })
-export class FizetesComponent {
+export class SikertelenKurzusComponent {
   toPayProduct: any[] = [];
   profileCustomer: any[] = [];
 
@@ -81,5 +81,6 @@ export class FizetesComponent {
     });
     
   }
+
 
 }

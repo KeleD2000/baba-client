@@ -4,13 +4,19 @@ import { ElofizetesComponent } from './elofizetes/elofizetes.component';
 import { ElofizetesRoutingModule } from './elofizetes-routing.module';
 import { FizetesComponent } from './fizetes/fizetes.component';
 import { FormsModule } from '@angular/forms';
+import { OsszegzesComponent } from './osszegzes/osszegzes.component';
+import { SikeresKurzusComponent } from './sikeres-kurzus/sikeres-kurzus.component';
+import { SikertelenKurzusComponent } from './sikertelen-kurzus/sikertelen-kurzus.component';
 
 
 
 @NgModule({
   declarations: [
     ElofizetesComponent,
-    FizetesComponent
+    FizetesComponent,
+    OsszegzesComponent,
+    SikeresKurzusComponent,
+    SikertelenKurzusComponent
   ],
   imports: [
     CommonModule,

@@ -2,15 +2,28 @@ import { Component } from '@angular/core';
 import { FooldalService } from 'src/app/services/fooldal.service';
 
 @Component({
-  selector: 'app-fizetes',
-  templateUrl: './fizetes.component.html',
-  styleUrls: ['./fizetes.component.css']
+  selector: 'app-osszegzes',
+  templateUrl: './osszegzes.component.html',
+  styleUrls: ['./osszegzes.component.css']
 })
-export class FizetesComponent {
+export class OsszegzesComponent {
   toPayProduct: any[] = [];
   profileCustomer: any[] = [];
+  isPinkFill1: boolean = false;
+  isPinkFill2: boolean = false;
 
   constructor(private fooldalService: FooldalService) { }
+
+  toggleColors(circleNumber: number) {
+    if (circleNumber === 1) {
+        this.isPinkFill1 = true;
+        this.isPinkFill2 = false;
+    } else if (circleNumber === 2) {
+        this.isPinkFill2 = true;
+        this.isPinkFill1 = false;
+    }
+}
+  
 
   ngOnInit() {
     const obj = {
