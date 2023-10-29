@@ -69,15 +69,10 @@ export class HeaderComponent {
               // Ellenőrizze, hogy az adatok tartalmaznak-e 'name' mezőt
               if (loginData && loginData.current_user && loginData.current_user.name) {
                 const name = loginData.current_user.name;
-                console.log('Felhasználó neve:', name);
-                console.log(user.name);
-                console.log(user.roles);
                 if (name === user.name) {
                   if (user.roles === 'subscriber') {
-                    console.log("Név megegyezik és a felhasználó feliratkozó.");
                     this.subscriber = true;
                   } else {
-                    console.log("Név megegyezik, de a felhasználó nem feliratkozó.");
                     this.subscriber = false;
                   }
                   break; // Kilépés a ciklusból

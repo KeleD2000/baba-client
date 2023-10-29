@@ -269,4 +269,8 @@ export class FooldalService {
     return this.http.post(`${this.baseUrl}/jsonapi/cart/add`, data, {headers});
   }
 
+  getProfileCustomer(){
+    return this.http.get(`${this.baseUrl}/jsonapi/profile/customer`);
+  }
+
 }

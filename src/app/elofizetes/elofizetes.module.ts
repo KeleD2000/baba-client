@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ElofizetesComponent } from './elofizetes/elofizetes.component';
 import { ElofizetesRoutingModule } from './elofizetes-routing.module';
 import { FizetesComponent } from './fizetes/fizetes.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -13,7 +14,8 @@ import { FizetesComponent } from './fizetes/fizetes.component';
   ],
   imports: [
     CommonModule,
-    ElofizetesRoutingModule
+    ElofizetesRoutingModule,
+    FormsModule
   ]
 })
 export class ElofizetesModule { }
