@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CuoponIdService } from 'src/app/services/cuopon-id.service';
 import { FooldalService } from 'src/app/services/fooldal.service';
 
 @Component({
@@ -9,8 +10,10 @@ import { FooldalService } from 'src/app/services/fooldal.service';
 export class FizetesComponent {
   toPayProduct: any[] = [];
   profileCustomer: any[] = [];
+  cuoponDatas: any = {};
+  public orderId: string = "";
 
-  constructor(private fooldalService: FooldalService) { }
+  constructor(private fooldalService: FooldalService, private cuoponId: CuoponIdService) { }
 
   ngOnInit() {
     const obj = {
@@ -36,9 +39,9 @@ export class FizetesComponent {
         address: '',
         email: ''
       };
-      
+
       let objId = ''; // Új változó az obj.id helyett
-    
+
       for (const [key, valuee] of Object.entries(p)) {
         if (key === 'data') {
           for (let i in valuee) {
@@ -50,7 +53,7 @@ export class FizetesComponent {
                 objProfile.email = valuee[i].attributes.mail;
                 if (name === objProfile.name) {
                   var mail = objProfile.email;
-                  objId = valuee[i].id;  
+                  objId = valuee[i].id;
                   this.fooldalService.getProfileCustomer().subscribe(p => {
                     for (const [key, value] of Object.entries(p)) {
                       if (key === 'data') {
@@ -68,7 +71,7 @@ export class FizetesComponent {
                         }
                       }
                     }
-            
+
                     this.profileCustomer.push(objProfile);
                     console.log(this.profileCustomer);
                   });
@@ -79,7 +82,27 @@ export class FizetesComponent {
         }
       }
     });
-    
   }
+
+  /*
+  addCuopon() {
+    this.cuoponDatas = {
+      "data": [
+        {
+          "type": "promotion-coupon",
+          "id": "0923d283-ba5a-423d-b5db-c6caae07128b"
+
+        }
+      ]
+    }
+    console.log(this.cuoponDatas);
+    this.cuoponId.getCuopon().subscribe((id) => {
+      this.orderId = id;
+      console.log(this.orderId);
+      this.fooldalService.addCuopon(this.cuoponDatas, this.orderId).subscribe(c => {
+        console.log(c);
+      });
+    });
+  }*/
 
 }

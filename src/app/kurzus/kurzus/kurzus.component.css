@@ -81,3 +81,9 @@
     cursor: pointer;
     text-align: right;
   }
+
+  .disabled-button {
+    color: #808080;
+    pointer-events: none;
+  }
+  

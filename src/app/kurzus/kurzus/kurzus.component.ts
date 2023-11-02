@@ -25,7 +25,9 @@ export class KurzusComponent {
   courseTitle: string = '';
   completed: any[] = [];
   lessonColor: string = 'darkgray';
+  visible: boolean = false;
   private isFirstFalseAfterTrue: boolean = true;
+
   
 
   toggleTextOverflow(lesson: any) {
@@ -44,19 +46,25 @@ export class KurzusComponent {
   
 
   getLessonColor(current: boolean): string {
+    let lessonColor: string;
     if (current === true) {
       this.isFirstFalseAfterTrue = true;
-      return '#0A606F';
+      lessonColor = '#0A606F';
+      this.visible = true;
     } else if (current === false && this.isFirstFalseAfterTrue) {
       this.isFirstFalseAfterTrue = false;
-      return '#E6009F';
+      lessonColor = '#E6009F';
+      this.visible = true;
     } else if (current === false) {
-      return '#808080';
+      lessonColor = '#808080';
+      this.visible = false;
     } else {
-      return '#808080';
+      lessonColor = '#808080';
+      this.visible = false;
     }
+    return lessonColor;
   }
-
+  
   toggleLesson(index: number): void {
     this.lessonStates[index] = !this.lessonStates[index];
   }
@@ -124,14 +132,17 @@ export class KurzusComponent {
                     const field_c = this.htmlconvertService.convertToHtml(v[i].lessons[j].lesson.field_content[0].value);
                     lesson_obj.lessons_desc = field_c;
                     const baseUrl = this.fooldalService.getBaseUrl();
-                    if (Array.isArray(v[i].lessons[j].fulfillment.complete)) {
-                      lesson_obj.completed = v[i].lessons[j].fulfillment.complete.length > 0;
-                    } else {
-                      lesson_obj.completed = false;
+                    if(v[i].lessons[j].fulfillment){
+                      if (Array.isArray(v[i].lessons[j].fulfillment.complete)) {
+                        lesson_obj.completed = v[i].lessons[j].fulfillment.complete.length > 0;
+                      } else {
+                        lesson_obj.completed = false;
+                      }
+                      if (v[i].lessons[j].thumbnail !== null) {
+                        lesson_obj.thumbnail = baseUrl + v[i].lessons[j].thumbnail
+                      }
                     }
-                    if (v[i].lessons[j].thumbnail !== null) {
-                      lesson_obj.thumbnail = baseUrl + v[i].lessons[j].thumbnail
-                    }
+
 
 
                     if (v[i].lessons[j].video_url !== null && !v[i].lessons[j].video_url.startsWith('/sites')) {

@@ -7,32 +7,32 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class FooldalService {
-  private baseUrl= "https://baba.jrdatashu.win";
+  private baseUrl = "https://baba.jrdatashu.win";
 
 
-  getBaseUrl(){
+  getBaseUrl() {
     return this.baseUrl;
   }
 
   constructor(private http: HttpClient,
-    private authService: AuthService) { 
+    private authService: AuthService) {
 
   }
 
-  getMenu(){
-   return this.http.get(`${this.baseUrl}/system/menu/main/linkset`);
+  getMenu() {
+    return this.http.get(`${this.baseUrl}/system/menu/main/linkset`);
   }
 
-  getId(){
+  getId() {
     return this.http.get(`${this.baseUrl}/jsonapi/node/page`);
-    
+
   }
 
   /*getFooldal(id: string){
     return this.http.get(`${this.baseUrl}/jsonapi/node/page/` + id + `?include=field_paragraphs.field_image_full.field_media_image`);
   }*/
 
-  getFooldal(id: string){
+  getFooldal(id: string) {
 
     // Define your headers
     const headers = new HttpHeaders({
@@ -48,38 +48,38 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/node/page/` + id, httpOptions);
   }
 
-  getPhotos(id: string, media: string, image: string){
+  getPhotos(id: string, media: string, image: string) {
     return this.http.get(`${this.baseUrl}/jsonapi/` + media + '/' + image + '/' + id);
   }
 
-  getCatNames(){
+  getCatNames() {
     return this.http.get(`${this.baseUrl}/jsonapi/taxonomy_term/videostore_categories`);
   }
 
-  getRotation(){
+  getRotation() {
     return this.http.get(`${this.baseUrl}/jsonapi/taxonomy_term/rotation`);
   }
 
-  getToken() : Observable<string> {
-   return this.http.get<string>(`${this.baseUrl}/session/token`, {responseType: 'text' as 'json'});
+  getToken(): Observable<string> {
+    return this.http.get<string>(`${this.baseUrl}/session/token`, { responseType: 'text' as 'json' });
   }
-  
+
   getVideos() {
     const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
       Authorization: 'Basic ' + auth
     });
-    return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`, {headers});
+    return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`, { headers });
   }
 
-  deleteVideos(id: string){
+  deleteVideos(id: string) {
     const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
       Authorization: 'Basic ' + auth
     });
-    return this.http.delete(`${this.baseUrl}/jsonapi/node/videostore/` + id, {headers});
+    return this.http.delete(`${this.baseUrl}/jsonapi/node/videostore/` + id, { headers });
   }
 
   createMediaVideo(data: any) {
@@ -91,7 +91,7 @@ export class FooldalService {
     return this.http.post(`${this.baseUrl}/jsonapi/media/video`, data, { headers });
   }
 
-  createMediaImage(data: any){
+  createMediaImage(data: any) {
     const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
@@ -105,28 +105,28 @@ export class FooldalService {
     const encodedFilename = encodeURIComponent(filename);
     const headers = new HttpHeaders({
       'Content-Type': 'application/octet-stream',
-      'Accept' : 'application/vnd.api+json',
-      'Content-Disposition' : 'file; filename="'+ encodedFilename +'"',
+      'Accept': 'application/vnd.api+json',
+      'Content-Disposition': 'file; filename="' + encodedFilename + '"',
       Authorization: 'Basic ' + auth
     });
 
-    return this.http.post(`${this.baseUrl}/jsonapi/media/video/` + id + '/field_media_video_file' , data.get('file'), { headers });
+    return this.http.post(`${this.baseUrl}/jsonapi/media/video/` + id + '/field_media_video_file', data.get('file'), { headers });
   }
 
-  sendImage(data: FormData, filename: string, id: string){
+  sendImage(data: FormData, filename: string, id: string) {
     const auth = btoa('admin:c');
     const encodedFilename = encodeURIComponent(filename);
     const headers = new HttpHeaders({
       'Content-Type': 'application/octet-stream',
-      'Accept' : 'application/vnd.api+json',
-      'Content-Disposition' : 'file; filename="'+ encodedFilename +'"',
+      'Accept': 'application/vnd.api+json',
+      'Content-Disposition': 'file; filename="' + encodedFilename + '"',
       Authorization: 'Basic ' + auth
     });
 
-    return this.http.post(`${this.baseUrl}/jsonapi/media/image/` + id + '/field_media_image' , data.get('file'), { headers });
+    return this.http.post(`${this.baseUrl}/jsonapi/media/image/` + id + '/field_media_image', data.get('file'), { headers });
   }
 
-  patchVideo(data: any, video_id: string){
+  patchVideo(data: any, video_id: string) {
     const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
@@ -136,7 +136,7 @@ export class FooldalService {
     return this.http.patch(`${this.baseUrl}/jsonapi/media/video/` + video_id, data, { headers });
   }
 
-  createThumbnail(data: any){
+  createThumbnail(data: any) {
     const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
@@ -145,7 +145,7 @@ export class FooldalService {
     return this.http.post(`${this.baseUrl}/jsonapi/media/image`, data, { headers });
   }
 
-  createVideoParagraph(data: any){
+  createVideoParagraph(data: any) {
     const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
@@ -154,7 +154,7 @@ export class FooldalService {
     return this.http.post(`${this.baseUrl}/jsonapi/paragraph/video`, data, { headers });
   }
 
-  sendVideoStore(data: any){
+  sendVideoStore(data: any) {
     const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
@@ -171,7 +171,7 @@ export class FooldalService {
   }
   */
 
-  getCourses(){
+  getCourses() {
     return this.http.get(`${this.baseUrl}/api/courses`);
   }
 
@@ -181,14 +181,14 @@ export class FooldalService {
         if (response.courses) {
           const courses = response.courses;
           const cids: string[] = [];
-  
+
           for (const courseId in courses) {
             if (courses.hasOwnProperty(courseId)) {
               const cid = courses[courseId].cid[0].value;
               cids.push(cid);
             }
           }
-          
+
           return cids;
         } else {
           throw new Error('Hibás API válasz struktúra');
@@ -197,80 +197,96 @@ export class FooldalService {
     );
   }
 
-  enrolledUser(){
+  enrolledUser() {
     return this.http.get(`${this.baseUrl}/api/courses?enrolled=1`);
   }
 
-  nonEnrolledUser(){
+  nonEnrolledUser() {
     return this.http.get(`${this.baseUrl}/api/courses?enrolled=0`);
   }
 
-  enrolledUserOutline(cid: string){
+  enrolledUserOutline(cid: string) {
     return this.http.get(`${this.baseUrl}/api/courseoutline/${cid}`);
   }
 
-  getPage(){
+  getPage() {
     return this.http.get(`${this.baseUrl}/jsonapi/node/page`);
   }
 
-  getPageAlias(){
+  getPageAlias() {
     return this.http.get(`${this.baseUrl}/jsonapi/path_alias/path_alias`);
   }
 
-  getPageFilter(id: number){
+  getPageFilter(id: number) {
     return this.http.get(`${this.baseUrl}/jsonapi/node/page?filter[drupal_internal__nid]=${id}`);
   }
 
-  catPhotos(id: string){
+  catPhotos(id: string) {
     const headers = new HttpHeaders({
       'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
-    return this.http.get(`${this.baseUrl}/jsonapi/media/image/` + id + `/field_media_image`, {headers});
+    return this.http.get(`${this.baseUrl}/jsonapi/media/image/` + id + `/field_media_image`, { headers });
   }
 
-  getCurrentVideos(id: number){
+  getCurrentVideos(id: number) {
     const headers = new HttpHeaders({
       'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
-    return this.http.get(`${this.baseUrl}/api/videostore/current-videos/` + id, {headers});
+    return this.http.get(`${this.baseUrl}/api/videostore/current-videos/` + id, { headers });
   }
 
-  getFavoritesVideos(){
+  getFavoritesVideos() {
     return this.http.get(`${this.baseUrl}/api/favorite-videos`);
   }
 
-  likedVideos(data: any){
-    const headers =  new HttpHeaders({
-      "Content-type" : 'application/json'
+  likedVideos(data: any) {
+    const headers = new HttpHeaders({
+      "Content-type": 'application/json'
     });
-    return this.http.post(`${this.baseUrl}/api/flag-entity`, data, {headers});
+    return this.http.post(`${this.baseUrl}/api/flag-entity`, data, { headers });
   }
 
-  enrolledCourseLicens(){
+  enrolledCourseLicens() {
     return this.http.get(`${this.baseUrl}/jsonapi/licenses/role`);
   }
 
-  getAllUsers(){
+  getAllUsers() {
     const headers = new HttpHeaders({
-      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     })
-    return this.http.get(`${this.baseUrl}/jsonapi/user/user`, {headers});
+    return this.http.get(`${this.baseUrl}/jsonapi/user/user`, { headers });
   }
 
-  getAllProducts(){
+  getAllProducts() {
     return this.http.get(`${this.baseUrl}/jsonapi/products/default`);
   }
 
-  addItemToCart(data: any){
+  addItemToCart(data: any) {
     const headers = new HttpHeaders({
-      'Accept' : 'application/vnd.api+json',
-      'Content-Type' : 'application/vnd.api+json'
+      'Content-Type': 'application/vnd.api+json'
     });
-    return this.http.post(`${this.baseUrl}/jsonapi/cart/add`, data, {headers});
+    return this.http.post(`${this.baseUrl}/jsonapi/cart/add`, data, { headers });
   }
 
-  getProfileCustomer(){
+  getProfileCustomer() {
     return this.http.get(`${this.baseUrl}/jsonapi/profile/customer`);
+  }
+
+  addProductWithCart(data: any) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/vnd.api+json'
+    });
+    return this.http.post(`${this.baseUrl}/jsonapi/orders/default`, data, { headers });
+  }
+
+  addCuopon(data: any, id: any) {
+    const headers = new HttpHeaders ({
+      'Content-Type': 'application/vnd.api+json',
+      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34',
+      'X-CSRF-Token' : 'Bj8LItkxD8vky-aJ94j6ArW6TqNdCZk02oBmc7nL8qM'
+    });
+    return this.http.post(`${this.baseUrl}/jsonapi/orders/default/` + id +`/relationships/coupons`, data, {headers})
+
   }
 
 }

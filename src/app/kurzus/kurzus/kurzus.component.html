@@ -13,7 +13,7 @@
           <div class="lesson-container">
             <div class="video-container">
               <div *ngIf="lesson.video_url && !lesson.y_video_url">
-                <app-video-player style="padding-top: 15px;"
+                <app-video-player [ngClass]="{'disabled-button': !visible}" style="padding-top: 15px;"
                   [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: lesson.thumbnail, sources: [{ src: lesson.video_url, type: 'video/mp4', label: 'Basic' }, { src: lesson.video_url_1080, type: 'video/mp4', label: '1080p' },{ src: lesson.video_url_720, type: 'video/mp4', label: '720p' }, { src: lesson.video_url_360, type: 'video/mp4', label: '360p' }]}">
                 </app-video-player>
               </div>
@@ -24,7 +24,7 @@
             </div>
             <div class="lesson-info" #lessonInfo>
               <h3 [style.color]="getLessonColor(lesson.completed)">{{ lesson.lessons_title }}</h3>
-              <div [innerHTML]="lesson.lessons_desc" [class.truncated-text]="lesson.isTextOverflow"></div>
+              <div [ngClass]="{'disabled-button': !visible}" [innerHTML]="lesson.lessons_desc" [class.truncated-text]="lesson.isTextOverflow"></div>            
               <p class="read-more-button text-right" *ngIf="isTextOverflowing(lesson)" (click)="toggleTextOverflow(lesson)">{{ lesson.isTextOverflow ? 'TOVÁBB' : 'KEVESEBB' }}</p>
             </div>                                  
           </div>
