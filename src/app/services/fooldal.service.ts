@@ -272,21 +272,28 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/profile/customer`);
   }
 
-  addProductWithCart(data: any) {
+  addProductWithCart(data: any, id: any) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json'
     });
-    return this.http.post(`${this.baseUrl}/jsonapi/orders/default`, data, { headers });
+    return this.http.patch(`${this.baseUrl}/jsonapi/checkout/` + id , data, { headers });
   }
 
   addCuopon(data: any, id: any) {
     const headers = new HttpHeaders ({
       'Content-Type': 'application/vnd.api+json',
-      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34',
-      'X-CSRF-Token' : 'Bj8LItkxD8vky-aJ94j6ArW6TqNdCZk02oBmc7nL8qM'
+      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
     return this.http.post(`${this.baseUrl}/jsonapi/orders/default/` + id +`/relationships/coupons`, data, {headers})
 
+  }
+
+  getAllCuopons(){
+    return this.http.get(`${this.baseUrl}/jsonapi/promotion-coupons`);
+  }
+
+  getProductById(id: any){
+    return this.http.get(`${this.baseUrl}/jsonapi/orders/default/` + id);
   }
 
 }

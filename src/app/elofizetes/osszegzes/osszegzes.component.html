@@ -11,14 +11,14 @@
         <span class="course-name">{{product.title}}</span>
         <span class="course-price">{{product.price}}</span>
     </div>
-    <div class="flex-container mb-2">
+    <div *ngFor="let price of cuoponPrice" class="flex-container mb-2">
         <span>Kedvezményes kupon</span>
-        <span style="margin-left: 140px;">kupon neve</span>
-        <span style="margin-left: 210px;">-15.000Ft</span>
+        <span style="margin-left: 140px;">{{price.cuopon_name}}</span>
+        <span style="margin-left: 225px;">{{price.cuopon_price}}</span>
     </div>
-    <div class="flex-container mb-2">
-        <span style="margin-right: 515px;">Fizetendő</span>
-        <span>Ár</span>
+    <div *ngFor="let price of cuoponPrice" class="flex-container mb-2">
+        <span style="margin-right: 470px;">Fizetendő</span>
+        <span>{{price.current}}</span>
     </div>
     <div class="line p-3"></div>
     <p class="cart-content">Számlázási adatok</p>

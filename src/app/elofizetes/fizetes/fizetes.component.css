@@ -166,3 +166,11 @@ input{
     margin: 35px auto;
     width: 900px;
   }
+
+  .cuopon-text{
+	color: #0A606F;
+  }
+
+  .cuopon-text-error{
+	color: red;
+  }

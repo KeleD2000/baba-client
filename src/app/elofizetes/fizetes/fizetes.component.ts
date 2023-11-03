@@ -1,19 +1,30 @@
 import { Component, Input } from '@angular/core';
-import { CuoponIdService } from 'src/app/services/cuopon-id.service';
 import { FooldalService } from 'src/app/services/fooldal.service';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-fizetes',
   templateUrl: './fizetes.component.html',
-  styleUrls: ['./fizetes.component.css']
+  styleUrls: ['./fizetes.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      state('in', style({ opacity: 1 })),
+      transition(':enter', [style({ opacity: 0 }), animate(300)]),
+      transition(':leave', animate(300, style({ opacity: 0 })))
+    ])
+  ]
 })
 export class FizetesComponent {
   toPayProduct: any[] = [];
   profileCustomer: any[] = [];
   cuoponDatas: any = {};
   public orderId: string = "";
+  inputText: string = '';
+  succesfull: boolean | null = null;
+  used: boolean | null = null;
+  usedCuopons: any[] = [];
 
-  constructor(private fooldalService: FooldalService, private cuoponId: CuoponIdService) { }
+  constructor(private fooldalService: FooldalService) { }
 
   ngOnInit() {
     const obj = {
@@ -59,7 +70,6 @@ export class FizetesComponent {
                       if (key === 'data') {
                         for (let i in value) {
                           objProfile.id = value[i].relationships.uid.data.id;
-                          console.log(objProfile.id);
                           if (objProfile.id === objId) { // Az új változót használjuk itt
                             objProfile.name = value[i].attributes.address.family_name + " " + value[i].attributes.address.given_name;
                             objProfile.country = value[i].attributes.address.country_code;
@@ -84,8 +94,13 @@ export class FizetesComponent {
     });
   }
 
-  /*
+  
   addCuopon() {
+    const objCuopon = {
+      code : '',
+      type: '',
+      id : ''
+    }
     this.cuoponDatas = {
       "data": [
         {
@@ -96,13 +111,41 @@ export class FizetesComponent {
       ]
     }
     console.log(this.cuoponDatas);
-    this.cuoponId.getCuopon().subscribe((id) => {
-      this.orderId = id;
-      console.log(this.orderId);
-      this.fooldalService.addCuopon(this.cuoponDatas, this.orderId).subscribe(c => {
-        console.log(c);
-      });
+    const pIdLocalS = localStorage.getItem('productId');
+    if(pIdLocalS !== null){
+      this.orderId = pIdLocalS;
+    }
+    console.log(this.orderId);
+    this.fooldalService.getAllCuopons().subscribe((c) => {
+      for(const [key, value] of Object.entries(c)){
+        if(key === 'data'){
+          for(let i in value){
+            objCuopon.code = value[i].attributes.code;
+            objCuopon.type = value[i].type;
+            objCuopon.id = value[i].id;
+          }
+          console.log(this.inputText);
+          console.log(objCuopon.code);
+          
+          if (this.usedCuopons.includes(this.inputText)) {
+            this.succesfull = false;
+            console.log("Sikertelen kupon, már használták");
+          } else if (this.inputText === objCuopon.code){
+            this.succesfull = true;
+            this.usedCuopons.push(this.inputText);
+            this.fooldalService.addCuopon(this.cuoponDatas, this.orderId).subscribe(c => {
+              console.log("Sikeres kupon aktiválás");
+            });
+          } else {
+            this.succesfull = false;
+            console.log("Sikertelen kupon");
+          }
+        }
+      }
     });
-  }*/
+    
+
+
+  }
 
 }

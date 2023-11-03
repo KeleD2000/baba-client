@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { OsszegzesComponent } from './osszegzes/osszegzes.component';
 import { SikeresKurzusComponent } from './sikeres-kurzus/sikeres-kurzus.component';
 import { SikertelenKurzusComponent } from './sikertelen-kurzus/sikertelen-kurzus.component';
-import { CuoponIdService } from '../services/cuopon-id.service';
+
 
 
 
@@ -23,9 +23,6 @@ import { CuoponIdService } from '../services/cuopon-id.service';
     CommonModule,
     ElofizetesRoutingModule,
     FormsModule
-  ],
-  providers: [
-    CuoponIdService
   ]
 })
 export class ElofizetesModule { }

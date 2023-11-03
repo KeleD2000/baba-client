@@ -3,7 +3,6 @@ import { SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription, subscribeOn } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { CuoponIdService } from 'src/app/services/cuopon-id.service';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -32,26 +31,13 @@ export class ElofizetesComponent {
 
 
 
-  constructor(private fooldalService: FooldalService, private shared: SharedService, 
-    private htmlconvertService: HtmlconvertService, private authService: AuthService, 
-    private router: Router, private cuoponId: CuoponIdService) {
+  constructor(private fooldalService: FooldalService, private shared: SharedService,
+    private htmlconvertService: HtmlconvertService, private authService: AuthService,
+    private router: Router) {
 
   }
 
   addCart(type: any, id: any) {
-    const objProf = {
-      name: '',
-    };
-    const objBilling = {
-      country_code: '',
-      locality: '',
-      postal_code: '',
-      address_line1: '',
-      address_line2: '',
-      given_name: '',
-      family_name: '',
-    };
-
     this.postDataProducts = {
       data: [
         {
@@ -64,14 +50,22 @@ export class ElofizetesComponent {
         },
       ],
     };
-
+    const objProf = {
+      name: '',
+    };
+    const objBilling = {
+      country_code: '',
+      locality: '',
+      postal_code: '',
+      address_line1: '',
+      address_line2: '',
+      given_name: '',
+      family_name: '',
+    };
     this.fooldalService.addItemToCart(this.postDataProducts).subscribe((p) => {
-      console.log(this.postDataProducts);
-      console.log(p);
       for (const [key, value] of Object.entries(p)) {
         if (key === 'data') {
           for (let i in value) {
-            console.log(value[i]);
             const obj = {
               title: '',
               price: '',
@@ -100,16 +94,13 @@ export class ElofizetesComponent {
                         var name = loginData.current_user.name;
                       }
                     }
-
-                    if (name === objProf.name) {
+                    if(name === objProf.name){
                       var userId = vv[j].id;
-
                       this.fooldalService.getProfileCustomer().subscribe((profile) => {
-                        for (const [k, v] of Object.entries(profile)) {
-                          if (k === 'data') {
-                            for (let j in v) {
-                              if (userId === v[j].relationships.uid.data.id) {
-                                console.log(v[j].attributes.address);
+                        for(const [k,v] of Object.entries(profile)){
+                          if(k === 'data'){
+                            for(let j in v){
+                              if (userId === v[j].relationships.uid.data.id){
                                 objBilling.country_code = v[j].attributes.address.country_code;
                                 objBilling.locality = v[j].attributes.address.locality;
                                 objBilling.postal_code = v[j].attributes.address.postal_code;
@@ -121,81 +112,32 @@ export class ElofizetesComponent {
                             }
                           }
                         }
-                        console.log(value[i].type);
-                        console.log(value[i].id);
                         this.productDatas = {
-                          data: {
-                            type: value[i].relationships.order_id.data.type,
-                            attributes: {
-                              billing_information: {
-                                address: {
-                                  country_code: objBilling.country_code,
-                                  locality: objBilling.locality,
-                                  postal_code: objBilling.postal_code,
-                                  address_line1: objBilling.address_line1,
-                                  address_line2: objBilling.address_line2,
-                                  given_name: objBilling.given_name,
-                                  family_name: objBilling.family_name,
-                                },
-                                tax_number: {
-                                  type: null,
-                                  value: null,
-                                },
-                              },
-                              order_total: {
-                                subtotal: {
-                                  number: value[i].attributes.total_price.number,
-                                  currency_code: value[i].attributes.total_price.currency_code,
-                                  formatted: value[i].attributes.total_price.formatted,
-                                },
-                                total: {
-                                  number: value[i].attributes.total_price.number,
-                                  currency_code: value[i].attributes.total_price.currency_code,
-                                  formatted: value[i].attributes.total_price.formatted,
-                                },
-                              },
-                              cart: true,
-                              checkout_step: null,
-                            },
-                            relationships: {
-                              order_type: {
-                                data: {
-                                  type: 'order-type',
-                                  id: '8f6b2a8d-93d6-43a6-bcf8-a3df729a0365',
-                                },
-                              },
-                              store_id: {
-                                data: {
-                                  type: 'store--online',
-                                  id: '1592cb08-0724-4172-8406-eab6c557ae27',
-                                },
-                              },
-                              uid: {
-                                data: {
-                                  type: 'user--user',
-                                  id: userId,
-                                },
-                              },
-                              order_items: {
-                                data: [
-                                  {
-                                    type: value[i].type,
-                                    id: value[i].id,
-                                  },
-                                ],
-                              },
-                            },
-                          },
+                          "data" : {
+                            "type" : value[i].relationships.order_id.data.type,
+                            "id" : value[i].relationships.order_id.data.id,
+                            "attributes" : {
+                              "billing_information" : {
+                                "address" : {
+                                  "country_code": objBilling.country_code,
+                                  "locality": objBilling.locality,
+                                  "postal_code": objBilling.postal_code,
+                                  "address_line1": objBilling.address_line1,
+                                  "address_line2": objBilling.address_line2,
+                                  "given_name": objBilling.given_name,
+                                  "family_name": objBilling.family_name,
+                                }
+                              }
+                            }           
+                          }
                         };
-                        console.log(this.productDatas);
-                        this.fooldalService.addProductWithCart(this.productDatas).subscribe(p => {
-                          console.log(p);
-                          console.log(this.productDatas);
-                          for (const [keyP, valueP] of Object.entries(p)) {
-                            if (keyP === 'data') {
-                              for (let k in valueP) {
-                                if(valueP.id){
-                                  this.cuoponId.setCuopon(valueP.id);
+                        var orderId = value[i].relationships.order_id.data.id;
+                        this.fooldalService.addProductWithCart(this.productDatas, orderId).subscribe((p) => {
+                          for(const [keyP, valueP] of Object.entries(p)){
+                            if(keyP === 'data'){
+                              for(let k in valueP){
+                                if(valueP.id !== undefined && valueP.id !== null){
+                                  localStorage.setItem('productId', valueP.id.toString());
                                 }
                               }
                             }
@@ -210,13 +152,13 @@ export class ElofizetesComponent {
           }
         }
       }
-
       if (localStorage.getItem('login')) {
         this.router.navigate(['/fizetes']);
       } else {
         this.router.navigate(['/signin'], { queryParams: { from: 'elofizetes' } });
       }
     });
+
   }
 
   ngOnInit() {
@@ -316,11 +258,9 @@ export class ElofizetesComponent {
                   this.courseDetailsExpires.push(obj); // Hozzáadja az objektumot csak akkor, ha az if feltétel teljesül
                 }
               }
-               console.log(this.active);
             }
           }
         }
-        console.log(this.courseDetailsExpires);
       }
 
     });
@@ -424,15 +364,10 @@ export class ElofizetesComponent {
                   obj.discount_price = value[i].product_variation.price.formatted;
                 }
                 this.courseNonEnrollmentsDetailsExpires.push(obj);
-                console.log(this.courseNonEnrollmentsDetailsExpires);
-
               }
             }
-
           }
-
         }
-        console.log(this.courseNonEnrollmentsDetailsExpires);
       });
       /*
       this.fooldalService.enrolledCourseLicens().subscribe(s => {
@@ -469,7 +404,6 @@ export class ElofizetesComponent {
       })
       console.log(this.courseCommercie);
   */
- console.log(this.active);
     });
 
 

@@ -11,6 +11,8 @@ export class OsszegzesComponent {
   profileCustomer: any[] = [];
   isPinkFill1: boolean = false;
   isPinkFill2: boolean = false;
+  orderId: string = '';
+  cuoponPrice: any[] = [];
 
   constructor(private fooldalService: FooldalService) { }
 
@@ -29,6 +31,11 @@ export class OsszegzesComponent {
     const obj = {
       title: '',
       price: ''
+    }
+    const objProductPrice = {
+      cuopon_price: '',
+      cuopon_name: '',
+      current: ''
     }
     if (localStorage.getItem('product')) {
       var current = JSON.parse(localStorage.getItem('product')!)
@@ -92,7 +99,23 @@ export class OsszegzesComponent {
         }
       }
     });
-    
+    const pIdLocalS = localStorage.getItem('productId');
+    if(pIdLocalS !== null){
+      this.orderId = pIdLocalS;
+    }
+    this.fooldalService.getProductById(this.orderId).subscribe((order) => {
+      for(const [key, value] of Object.entries(order)){
+        if(key === 'data'){
+          objProductPrice.current = value.order_total.total.formatted;
+          if(value.order_total.adjustments.length > 0 ){
+            objProductPrice.cuopon_name = value.order_total.adjustments[0].label;
+            objProductPrice.cuopon_price = value.order_total.adjustments[0].amount.formatted;
+          }
+          this.cuoponPrice.push(objProductPrice);
+        }
+      }
+    });
+    console.log(this.cuoponPrice);
   }
 
 }
