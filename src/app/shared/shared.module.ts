@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VideoPlayerComponent } from './video-player/video-player.component';
+import { FooldalService } from '../services/fooldal.service';
+
 
 
 @NgModule({
@@ -10,6 +12,10 @@ import { VideoPlayerComponent } from './video-player/video-player.component';
   imports: [
     CommonModule
   ],
-  exports: [VideoPlayerComponent]
+  exports: [VideoPlayerComponent],
+  providers: [
+    FooldalService
+
+  ]
 })
 export class SharedModule { }

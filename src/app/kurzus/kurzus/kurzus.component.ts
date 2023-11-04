@@ -24,6 +24,7 @@ export class KurzusComponent {
   choosedCourse: any;
   courseTitle: string = '';
   completed: any[] = [];
+  videoIds: any[]= [];
   lessonColor: string = 'darkgray';
   visible: boolean = false;
   private isFirstFalseAfterTrue: boolean = true;
@@ -78,16 +79,16 @@ export class KurzusComponent {
 
   constructor(private fooldalService: FooldalService,
     private htmlconvertService: HtmlconvertService,
-    private router: ActivatedRoute) { }
-
-
+    private router: ActivatedRoute,
+    ) { }
 
   ngOnInit(): void {
     this.courseTitle = this.router.snapshot.params['title'];
     this.fooldalService.getCoursesId().subscribe((cids: string[]) => {
       for (const cid of cids) {
+        console.log(cid);
         this.fooldalService.enrolledUserOutline(cid).subscribe((out) => {
-          //console.log(out);
+          console.log(out);
           for (const [key, v] of Object.entries(out)) {
             if (v.title != undefined && v.title[0].value != this.router.snapshot.params['title']) {
               continue;
@@ -116,6 +117,7 @@ export class KurzusComponent {
                   //console.log(v[i].fulfillment.complete);
                   for (let j in v[i].lessons) {
                     const lesson_obj = {
+                      video_id: '',
                       lessons_title: '',
                       lessons_desc: '' as SafeHtml,
                       completed: false,
@@ -132,10 +134,19 @@ export class KurzusComponent {
                     const field_c = this.htmlconvertService.convertToHtml(v[i].lessons[j].lesson.field_content[0].value);
                     lesson_obj.lessons_desc = field_c;
                     const baseUrl = this.fooldalService.getBaseUrl();
+                    console.log(v[i].lessons[j].lesson);
+                    console.log(v[i].lessons[j].lesson.id[0].value);
+                    if(v[i].lessons[j].lesson.field_video){
+                      lesson_obj.video_id = v[i].lessons[j].lesson.id[0].value;
+                      this.videoIds.push(v[i].lessons[j].lesson.id[0].value);
+                      localStorage.setItem("video_id", JSON.stringify(this.videoIds));
+                    }
                     if(v[i].lessons[j].fulfillment){
+                      console.log(v[i].lessons[j].fulfillment.complete);
                       if (Array.isArray(v[i].lessons[j].fulfillment.complete)) {
                         lesson_obj.completed = v[i].lessons[j].fulfillment.complete.length > 0;
                       } else {
+                        
                         lesson_obj.completed = false;
                       }
                       if (v[i].lessons[j].thumbnail !== null) {
@@ -164,7 +175,8 @@ export class KurzusComponent {
                       */
                     }
                     obj.lessons.push(lesson_obj);
-                    // 
+
+                    
                   }
                   //console.log(this.block);
                 }
