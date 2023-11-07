@@ -94,13 +94,13 @@ export class ElofizetesComponent {
                         var name = loginData.current_user.name;
                       }
                     }
-                    if(name === objProf.name){
+                    if (name === objProf.name) {
                       var userId = vv[j].id;
                       this.fooldalService.getProfileCustomer().subscribe((profile) => {
-                        for(const [k,v] of Object.entries(profile)){
-                          if(k === 'data'){
-                            for(let j in v){
-                              if (userId === v[j].relationships.uid.data.id){
+                        for (const [k, v] of Object.entries(profile)) {
+                          if (k === 'data') {
+                            for (let j in v) {
+                              if (userId === v[j].relationships.uid.data.id) {
                                 objBilling.country_code = v[j].attributes.address.country_code;
                                 objBilling.locality = v[j].attributes.address.locality;
                                 objBilling.postal_code = v[j].attributes.address.postal_code;
@@ -113,12 +113,12 @@ export class ElofizetesComponent {
                           }
                         }
                         this.productDatas = {
-                          "data" : {
-                            "type" : value[i].relationships.order_id.data.type,
-                            "id" : value[i].relationships.order_id.data.id,
-                            "attributes" : {
-                              "billing_information" : {
-                                "address" : {
+                          "data": {
+                            "type": value[i].relationships.order_id.data.type,
+                            "id": value[i].relationships.order_id.data.id,
+                            "attributes": {
+                              "billing_information": {
+                                "address": {
                                   "country_code": objBilling.country_code,
                                   "locality": objBilling.locality,
                                   "postal_code": objBilling.postal_code,
@@ -128,15 +128,15 @@ export class ElofizetesComponent {
                                   "family_name": objBilling.family_name,
                                 }
                               }
-                            }           
+                            }
                           }
                         };
                         var orderId = value[i].relationships.order_id.data.id;
                         this.fooldalService.addProductWithCart(this.productDatas, orderId).subscribe((p) => {
-                          for(const [keyP, valueP] of Object.entries(p)){
-                            if(keyP === 'data'){
-                              for(let k in valueP){
-                                if(valueP.id !== undefined && valueP.id !== null){
+                          for (const [keyP, valueP] of Object.entries(p)) {
+                            if (keyP === 'data') {
+                              for (let k in valueP) {
+                                if (valueP.id !== undefined && valueP.id !== null) {
                                   localStorage.setItem('productId', valueP.id.toString());
                                 }
                               }
@@ -251,7 +251,9 @@ export class ElofizetesComponent {
                   uuid: '',
                   end_date: ''
                 };
-                obj.uuid = value[i].product_variation.product_id.field_course.id;
+                if (value[i].product_variation.product_id.field_course) {
+                  obj.uuid = value[i].product_variation.product_id.field_course.id;
+                }
                 if (obj.uuid === uuid) {
                   obj.title = value[i].product_variation.product_id.title;
                   obj.end_date = value[i].expires.substring(0, 10);
@@ -342,26 +344,28 @@ export class ElofizetesComponent {
                   type_id: ''
 
                 };
-                obj.type = value[i].product_variation.product_id.variations[0].type;
-                obj.type_id = value[i].product_variation.product_id.variations[0].id;
-                obj.uuid = value[i].product_variation.product_id.field_course.id;
-                const regex = /(.+?) - (\d+ hónap)/;
-                const founded = value[i].product_variation.product_id.variations[0].title.match(regex);
-                if (founded) {
-                  const cutTitle = founded[1].trim();
-                  const cutMonth = founded[2].trim();
-                  obj.title = cutTitle;
-                  obj.month = cutMonth;
-                }
-
-                obj.describe = this.htmlconvertService.convertToHtml(value[i].product_variation.product_id.body.value);
-                for (let j in value[i].product_variation.list_price) {
-                  if (value[i].product_variation.list_price) {
-                    obj.price = value[i].product_variation.list_price.formatted;
+                console.log();
+                if (value[i].product_variation.product_id) {
+                  obj.type = value[i].product_variation.product_id.variations[0].type;
+                  obj.type_id = value[i].product_variation.product_id.variations[0].id;
+                  obj.uuid = value[i].product_variation.product_id.field_course.id;
+                  const regex = /(.+?) - (\d+ hónap)/;
+                  const founded = value[i].product_variation.product_id.variations[0].title.match(regex);
+                  if (founded) {
+                    const cutTitle = founded[1].trim();
+                    const cutMonth = founded[2].trim();
+                    obj.title = cutTitle;
+                    obj.month = cutMonth;
                   }
-                }
-                for (let j in value[i].product_variation.price) {
-                  obj.discount_price = value[i].product_variation.price.formatted;
+                  obj.describe = this.htmlconvertService.convertToHtml(value[i].product_variation.product_id.body.value);
+                  for (let j in value[i].product_variation.list_price) {
+                    if (value[i].product_variation.list_price) {
+                      obj.price = value[i].product_variation.list_price.formatted;
+                    }
+                  }
+                  for (let j in value[i].product_variation.price) {
+                    obj.discount_price = value[i].product_variation.price.formatted;
+                  }
                 }
                 this.courseNonEnrollmentsDetailsExpires.push(obj);
               }

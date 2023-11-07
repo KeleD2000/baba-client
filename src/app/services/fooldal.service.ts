@@ -296,4 +296,22 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/orders/default/` + id);
   }
 
+  getPayPalAccesToken(data: any){
+    const auth = btoa('AToSxjcGJXgQ85oxUXqEmUgIkEW6tdE4Dx2X037MCuF_BN1vTohGlIbglVgpvaOwbqoaJLz7peUkfKC7:EGhfOoFn1bkAKB5kvWQTVbmptTIkJSqdHtfw-z3SSReiXyhNCFHBBgf_HWUa2k2scGyHt2mEWnxknvJg');
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + auth,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+    return this.http.post(`https://api-m.sandbox.paypal.com/v1/oauth2/token`, data, {headers});
+
+  }
+
+  createPayPalOrder(data: any, accesToken: string){
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + accesToken,
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(`https://api-m.sandbox.paypal.com/v2/checkout/orders`, data, {headers});
+  }
+
 }

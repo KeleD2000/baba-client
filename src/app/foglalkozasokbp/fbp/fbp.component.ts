@@ -17,11 +17,20 @@ export class FbpComponent {
 
   constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService, private sanitizer: DomSanitizer) { }
 
-  extractVideoId(url: string): string | null {
-    const regex = /[?&]v=([^&#]*)/i;
-    const match = regex.exec(url);
-    return match ? match[1] : null;
+  extractVideoIdAndTime(url: string): { videoId: string | null, time: string | null } {
+    const videoIdRegex = /[?&]v=([^&#]*)/i;
+    const timeRegex = /[?&]t=([^&#]*)/i;
+  
+    const videoIdMatch = videoIdRegex.exec(url);
+    const timeMatch = timeRegex.exec(url);
+  
+    const videoId = videoIdMatch ? videoIdMatch[1] : null;
+    const time = timeMatch ? timeMatch[1] : null;
+  
+    return { videoId, time };
   }
+  
+  
 
   ngOnInit() {
     this.fooldalService.getId().subscribe((i) => {
@@ -73,7 +82,9 @@ export class FbpComponent {
                       obj.video = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url
                       obj.video_thumbnail = this.baseUrl + value.field_paragraphs[k].field_video.field_thumbnail.field_media_image.uri.url;
                     }else if(value.field_paragraphs[k].type === 'paragraph--youtube_video'){
-                      const videoId = this.extractVideoId(value.field_paragraphs[k].field_youtube_video.field_media_oembed_video);
+                      console.log(value.field_paragraphs[k].field_youtube_video.field_media_oembed_video);
+                      const videoId = this.extractVideoIdAndTime(value.field_paragraphs[k].field_youtube_video.field_media_oembed_video).videoId;
+                      console.log(videoId);
                       obj.youtube_video = "https://www.youtube.com/embed/"+ videoId
                     }
                     this.content.push(obj);
