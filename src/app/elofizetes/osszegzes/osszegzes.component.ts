@@ -88,8 +88,8 @@ export class OsszegzesComponent {
                           }
                         ],
                         "application_context": {
-                          "return_url": "http://localhost:4200/sikeres_fizetes",
-                          "cancel_url": "http://localhost:4200/sikertelen_fizetes"
+                          "return_url": "https://babafeszkelo-51994.web.app/sikeres_fizetes",
+                          "cancel_url": "https://babafeszkelo-51994.web.app/sikertelen_fizetes"
                         }
                       }
                       console.log(createPayPal);
@@ -125,8 +125,8 @@ export class OsszegzesComponent {
                           }
                         ],
                         "application_context" : {
-                          "return_url" : "http://localhost:4200/sikeres_fizetes",
-                          "cancel_url" : "http://localhost:4200/sikertelen_fizetes"
+                          "return_url" : "https://babafeszkelo-51994.web.app/sikeres_fizetes",
+                          "cancel_url" : "https://babafeszkelo-51994.web.app/sikertelen_fizetes"
                         }
                       }
                       console.log(createPayPal);
