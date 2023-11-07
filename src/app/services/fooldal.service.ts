@@ -313,5 +313,23 @@ export class FooldalService {
     });
     return this.http.post(`https://api-m.sandbox.paypal.com/v2/checkout/orders`, data, {headers});
   }
+  
+  addPaymentMethod(data: any, id: any){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/vnd.api+json',
+      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+    });
+
+    return this.http.patch(`${this.baseUrl}/jsonapi/checkout/` + id, data, {headers});
+  }
+
+  startPayment(data: any, id: any){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/vnd.api+json',
+      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+    });
+
+    return this.http.post(`${this.baseUrl}/jsonapi/checkout/` + id + `/payment`, data, {headers});
+  }
 
 }

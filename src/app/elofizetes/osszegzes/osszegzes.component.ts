@@ -48,7 +48,9 @@ export class OsszegzesComponent {
             var accessToken = value;
             for (let i in this.toPayProduct) {
               var productTitle = this.toPayProduct[i].title;
-              var productPrice = this.toPayProduct[i].price;
+            }
+            for(let j in this.cuoponPrice){
+              var productPrice = this.cuoponPrice[j].current;
               var withoutSpace  = productPrice.replace(/\s+/g, '').replace('Ft', '');
               var convertedPrice = withoutSpace.replace(',', '.');
             }
@@ -130,8 +132,18 @@ export class OsszegzesComponent {
                       console.log(createPayPal);
                       console.log(accessToken);
                       this.fooldalService.createPayPalOrder(createPayPal, accessToken).subscribe( p => {
-                        console.log(p);
-                      })
+                        for(const [kk, vv] of Object.entries(p)){
+                          if(kk === 'id'){
+                            localStorage.setItem('paypalApi', vv);
+                          }
+                          if(kk === 'links'){
+                            for(let k in vv){
+                              window.location.href = vv[1].href;
+                              
+                            }
+                          }
+                        }
+                      });
                     }
                   }
                 }

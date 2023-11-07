@@ -12,6 +12,6 @@
     <p class="cart-content">Megrendelt kurzus</p>
     <div class="flex-container mb-2">
         <span class="course-name">{{product.title}}</span>
-        <button routerLink="/elofizetes" class="btn btn-primary">Irány a kurzus</button>
+        <button  [routerLink]="'/kurzusok/' + product.title" class="btn btn-primary">Irány a kurzus</button>
     </div>
 </div>

@@ -126,7 +126,17 @@ export class ElofizetesComponent {
                                   "address_line2": objBilling.address_line2,
                                   "given_name": objBilling.given_name,
                                   "family_name": objBilling.family_name,
+                                },
+                                "tax_number": {
+                                  "type": null,
+                                  "value": null
                                 }
+                              }
+                            },
+                            "relationships": {
+                              "data": {
+                                "type": "checkout-flow",
+                                "id": "585db1b4-c23e-4ee4-a32c-df3a7f0a7ae3"
                               }
                             }
                           }

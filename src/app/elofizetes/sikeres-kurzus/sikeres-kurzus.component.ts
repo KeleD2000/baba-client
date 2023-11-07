@@ -79,6 +79,43 @@ export class SikeresKurzusComponent {
         }
       }
     });
+    var localPId = localStorage.getItem('productId');
+    var paypalId = localStorage.getItem('paypalApi');
+    console.log(localPId);
+    console.log(paypalId);
+    const paymentBody = {
+      "data": 
+        {
+          "type": "order--default", 
+          "id": localPId,
+          "attributes": {
+            "payment_instrument": {
+              "payment_gateway_id": "client_pay_pal",
+              "payment_method_type": "paypal_checkout",
+              "payment_gateway_mode": "test",
+              "payment_details": {
+                "paypal_remote_id": paypalId
+              }
+            }
+          }
+        }
+    }
+
+    const startBody = {
+      "data": {
+        "type": "payment--paypal-checkout",
+        "attributes": {
+          "capture": true
+        }
+      }
+    }
+
+    console.log(paymentBody);
+    this.fooldalService.addPaymentMethod(paymentBody, localPId).subscribe( p => {
+      this.fooldalService.startPayment(startBody, localPId).subscribe( f => {
+        console.log(f);
+      })
+    });
     
   }
 
