@@ -1,49 +1,69 @@
-<div class="wrapper">
-    <div class="arrow-steps clearfix">
-        <div class="step current"> <span>Adatok</span> </div>
-        <div class="step"> <span>Összegzés</span> </div>
-        <div class="step"> <span> Végelegesítés</span> </div>
+<div class="container">
+    <div class="wrapper">
+        <div class="arrow-steps clearfix">
+            <div class="step current"> <span>Adatok</span> </div>
+            <div class="step"> <span>Összegzés</span> </div>
+            <div class="step"> <span> Végelegesítés</span> </div>
+        </div>
+    </div>
+    <div *ngFor="let profile of profileCustomer">
+        <p class="cart-content">Kosár tartalma</p>
+        <div class="mb-2" *ngFor="let product of toPayProduct">
+            <span class="course-name">{{product.title}}</span>
+            <span class="course-price">{{product.price}}</span>
+        </div>
+        <div class="flex-container mb-2">
+            <span>Kedvezményes kupon</span>
+            <input [(ngModel)]="inputText" class="course" type="text">
+            <button class="btn btn-primary" (click)="addCuopon()">Kupon érvényesítés</button>
+        </div>
+        <div class="text-center cuopon-text" *ngIf="succesfull" [@fadeInOut]>
+            Sikeresen érvényesítetted a kuponod
+        </div>
+        <div class="text-center cuopon-text-error" *ngIf="succesfull === false" [@fadeInOut]>
+            Sikertelenül érvényesítetted a kuponod
+        </div>
+        <div class="line p-3"></div>
+        <p class="cart-content">Számlázási adatok</p>
+        <div class="flex-container mb-3">
+            <span style="margin-right: 60px;">Név</span>
+            <input [(ngModel)]="profile.name" type="text" style="width: 575px;">
+        </div>
+        <div class="flex-container mb-3">
+            <span style="margin-right: 59px;">Cím</span>
+            <input [(ngModel)]="profile.country" type="text">
+            <input style="width: 375px; margin-left: 10px;" type="text">
+        </div>
+        <div class="flex-container mb-3">
+            <span style="margin-right: 60px;"></span>
+            <input [(ngModel)]="profile.postal_code" style="margin-left: 27px; width: 10%; margin-right: 10px;"
+                type="text">
+            <input [(ngModel)]="profile.city" style="width: 17%;margin-right: 10px;" type="text">
+            <input [(ngModel)]="profile.address" style="width: 295px;" type="text">
+        </div>
+        <div class="flex-container mb-3">
+            <span style="margin-right: 43px;">E-mail</span>
+            <input [(ngModel)]="profile.email" style="width: 575px" type="text">
+        </div>
+        <div class="d-flex justify-content-center">
+            <button routerLink="/osszegzes" class="btn btn-primary m-3 p-2">Összegzés</button>
+        </div>
     </div>
 </div>
-<div *ngFor="let profile of profileCustomer">
-    <p class="cart-content">Kosár tartalma</p>
-    <div class="mb-2" *ngFor="let product of toPayProduct">
-        <span class="course-name">{{product.title}}</span>
-        <span class="course-price">{{product.price}}</span>
-    </div>
-    <div class="flex-container mb-2">
-        <span>Kedvezményes kupon</span>
-        <input [(ngModel)]="inputText" class="course" type="text">
-        <button class="btn btn-primary" (click)="addCuopon()">Kupon érvényesítés</button>
-    </div>
-    <div class="text-center cuopon-text" *ngIf="succesfull" [@fadeInOut]>
-        Sikeresen érvényesítetted a kuponod
-    </div>
-    <div class="text-center cuopon-text-error" *ngIf="succesfull === false" [@fadeInOut]>
-        Sikertelenül érvényesítetted a kuponod
-    </div>
-    <div class="line p-3"></div>
-    <p class="cart-content">Számlázási adatok</p>
-    <div class="flex-container mb-3">
-        <span style="margin-right: 60px;">Név</span>
-        <input [(ngModel)]="profile.name" type="text"  style="width: 575px;">
-    </div>
-    <div class="flex-container mb-3">
-        <span style="margin-right: 59px;">Cím</span>
-        <input [(ngModel)]="profile.country"  type="text">
-        <input style="width: 375px; margin-left: 10px;" type="text">
-    </div>
-    <div class="flex-container mb-3">
-        <span style="margin-right: 60px;"></span>
-        <input [(ngModel)]="profile.postal_code" style="margin-left: 27px; width: 10%; margin-right: 10px;" type="text">
-        <input [(ngModel)]="profile.city" style="width: 17%;margin-right: 10px;" type="text">
-        <input [(ngModel)]="profile.address" style="width: 295px;" type="text">
-    </div>
-    <div class="flex-container mb-3">
-        <span style="margin-right: 43px;">E-mail</span>
-        <input [(ngModel)]="profile.email" style="width: 575px" type="text">
-    </div>
-    <div class="d-flex justify-content-center">
-        <button routerLink="/osszegzes" class="btn btn-primary m-3 p-2">Összegzés</button>
-    </div>
-</div>
+
+<!--
+    reszponzivhoz
+            <div class="arrow-steps clearfix">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="step current"> <span>Adatok</span> </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="step"> <span>Összegzés</span> </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="step"> <span> Végelegesítés</span> </div>
+                </div>
+            </div>
+        </div>
+-->
