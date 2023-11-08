@@ -133,12 +133,14 @@ export class ElofizetesComponent {
                                 }
                               }
                             },
-                            "relationships": {
-                              "data": {
-                                "type": "checkout-flow",
-                                "id": "585db1b4-c23e-4ee4-a32c-df3a7f0a7ae3"
-                              }
-                            }
+                            "relationships": { 
+                              "uid": {
+                                  "data": {
+                                      "type": "user--user",
+                                      "id": userId
+                                      }
+                                  }
+                              }   
                           }
                         };
                         var orderId = value[i].relationships.order_id.data.id;
