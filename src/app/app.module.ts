@@ -29,6 +29,7 @@ import { ElofizetesModule } from './elofizetes/elofizetes.module';
 import { CsrfInterceptorService } from './csrf-interceptor';
 import { RefreshComponent } from './components/refresh/refresh.component';
 import { SharedService } from './services/shared.service';
+import { VideoStatusService } from './services/video-status.service';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSwXraHIkw4DG5uRRsfD_FFqAhMWG5X_w",
@@ -72,7 +73,7 @@ const firebaseConfig = {
       useClass: CsrfInterceptorService,
       multi: true,
     },
-    HtmlconvertService, SharedService
+    HtmlconvertService, SharedService, VideoStatusService
   ],
   bootstrap: [AppComponent]
 })
