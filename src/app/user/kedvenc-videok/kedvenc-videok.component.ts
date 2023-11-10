@@ -28,12 +28,26 @@ export class KedvencVideokComponent {
     this.isArrow = !this.isArrow;
   }
 
-  toggleLike(fav: any) {
-    fav.isLiked = !fav.isLiked; 
-    this.fooldalService.likedVideos(this.likedData).subscribe(liked => {
-      window.location.reload();
-    })
-  }
+  toggleLike(video: any) {
+    video.isLiked = !video.isLiked;
+  
+    const index = this.favoriteVideos.findIndex((v) => v.mid === video.mid);
+    if (index !== -1) {
+      this.favoriteVideos.splice(index, 1); // Az elem eltávolítása a tömbből
+    }
+  
+    const likedData = {
+      "entity_type": "media",
+      "entity_id": video.mid,
+      "flag_id": "favorite_videos"
+    };
+  
+    this.fooldalService.likedVideos(likedData).subscribe(liked => {
+      console.log(likedData);
+      console.log(liked);
+    });
+  }  
+  
 
   toggleButtonState(buttonId: any) {
     if (this.isButtonActive === buttonId) {
@@ -85,13 +99,6 @@ export class KedvencVideokComponent {
           obj.thumbnail = value.thumbnail;
         }
         obj.mid = value.mid;
-        this.likedData = {
-          "entity_type": "media",
-          "entity_id": obj.mid,
-          "flag_id": "favorite_videos"
-
-        }
-        
         this.favoriteVideos.push(obj);
       }
     });

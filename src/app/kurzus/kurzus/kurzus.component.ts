@@ -4,7 +4,7 @@ import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 import { SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { VideoStatusService } from 'src/app/services/video-status.service';
 
 @Component({
@@ -31,6 +31,12 @@ export class KurzusComponent {
   visible: boolean = false;
   private isFirstFalseAfterTrue: boolean = true;
   public videoEnded?: boolean ;
+  private obj = {
+    tema_title: '',
+    tema_description: '',
+    lessons: [] as {}[]
+  };
+  firstBlock : boolean = true;
   
 
   
@@ -99,106 +105,29 @@ export class KurzusComponent {
               continue;
             }
             if (key === 'outline') {
+              this.firstBlock = true;
               for (let i in v) {
-                //console.log(v[i]);
-                const obj = {
+                console.log(v[i]);
+                this.obj = {
                   tema_title: "",
                   tema_description: "",
-                  lessons: [] as {
-                    lessons_title: string, lessons_desc: SafeHtml, y_video_url: string, text: string,
-                    video_url: string, video_url_360: string, video_url_720: string, video_url_1080: string
-                  }[]
+                  lessons: [] as {}[]
 
                 };
-                //console.log(v[i]);
+                console.log(v[i]);
                 if (v[i].node.hasOwnProperty("title")) {
-                  obj.tema_title = v[i].node.title[0].value;
+                  this.obj.tema_title = v[i].node.title[0].value;
                 }
                 if (v[i].node.hasOwnProperty("body") && v[i].node.body.length > 0) {
-                  obj.tema_description = v[i].node.body[0].value;
+                  this.obj.tema_description = v[i].node.body[0].value;
 
                 }
                 
                 if (Array.isArray(v[i].lessons)) {
-                  let firstMatch = true;
-                  for (let j in v[i].lessons) {
-                    const lesson_obj = {
-                      video_id: '',
-                      lessons_title: '',
-                      lessons_desc: '' as SafeHtml,
-                      completed: false,
-                      y_video_url: '',
-                      text: '',
-                      video_url: '',
-                      video_url_360: '',
-                      video_url_720: '',
-                      video_url_1080: '',
-                      video_ended: false,
-                      thumbnail: '',
-                      isTextOverflow: true,
-                    }
-                    this.videoStatusService.videoEnded$.subscribe((videoEnded) => {
-                      this.videoEnded = videoEnded;
-                      console.log('videoEnded változás:', videoEnded);
-                      console.log(v[i].fulfillment.complete);                     
-                      if (firstMatch && lesson_obj.video_id !== '' && !lesson_obj.completed && this.videoEnded) {
-                        console.log('videoEnded változás:', this.videoEnded);
-                        lesson_obj.video_ended = true;
-                        v[i].fulfillment.complete = [{ value: true }];
-                        console.log(v[i].fulfillment.complete);
-                        console.log(lesson_obj);
-                        this.videoEnded = false; // Visszaállítod a videoEnded értékét false-ra, hogy újra megtörténjen
-                        firstMatch = false;
-                      }
-                    });
-                    lesson_obj.lessons_title = v[i].lessons[j].lesson.field_label[0].value;
-                    const field_c = this.htmlconvertService.convertToHtml(v[i].lessons[j].lesson.field_content[0].value);
-                    lesson_obj.lessons_desc = field_c;
-                    const baseUrl = this.fooldalService.getBaseUrl();
-                    if (v[i].lessons[j].lesson.field_video) {
-                      lesson_obj.video_id = v[i].lessons[j].lesson.id[0].value;
-                    }
-                    if (v[i].lessons[j].fulfillment) {
-                      if (Array.isArray(v[i].lessons[j].fulfillment.complete)) {
-                        lesson_obj.completed = v[i].lessons[j].fulfillment.complete.length > 0;
-                      } else {
-
-                        lesson_obj.completed = false;
-                      }
-                      if (v[i].lessons[j].thumbnail !== null) {
-                        lesson_obj.thumbnail = baseUrl + v[i].lessons[j].thumbnail
-                      }
-                    }
-                    if (v[i].lessons[j].video_url !== null && !v[i].lessons[j].video_url.startsWith('/sites')) {
-                      const y_video = this.extractVideoId(v[i].lessons[j].video_url);
-                      lesson_obj.y_video_url = "https://www.youtube.com/embed/" + y_video;
-                      //console.log(obj.y_video_url);
-                    }
-
-                    if (v[i].lessons[j].video_url !== null && v[i].lessons[j].video_url.startsWith('/sites')) {
-                      lesson_obj.video_url = baseUrl + v[i].lessons[j].video_url;
-                      lesson_obj.video_url_360 = baseUrl + v[i].lessons[j].video_url_360p;
-                      lesson_obj.video_url_720 = baseUrl + v[i].lessons[j].video_url_720p;
-                      lesson_obj.video_url_1080 = baseUrl + v[i].lessons[j].video_url_1080p;
-                      /*
-                      console.log(obj.video_url);
-                      console.log(obj.video_url_360);
-                      console.log(obj.video_url_720);
-                      console.log(obj.video_url_1080);
-                      */
-                    }
-
-
-
-                    obj.lessons.push(lesson_obj);
-
-
-
-                  }
-                  //console.log(this.block);
+                 this.checkAndSetVideoEnded(v[i]);
                 }
-                this.block.push(obj);
-                console.log(this.block);
+                this.block.push(this.obj);
+
 
               }
 
@@ -217,6 +146,89 @@ export class KurzusComponent {
       }
     });
 
+  }
+
+  private checkAndSetVideoEnded(vElement: any): void {
+    let firstMatch = true;
+    let videoEndedSubscription: Subscription;
+
+    for (let j in vElement.lessons) {
+      if (!firstMatch) {
+        break; // Ha már talált egyezést, ne menjen tovább
+      }
+    }
+
+    for (let j in vElement.lessons) {
+      
+      const lesson_obj = {
+        video_id: '',
+        lessons_title: '',
+        lessons_desc: '' as SafeHtml,
+        completed: false,
+        y_video_url: '',
+        text: '',
+        video_url: '',
+        video_url_360: '',
+        video_url_720: '',
+        video_url_1080: '',
+        video_ended: false,
+        thumbnail: '',
+        isTextOverflow: true,
+      };
+
+      videoEndedSubscription = this.videoStatusService.videoEnded$.subscribe((videoEnded) => {
+        this.videoEnded = videoEnded;
+        console.log('videoEnded változás:', videoEnded);
+        console.log(vElement.fulfillment.complete);
+
+        if (firstMatch && lesson_obj.video_id !== '' && !lesson_obj.completed && this.videoEnded && this.firstBlock) {
+          console.log('videoEnded változás:', this.videoEnded);
+          lesson_obj.video_ended = true;
+          console.log(lesson_obj);
+          console.log(vElement.lessons[j].fulfillment.uuid[0].value);
+          
+          this.videoEnded = false;
+          firstMatch = false;
+          this.firstBlock  = false;
+          videoEndedSubscription.unsubscribe();
+        }
+      });
+
+      lesson_obj.lessons_title = vElement.lessons[j].lesson.field_label[0].value;
+      const field_c = this.htmlconvertService.convertToHtml(vElement.lessons[j].lesson.field_content[0].value);
+      lesson_obj.lessons_desc = field_c;
+      const baseUrl = this.fooldalService.getBaseUrl();
+
+      if (vElement.lessons[j].lesson.field_video) {
+        lesson_obj.video_id = vElement.lessons[j].lesson.id[0].value;
+      }
+
+      if (vElement.lessons[j].fulfillment) {
+        if (Array.isArray(vElement.lessons[j].fulfillment.complete)) {
+          lesson_obj.completed = vElement.lessons[j].fulfillment.complete.length > 0;
+        } else {
+          lesson_obj.completed = false;
+        }
+
+        if (vElement.lessons[j].thumbnail !== null) {
+          lesson_obj.thumbnail = baseUrl + vElement.lessons[j].thumbnail;
+        }
+      }
+
+      if (vElement.lessons[j].video_url !== null && !vElement.lessons[j].video_url.startsWith('/sites')) {
+        const y_video = this.extractVideoId(vElement.lessons[j].video_url);
+        lesson_obj.y_video_url = 'https://www.youtube.com/embed/' + y_video;
+      }
+
+      if (vElement.lessons[j].video_url !== null && vElement.lessons[j].video_url.startsWith('/sites')) {
+        lesson_obj.video_url = baseUrl + vElement.lessons[j].video_url;
+        lesson_obj.video_url_360 = baseUrl + vElement.lessons[j].video_url_360p;
+        lesson_obj.video_url_720 = baseUrl + vElement.lessons[j].video_url_720p;
+        lesson_obj.video_url_1080 = baseUrl + vElement.lessons[j].video_url_1080p;
+      }
+
+      this.obj.lessons.push(lesson_obj);
+    }
   }
 
 

@@ -26,69 +26,32 @@ export class ViditekaComponent {
   isLiked: boolean = false;
   isArrow: boolean = false;
   isButtonActive: string = 'napi';
+  isItFavorite: boolean = false;
   likedData: any = {};
   buttonChange: string = '';
   partialCatDesc: string = ''; // Az első 5 sor a kategória szövegéből
   isFullCatDescVisible: boolean = false;
   showFullCatDesc: boolean = false; // Zászló a teljes kategória leírásának megjelenítéséhez
+  showSummary: boolean = false;
 
 
   constructor(private fooldalService: FooldalService, private htmlConvert: HtmlconvertService, private sanitizer: DomSanitizer) {
 
   }
 
-  toggleShowFullCatDesc() {
+  toggleCatDesc() {
     this.showFullCatDesc = !this.showFullCatDesc;
+
+    // Az új változó beállítása az aktuális tartalom alapján
+    this.showSummary = !this.showFullCatDesc;
   }
 
-  convertSafeHtmlToString(safeHtml: SafeHtml): string {
-    return this.sanitizer.sanitize(SecurityContext.HTML, safeHtml) || '';
-  }
-
-  truncateCatDescription(fullText: any) {
-    const safeHtml: SafeHtml = fullText; // itt állítod be a safeHtml értékét
-    const catDescString = this.sanitizer.sanitize(SecurityContext.HTML, safeHtml) || ''; // SafeHtml-et szöveggé alakítunk
-
-    const paragraphs = catDescString.split('<p>'); // Szöveget osztunk párafolyamatokra
-    let firstFiveLines = ''; // Az első 5 sor tartalma
-    let lineCount = 0;
-
-    for (let i = 0; i < paragraphs.length; i++) {
-      const paragraph = paragraphs[i];
-      const lines = paragraph.split('\n');
-      for (let j = 0; j < lines.length; j++) {
-        const line = lines[j];
-        if (lineCount >= 5) {
-          break; // Már elértük az első 5 sort
-        }
-
-        firstFiveLines += line + '\n';
-        lineCount++;
-      }
-
-      if (lineCount >= 5) {
-        break; // Már elértük az első 5 sort
-      }
-    }
-
-    // További logikád (HTML-eltávolítás, tömörítés) ide jön
-
-    // Végül a firstFiveLines tartalmát rendeled a partialCatDesc változóhoz
-    this.partialCatDesc = firstFiveLines;
-    console.log(this.partialCatDesc);
-  }
 
   showCatImage(index: number) {
     this.activeCategoryIndex = index;
     const catImageContainer = document.getElementById('catImageContainer');
     if (catImageContainer) {
       catImageContainer.style.display = 'block';
-    }
-
-    if (this.activeCategoryIndex >= 0) {
-
-      this.truncateCatDescription(String(this.objCat[this.activeCategoryIndex].catDesc));
-      console.log(this.truncateCatDescription);
     }
   }
 
@@ -110,16 +73,18 @@ export class ViditekaComponent {
     }
   }
 
-  toggleTextOverflow(vid: any) {
-    vid.isTextOverflow = !vid.isTextOverflow;
+  toggleTextOverflow(lesson: any) {
+    lesson.isTextOverflow = !lesson.isTextOverflow;
+
   }
-  
-  isTextOverflowing(vid: any) {
-    const textContainer = document.querySelector('.lesson-info') as HTMLElement;
-    if (textContainer) {
-      return textContainer.scrollHeight > 115;
-    }
-    return false; // Vagy visszatérj hamis értékkel, ha a textContainer nem található
+
+  isTextOverflowing(lesson: any) {
+    const textContainer = document.createElement('div');
+    textContainer.innerHTML = lesson.lessons_desc;
+    document.body.appendChild(textContainer);
+    const isOverflowing = textContainer.scrollHeight > 118;
+    document.body.removeChild(textContainer);
+    return isOverflowing;
   }
 
   toggleLike() {
@@ -137,13 +102,7 @@ export class ViditekaComponent {
           console.log("Error");
         }
       }
-
     });
-    /*
-    this.fooldalService.likedVideos(this.likedData).subscribe( liked => {
-      console.log(this.likedData);
-      console.log(liked);
-    })*/
   }
 
   toggleButtonState(buttonId: any) {
@@ -167,7 +126,6 @@ export class ViditekaComponent {
     } else {
       this.isButtonActive = cat.catTitle;
       this.activeCategoryIndex = index;
-      this.truncateCatDescription(cat.catDesc);
     }
 
     this.objCat.forEach((c, i) => {
@@ -188,10 +146,10 @@ export class ViditekaComponent {
     if (this.activeCategoryIndex >= 0) {
       const selectedCategory = this.objCat[this.activeCategoryIndex];
       this.fooldalService.getCurrentVideos(selectedCategory.tid).subscribe((v) => {
-
+        console.log(v);
         // Ellenőrizzük, hogy van-e videó az adott kategóriához
         if (v && Object.keys(v).length > 0) {
-          const objVid = {
+          var objVid = {
             vidTitle: '',
             vidDesc: '' as SafeHtml,
             video_url: '',
@@ -205,17 +163,27 @@ export class ViditekaComponent {
           }
           for (const [key, value] of Object.entries(v)) {
             console.log(value);
+            /*
             objVid.vidTitle = value.videostore.title[0].value;
             let desc = value.videostore.body[0].value;
+            */
+            if (value.videostore.title.length > 0) {
+              objVid.vidTitle = value.videostore.title[0].value;
+            }
+            if (value.videostore.body.length > 0) {
+              var desc = value.videostore.body[0].value;
+            }
             objVid.vidDesc = this.sanitizer.bypassSecurityTrustHtml(desc);
             objVid.video_url = this.baseUrl + value.video_url;
             objVid.video_url_360 = this.baseUrl + value.video_url_360p;
             objVid.video_url_720 = this.baseUrl + value.video_url_720p;
             objVid.video_url_1080 = this.baseUrl + value.video_url_1080p;
             objVid.mid = value.media.mid[0].value;
-            //objVid.thumbnail = this.baseUrl + value.thumbnail;
+            objVid.thumbnail = this.baseUrl + value.thumbnail;
 
           }
+
+
 
           this.objVid = [objVid]; // Frissítsd az objVid tömböt
 
@@ -229,6 +197,15 @@ export class ViditekaComponent {
         } else {
           this.objVid = []; // Nincs videó az adott kategóriához, üres tömb
         }
+
+        this.fooldalService.getFavoritesVideos().subscribe(fav => {
+          for (const [k, v] of Object.entries(fav)) {
+            console.log(v.mid);
+            if (Number(v.mid) === objVid.mid) {
+              this.isItFavorite = true;
+            }
+          }
+        })
       });
     }
   }
@@ -240,16 +217,24 @@ export class ViditekaComponent {
           for (let i in value) {
             const obj = {
               catTitle: '',
+              catSummary: '' as SafeHtml,
               catDesc: '' as SafeHtml,
               photo_id: '',
               photo_url: '',
+              weight: 0,
               tid: 0
             };
+            obj.weight = value[i].attributes.weight;
             obj.photo_id = value[i].relationships.field_category_image.data.id;
-            if (value[i].attributes.description != null) {
-              let desc = value[i].attributes.description.value;
-              obj.catDesc = this.sanitizer.bypassSecurityTrustHtml(desc);
-            }
+            console.log(value[i].attributes.field_description.processed);
+            console.log(value[i].attributes.field_description.summary);
+            let desc = value[i].attributes.field_description.processed;
+            obj.catDesc = this.sanitizer.bypassSecurityTrustHtml(desc);
+            let sum = value[i].attributes.field_description.summary;
+            // A sum értékét először szanitizáljuk, majd egy p tage-be helyezzük
+            obj.catSummary = this.sanitizer.bypassSecurityTrustHtml(`<p>${sum}</p>`);
+
+
             obj.tid = value[i].attributes.drupal_internal__tid;
             obj.catTitle = value[i].attributes.name;
             this.objCat.push(obj);
@@ -259,11 +244,18 @@ export class ViditekaComponent {
                   obj.photo_url = this.baseUrl + value.attributes.uri.url;
                 }
               }
+
             });
           }
         }
+
+        // Rendezd a tömböt a weight property alapján
+        this.objCat.sort((a, b) => a.weight - b.weight);
+        console.log(this.objCat);
+
+        this.showSummary = true;
       }
     });
-
   }
+
 }

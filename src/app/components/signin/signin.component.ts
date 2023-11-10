@@ -50,6 +50,7 @@ export class SigninComponent {
             this.route.navigateByUrl('/fizetes');
           } else if (this.authService.isAdmin()) {
             this.route.navigateByUrl('/admin/videotar');
+            
           } else {
             this.route.navigateByUrl('/elofizetes');
           }
