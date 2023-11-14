@@ -144,19 +144,29 @@ export class VideotarComponent {
                   console.log(video.field_video[0]);
                   if (video.field_video[0].field_video.field_media_video_file != undefined) {
                       const baseUrl = this.fooldalService.getBaseUrl();
-                      var video_url = baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url;
-                      var thumbnail;
-                      
-                      if (video.field_video[0].field_video.field_thumbnail.field_media_image.uri != undefined ) {
-                        //Ha van thumbnail
-                        thumbnail = baseUrl + video.field_video[0].field_video.field_thumbnail.field_media_image.uri.url;
+                      console.log(video.field_video[0].field_video.field_media_video_file.uri);
+                      if(video.field_video[0].field_video.field_media_video_file.uri){
+                        var video_url = baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url;
+                        var thumbnail;
+                        if(video.field_video[0].field_video.field_thumbnail.field_media_image){
+                          if (video.field_video[0].field_video.field_thumbnail.field_media_image.uri != undefined ) {
+                            //Ha van thumbnail
+                            
+                            thumbnail = baseUrl + video.field_video[0].field_video.field_thumbnail.field_media_image.uri.url;
+                          }
+                        }
+                        findedRotation.videos.push({ id: video.id, url: video_url, iframe: false, title: video.title, description: this.htmlconvetrService.convertToHtml(""), thumbnail: thumbnail })
                       }
-                      findedRotation.videos.push({ id: video.id, url: video_url, iframe: false, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value), thumbnail: thumbnail });
+                    
                     }
                 } else if (video.field_video[0].type === "paragraph--youtube_video") {
                   //youtube video
                   const videoId = this.extractVideoId(video.field_video[0].field_youtube_video.field_media_oembed_video);
-                  findedRotation.videos.push({ id: video.id, url: "https://www.youtube.com/embed/" + videoId, iframe: true, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value) });
+                  console.log(video.body.value);
+                  if(video.body.value){
+                    findedRotation.videos.push({ id: video.id, url: "https://www.youtube.com/embed/" + videoId, iframe: true, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value) });
+                  }
+                  //findedRotation.videos.push({ id: video.id, url: "https://www.youtube.com/embed/" + videoId, iframe: true, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value) });
                 }
               }
             }

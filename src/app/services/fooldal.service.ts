@@ -332,4 +332,12 @@ export class FooldalService {
     return this.http.post(`${this.baseUrl}/jsonapi/checkout/` + id + `/payment`, data, {headers});
   }
 
+  patchVideoWatched(data: any, id: any){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/vnd.api+json'
+    });
+
+    return this.http.patch(`${this.baseUrl}/jsonapi/course_object_fulfillment/course_object_fulfillment/` + id, data, {headers});
+  }
+
 }

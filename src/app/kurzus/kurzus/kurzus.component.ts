@@ -186,6 +186,18 @@ export class KurzusComponent {
           lesson_obj.video_ended = true;
           console.log(lesson_obj);
           console.log(vElement.lessons[j].fulfillment.uuid[0].value);
+          const watchedBody = {
+            "data" : {
+                "type" : "course_object_fulfillment--course_object_fulfillment",
+                "id" : vElement.lessons[j].fulfillment.uuid[0].value,
+                "attributes": {
+                    "complete" : true
+                }
+            }
+        }
+        this.fooldalService.patchVideoWatched(watchedBody, vElement.lessons[j].fulfillment.uuid[0].value).subscribe( v => {
+          console.log(v);
+        })
           
           this.videoEnded = false;
           firstMatch = false;

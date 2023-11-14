@@ -11,18 +11,23 @@
           </div>
         </div>
         <div class="col-6 text-end">
-          <div> <a class="footera afooter" (click)="openModal()"><fa-icon [icon]="faFB"></fa-icon></a></div>
+          <div> 
+            <a class="footera afooter" style="margin-right: 10px;" (click)="openModal('fb')"><fa-icon [icon]="faFB"></fa-icon></a>
+            <a class="footera afooter" style="margin-right: 10px;" (click)="openModal('tiktok')"><fa-icon [icon]="fatikTok"></fa-icon></a>
+            <a class="footera afooter" (click)="openModal('insta')"><fa-icon [icon]="faInsta"></fa-icon></a>
+          </div>
           <div><a class="footera afooter" routerLink="aszf">ÁSZF</a></div>
           <div><a class="footera afooter" routerLink="gdpr">Adatkezelés</a></div>
+          <div><span>powered by: <a class="footera" href="https://datastep.solutions/">Datastep Hungary Kft.</a></span></div>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-12 text-center">
-          <span>powered by: <a class="footera" href="https://datastep.solutions/">Datastep Hungary Kft.</a></span>
           <div class="d-flex align-items-center justify-content-center mt-2">
             <fa-icon style="margin-right: 5px;" [icon]="faCopy"></fa-icon>
             <p class="ml-2 mb-0">Minden jog fentartva</p> 
           </div>
+          <p>Tudomásom és beleegyezésem nélkül tilos az oldal szöveges, képi és videó tartalmainak kimásolása, terjesztése. Sok munkám van benne, kérlek tartsd tiszteletben a szerzői és előadói jogokat!</p>
         </div>
       </div>      
     </div>
@@ -30,24 +35,23 @@
 <div class="modal fade modalc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
     id="exampleModal">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Facebook</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
-                        (click)="closeModal()">
-                    </button>
-                </div>
-                <div class="modal-body">
-                  <div>Fontos adataid védelme, ezért tudatosan nincs összekötve a Babafészkelő oldal és videotár a Facebookkal, vagy más közösségi platformmal. Szerintem nem tartozik az algoritmusra sem az, hogy kisbabát szeretnél, sem az, hogy éppen hol tartasz a ciklusodban. </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                        (click)="closeModal()">Bezárás</button>
-                </div>
-            </form>
-        </div>
-    </div>
+      <div class="modal-content">
+          <form>
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">{{ modalTitle }}</h5>
+                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div>{{ modalContent }}</div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Bezárás</button>
+              </div>
+          </form>
+      </div>
+  </div>
+  
 </div>
   
   </footer>
