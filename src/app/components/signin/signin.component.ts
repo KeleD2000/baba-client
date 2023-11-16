@@ -46,13 +46,13 @@ export class SigninComponent {
           localStorage.setItem("login", JSON.stringify(loggedIn));
           console.log(this.activedRoute.snapshot.queryParams['from'])
           if (this.activedRoute.snapshot.queryParams['from'] === 'elofizetes') {
-            console.log("JÓ?")
             this.route.navigateByUrl('/fizetes');
           } else if (this.authService.isAdmin()) {
             this.route.navigateByUrl('/admin/videotar');
             
           } else {
             this.route.navigateByUrl('/elofizetes');
+            console.log(loggedIn);
           }
         }
       }, error => {

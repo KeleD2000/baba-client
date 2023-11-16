@@ -26,22 +26,20 @@ export class AuthService {
   }
 
   register(userData: Register) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
 
-    return this.http.post(`${this.baseUrl}/user/register?_format=json`, userData, httpOptions);
+    return this.http.post(`${this.baseUrl}/user/register?_format=json`, userData, {headers});
   }
 
-  registerAddress(userAddress: Address) {
+  registerAddress(userAddress: any) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/vnd.api+json'
       })
     };
-    return this.http.post(`${this.baseUrl}/user/register?_format=json`, userAddress, httpOptions);
+    return this.http.post(`${this.baseUrl}/jsonapi/profile/customer`, userAddress, httpOptions);
   }
 
   isAuthenticated(){

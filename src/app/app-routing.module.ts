@@ -7,16 +7,15 @@ import { FoglalkozasokbpModule } from './foglalkozasokbp/foglalkozasokbp.module'
 import { RolamModule } from './rolam/rolam.module';
 import { VideotarModule } from './videotar/videotar.module';
 import { AdminGuard } from './guards/admin.guard';
+import { UserGuard } from './guards/user.guard';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { AdatkezelesComponent } from './components/adatkezeles/adatkezeles.component';
 import { AszfComponent } from './components/aszf/aszf.component';
-import { ElofizetesModule } from './elofizetes/elofizetes.module';
 import { KurzusModule } from './kurzus/kurzus.module';
 import { RefreshComponent } from './components/refresh/refresh.component';
-import { UserModule } from './user/user.module';
 import { KurzusoldalComponent } from './kurzus/kurzusoldal/kurzusoldal.component';
 
 const routes: Routes = [
@@ -37,7 +36,7 @@ const routes: Routes = [
   {path: '', loadChildren: () => import('./elofizetes/elofizetes.module').then(e => e.ElofizetesModule)},
   {path: 'kurzusok/:title', loadChildren: () => KurzusModule},
   {path: ':urlParam', component: KurzusoldalComponent},
-  {path: 'user', loadChildren:() => import('./user/user.module').then(u =>u.UserModule)},
+  {path: 'user', loadChildren:() => import('./user/user.module').then(u =>u.UserModule), canActivate: [UserGuard]},
   {path: 'not-found', component: NotFoundComponent},
   {path: 'refresh', component: RefreshComponent},
   {path: '**', component: RefreshComponent}

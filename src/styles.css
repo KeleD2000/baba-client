@@ -1,7 +1,15 @@
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 @import '../node_modules/video.js/dist/video-js.css';
 @import '~typeface-roboto';
-@import '~typeface-roboto-condensed';
+@import '~typeface-roboto-condensed/index.css';
+
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 400;
+      src: local('Roboto Condensed'), local('RobotoCondensed-Regular'), url('../node_modules/typeface-roboto-condensed/files/roboto-condensed-latin-400.woff2') format('woff2');
+  }
 
 * {
     font-family: 'Roboto', sans-serif;

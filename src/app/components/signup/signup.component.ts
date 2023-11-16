@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Address } from 'src/app/models/Address';
 import { Register } from 'src/app/models/Register';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,13 +13,18 @@ import { AuthService } from 'src/app/services/auth.service';
 export class SignupComponent {
 
   registerForm: FormGroup;
+  passwordInputStarted: boolean = false;
+  nameInputStarted: boolean = false;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,private router: Router) {
     this.registerForm = new FormGroup(
       {
         email: new FormControl('', [Validators.required, Validators.email]),
-        name: new FormControl('', Validators.required),
         username: new FormControl('', Validators.required),
+        display_name: new FormControl('', Validators.required),
+        first_name: new FormControl('', Validators.required),
+        last_name: new FormControl('', Validators.required),
+        password: new FormControl('', [Validators.required, Validators.min(8)]),
         birthdate: new FormControl('', Validators.required),
         postcode: new FormControl('', Validators.required),
         city: new FormControl('', Validators.required),
@@ -29,6 +35,22 @@ export class SignupComponent {
     )
   }
 
+  onPasswordInput() {
+    this.passwordInputStarted = true;
+  }
+
+  onNameInput() {
+    this.nameInputStarted = true;
+  }
+
+ mapCountryCode(country: string): string {
+    const countryCodes: { [key: string]: string } = {
+      'Magyarország': 'HU',
+    };
+
+    return countryCodes[country] || ''; // Alapértelmezett érték, ha nincs találat
+  }
+
   onSubmit() {
     if (this.registerForm.valid) {
       const userData: Register = {
@@ -36,36 +58,89 @@ export class SignupComponent {
         name: { value: this.registerForm.get('name')?.value },
         display_name: { value: this.registerForm.get('username')?.value },
         field_birth_date: { value: this.registerForm.get('birthdate')?.value.replace(/\./g, "-") },
+        pass: { value: this.registerForm.get('password')?.value }
+
       }
+
 
       this.authService.register(userData).subscribe((regIn) => {
         if (regIn) {
           console.log(regIn);
-          /*
           for (const [key, value] of Object.entries(regIn)) {
-
-            if (key == "uid") {
-              console.log(key, value);
-              var uid = value[0].value;
-              console.log(uid);
-              const userAddress: Address = {
-                uid: {value: uid},
-                postal_code: { value: this.registerForm.get('postcode')?.value },
-                locality: { value: this.registerForm.get('city')?.value },
-                address_line1: { value: this.registerForm.get('street')?.value },
-                address_line2: { value: this.registerForm.get('snumber')?.value },
-                country_code: { value: this.registerForm.get('country')?.value }
+            if (key === 'uuid') {
+              console.log(value[0].value);
+              const fullName = this.registerForm.get('name')?.value;
+              if (fullName && fullName.includes(' ')) {
+                var [firstName, lastName] = fullName.split(' ');
+                console.log('Keresztnév:', firstName);
+                console.log('Vezetéknév:', lastName);
+              } else {
+                console.log('Hibás névformátum');
               }
-              this.authService.registerAddress(userAddress).subscribe((regAddress) => {
-                if(regAddress){
-                  console.log(regAddress);
+              const addressBody = {
+                "data": {
+                  "type": "profile--customer",
+                  "id": value[0].value,
+                  "attributes": {
+                    "address": {
+                      "country_code": this.registerForm.get('country')?.value,
+                      "locality": this.registerForm.get('city')?.value,
+                      "postal_code": this.registerForm.get('postcode')?.value,
+                      "address_line1": this.registerForm.get('street')?.value,
+                      "address_line2": this.registerForm.get('snumber')?.value,
+                      "given_name": firstName,
+                      "family_name": lastName
+                    }
+                  },
+                  "relationships": {
+                    "uid": {
+                      "data": {
+                        "type": "user--user",
+                        "id": value[0].value
+                      }
+                    }
+                  }
                 }
-              });
+              }
+              this.authService.registerAddress(addressBody).subscribe( s=>{
+                this.router.navigateByUrl('/signin');
+              })
             }
-          }*/
-
+          }
         }
       });
+      /*
+     this.authService.register(userData).subscribe((regIn) => {
+       if (regIn) {
+         console.log(regIn);
+          
+
+        
+         for (const [key, value] of Object.entries(regIn)) {
+
+           if (key == "uid") {
+             console.log(key, value);
+             var uid = value[0].value;
+             console.log(uid);
+             const userAddress: Address = {
+               uid: {value: uid},
+               postal_code: { value: this.registerForm.get('postcode')?.value },
+               locality: { value: this.registerForm.get('city')?.value },
+               address_line1: { value: this.registerForm.get('street')?.value },
+               address_line2: { value: this.registerForm.get('snumber')?.value },
+               country_code: { value: this.registerForm.get('country')?.value },
+
+             }
+             this.authService.registerAddress(userAddress).subscribe((regAddress) => {
+               if(regAddress){
+                 console.log(regAddress);
+               }
+             });
+           }
+         }
+
+       }
+     });*/
     }
   }
 

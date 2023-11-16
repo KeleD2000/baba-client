@@ -30,6 +30,8 @@ import { CsrfInterceptorService } from './csrf-interceptor';
 import { RefreshComponent } from './components/refresh/refresh.component';
 import { SharedService } from './services/shared.service';
 import { VideoStatusService } from './services/video-status.service';
+import { SpecialCharacterDirective } from './directives/special-character.directive';
+import { FullNameDirective } from './directives/full-name.directive';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSwXraHIkw4DG5uRRsfD_FFqAhMWG5X_w",
@@ -52,7 +54,9 @@ const firebaseConfig = {
     ResetPasswordComponent,
     AdatkezelesComponent,
     AszfComponent,
-    RefreshComponent
+    RefreshComponent,
+    SpecialCharacterDirective,
+    FullNameDirective
   ],
   imports: [
     BrowserModule,
