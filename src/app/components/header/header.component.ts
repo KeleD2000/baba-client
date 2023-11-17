@@ -14,6 +14,7 @@ export class HeaderComponent {
   @Input() loggedUser: any;
   @Input() showImage?: boolean;
   @Input() isAdmin?: boolean;
+  displayName: string = '';
   enrolledCourse: any[] = [];
   subscriber: boolean = false;
 
@@ -21,7 +22,7 @@ export class HeaderComponent {
     private router: Router,
     private authService: AuthService,
     private fooldalService: FooldalService
-  ){}
+  ) { }
   isActiveMenu(menuPath: string) {
     return this.router.isActive(menuPath, true);
   }
@@ -45,7 +46,7 @@ export class HeaderComponent {
     localStorage.removeItem('product');
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.fooldalService.getAllUsers().subscribe(s => {
       for (const [key, value] of Object.entries(s)) {
         if (key === 'data') {
@@ -65,6 +66,26 @@ export class HeaderComponent {
             if (localStorage.getItem('login')) {
               // Olvassa ki a 'login' kulcs alatt tárolt JSON adatot
               const loginData = JSON.parse(localStorage.getItem('login') || '');
+
+              if (loginData && loginData.current_user && loginData.current_user.uid) {
+                this.fooldalService.getAllUsers().subscribe(user => {
+                  for (const [key, value] of Object.entries(user)) {
+                    if (key === 'data') {
+                      for (let i in value) {
+                        if (value[i].attributes.drupal_internal__uid !== undefined) {
+                          var allUid = value[i].attributes.drupal_internal__uid;
+                        }
+                        
+                        var loginUid = Number(loginData.current_user.uid);
+                        if (allUid !== undefined && allUid === loginUid) {
+                          this.displayName = value[i].attributes.display_name;
+                          localStorage.setItem('display_name', this.displayName);
+                        }
+                      }
+                    }
+                  }
+                })
+              }
 
               // Ellenőrizze, hogy az adatok tartalmaznak-e 'name' mezőt
               if (loginData && loginData.current_user && loginData.current_user.name) {
@@ -89,28 +110,32 @@ export class HeaderComponent {
     });
 
     this.fooldalService.enrolledUser().subscribe((t) => {
-      for(const [key, value] of Object.entries(t)){
+      console.log(t);
+      for (const [key, value] of Object.entries(t)) {
         const obj = {
-          title : "",
+          title: "",
           cid: 0
         }
-        for(let c in value){
-          for(let v in value[c]){
-            if(v === 'title'){
+        for (let c in value) {
+          for (let v in value[c]) {
+            if (v === 'title') {
               obj.title = value[c][v][0].value;
             }
-            if(v === 'cid'){
+            if (v === 'cid') {
               obj.cid = value[c][v][0].value;
             }
-            
+
           }
         }
-        if(obj.title !== ''){
+        if (obj.title !== '') {
           this.enrolledCourse.push(obj)
         }
-        
+
       }
 
     });
+
+    
+
   }
 }

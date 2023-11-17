@@ -31,7 +31,8 @@ import { RefreshComponent } from './components/refresh/refresh.component';
 import { SharedService } from './services/shared.service';
 import { VideoStatusService } from './services/video-status.service';
 import { SpecialCharacterDirective } from './directives/special-character.directive';
-import { FullNameDirective } from './directives/full-name.directive';
+import { GyikComponent } from './components/gyik/gyik.component';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSwXraHIkw4DG5uRRsfD_FFqAhMWG5X_w",
@@ -56,7 +57,7 @@ const firebaseConfig = {
     AszfComponent,
     RefreshComponent,
     SpecialCharacterDirective,
-    FullNameDirective
+    GyikComponent
   ],
   imports: [
     BrowserModule,

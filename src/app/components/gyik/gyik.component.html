@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="row">
+        <div *ngFor="let item of faq; let i = index">
+            <div (click)="toggleFaq(i)">
+              {{ item.titleCat }}
+            </div>
+            <div *ngIf="item.isOpen">
+              <div>
+                Kérdések
+              </div>
+            </div>
+          </div>
+    </div>
+</div>

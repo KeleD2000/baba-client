@@ -79,7 +79,7 @@ export class AppComponent {
       } else if (event instanceof NavigationEnd || event instanceof NavigationError) {
         setTimeout(() => {
           this.spinner = false;
-        }, 2500);
+        }, 3000);
       }
     });
 

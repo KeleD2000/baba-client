@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-12 py-3">
             <form [formGroup]="registerForm" class="col-sm-6" style="margin: 0 auto;">
-                <div class="mb-3">
+            <div class="mb-3">
                     <label class="form-label">Email cím</label>
                     <input formControlName="email" type="email" class="form-control">
                     <div *ngIf="registerForm.get('email')?.errors?.['required'] && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
@@ -16,7 +16,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Felhasználó név</label>
-                    <input formControlName="username" type="text" class="form-control" (input)="onNameInput()" appFullName="true">
+                    <input formControlName="username" type="text" class="form-control">
                     <div *ngIf="registerForm.get('username')?.errors?.['required'] && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)"
                         class="error-message">
                         Felhasználó név megadása kötelező
@@ -49,7 +49,7 @@
                 <div class="mb-3">
                     <label class="form-label">Jelszó</label>
                     <input formControlName="password" type="password" class="form-control" required minlength="8"
-                    (input)="onPasswordInput()" appSpecialCharacter="true">
+                        (input)="onPasswordInput()" appSpecialCharacter="true">
                     <div *ngIf="registerForm.get('password')?.errors?.['required'] && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
                         class="error-message">
                         Jelszó megadása kötelező
@@ -57,8 +57,20 @@
                     <div *ngIf="registerForm.controls['password']?.errors?.['minlength']" class="error-message">
                         A jelszónak legalább 8 karakter hosszúnak kell lennie.
                     </div>
-                    <div *ngIf="registerForm.controls['password']?.errors?.['specialCharacter']  && passwordInputStarted" class="error-message">
+                    <div *ngIf="registerForm.controls['password']?.errors?.['specialCharacter']  && passwordInputStarted"
+                        class="error-message">
                         A jelszónak tartalmaznia kell legalább egy speciális karaktert.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Jelszó megadása mégegyszer</label>
+                    <input formControlName="passwordAccept" type="password" class="form-control">
+                    <div *ngIf="registerForm.get('passwordAccept')?.errors?.['required'] && (registerForm.get('passwordAccept')?.dirty || registerForm.get('passwordAccept')?.touched)"
+                        class="error-message">
+                        Jelszó megadása mégegyszer kötelező
+                    </div>
+                    <div *ngIf="registerForm.hasError('passwordMismatch')" class="error-message">
+                        Jelszók nem egyeznek meg.
                     </div>
                 </div>
                 <div class="mb-3">

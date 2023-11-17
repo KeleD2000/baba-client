@@ -340,4 +340,12 @@ export class FooldalService {
     return this.http.patch(`${this.baseUrl}/jsonapi/course_object_fulfillment/course_object_fulfillment/` + id, data, {headers});
   }
 
+  getFaqCat(){
+    return this.http.get(`${this.baseUrl}/jsonapi/taxonomy_term/faq_categories?sort=weight`);
+  }
+
+  getFaqNode(){
+    return this.http.get(`${this.baseUrl}/jsonapi/node/faq`);
+  }
+
 }

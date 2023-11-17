@@ -17,6 +17,7 @@ import { AszfComponent } from './components/aszf/aszf.component';
 import { KurzusModule } from './kurzus/kurzus.module';
 import { RefreshComponent } from './components/refresh/refresh.component';
 import { KurzusoldalComponent } from './kurzus/kurzusoldal/kurzusoldal.component';
+import { GyikComponent } from './components/gyik/gyik.component';
 
 const routes: Routes = [
   {path: '', loadChildren: () => FooldalModule},
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path: 'resetpassword', component: ResetPasswordComponent},
   {path: 'gdpr', component: AdatkezelesComponent},
   {path: 'aszf', component: AszfComponent},
+  {path: 'GYIK', component: GyikComponent},
   {path: 'fooldal', loadChildren: () => FooldalModule},
   {path: 'babafeszkelo-kurzus', loadChildren: () => BabafeszkelokurzusModule},
   {path: 'lombikra-felkeszito-kurzus', loadChildren: () => LombikrafelkeszitokurzusModule},

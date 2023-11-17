@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Login } from '../models/Login';
 import { User } from '../models/User';
 import { Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { Register } from '../models/Register';
 import { Address } from '../models/Address';
 import { UserService } from './user.service';
@@ -19,9 +19,6 @@ export class AuthService {
   }
 
   login(user: Login) {
-    const headers = new HttpHeaders({
-      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
-    })
     return this.http.post<User>(`${this.baseUrl}/user/login?_format=json`, user);
   }
 
@@ -30,7 +27,7 @@ export class AuthService {
       'Content-Type': 'application/json'
     })
 
-    return this.http.post(`${this.baseUrl}/user/register?_format=json`, userData, {headers});
+    return this.http.post(`${this.baseUrl}/user/register?_format=json`, userData, { headers });
   }
 
   registerAddress(userAddress: any) {
@@ -42,27 +39,34 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/jsonapi/profile/customer`, userAddress, httpOptions);
   }
 
-  isAuthenticated(){
+  isAuthenticated() {
     const login = localStorage.getItem('login');
     return login;
   }
 
-  getAuthenticatedUserID(){
+  getAuthenticatedUserID() {
     const login = localStorage.getItem('login');
-    if(login){
+    if (login) {
       var json = JSON.parse(login);
       return json.current_user.uid;
     }
     return undefined;
   }
 
-  getUserId(uid: string){
+  getUserId(uid: string) {
     const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
       Authorization: 'Basic ' + auth
     });
-    return this.http.get(`${this.baseUrl}/jsonapi/user/user?filter[uid][value]=${uid}`, {headers});
+    return this.http.get(`${this.baseUrl}/jsonapi/user/user?filter[uid][value]=${uid}`, { headers });
+  }
+
+  getApiKey(){
+    const headers = new HttpHeaders({
+      'X-CSRF-Token' : 'hfn2HQxMP7yKY6gYxxzXMY-fYRIC7pOSeK6ShmW-lKs'
+    })
+    return this.http.get(`${this.baseUrl}/api/key-auth`);
   }
 
 

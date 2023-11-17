@@ -43,6 +43,9 @@ export class SigninComponent {
         if (loggedIn) {
           console.log(loggedIn);
           this.userService.setLoggedInUser(loggedIn);
+          this.authService.getApiKey().subscribe( api => {
+            console.log(api);
+          })
           localStorage.setItem("login", JSON.stringify(loggedIn));
           console.log(this.activedRoute.snapshot.queryParams['from'])
           if (this.activedRoute.snapshot.queryParams['from'] === 'elofizetes') {
