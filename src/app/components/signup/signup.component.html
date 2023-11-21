@@ -54,13 +54,6 @@
                         class="error-message">
                         Jelszó megadása kötelező
                     </div>
-                    <div *ngIf="registerForm.controls['password']?.errors?.['minlength']" class="error-message">
-                        A jelszónak legalább 8 karakter hosszúnak kell lennie.
-                    </div>
-                    <div *ngIf="registerForm.controls['password']?.errors?.['specialCharacter']  && passwordInputStarted"
-                        class="error-message">
-                        A jelszónak tartalmaznia kell legalább egy speciális karaktert.
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Jelszó megadása mégegyszer</label>

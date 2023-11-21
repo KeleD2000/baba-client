@@ -261,6 +261,10 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/products/default`);
   }
 
+  getAllVideoStoreProducts(){
+    return this.http.get(`${this.baseUrl}/jsonapi/products/videostore`);
+  }
+
   addItemToCart(data: any) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json'
@@ -343,9 +347,9 @@ export class FooldalService {
   getFaqCat(){
     return this.http.get(`${this.baseUrl}/jsonapi/taxonomy_term/faq_categories?sort=weight`);
   }
-
-  getFaqNode(){
-    return this.http.get(`${this.baseUrl}/jsonapi/node/faq`);
+  
+  getScreeningQuestions(id: any){
+    return this.http.get(`${this.baseUrl}/jsonapi/node/faq?sort=field_weight&filter[field_faq_category.id]=` + id);
   }
 
 }

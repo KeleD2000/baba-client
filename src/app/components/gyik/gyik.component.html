@@ -1,14 +1,21 @@
 <div class="container">
-    <div class="row">
-        <div *ngFor="let item of faq; let i = index">
-            <div (click)="toggleFaq(i)">
-              {{ item.titleCat }}
-            </div>
-            <div *ngIf="item.isOpen">
-              <div>
-                Kérdések
-              </div>
-            </div>
-          </div>
+  <div class="row">
+    <div class="text-center">
+      <p class="p-pos">GYIK</p>
     </div>
+    <div *ngFor="let category of faq; let i = index" class="mb-3">
+      <div (click)="toggleFaq(i)" class="cat-name">
+        {{ category.titleCat }}
+      </div>
+      <div *ngIf="category.isOpen">
+        <div *ngFor="let question of category.questions" [@fadeInOut]>
+          <div (click)="question.isOpen = !question.isOpen">
+            {{ question.question }}
+          </div>
+          <div *ngIf="question.isOpen" [innerHTML]="question.answer" [@fadeInOut]>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
