@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class FooldalService {
-  private baseUrl = "https://baba.jrdatashu.win";
+  private baseUrl = "https://baba.datastep.solutions";
 
 
   getBaseUrl() {

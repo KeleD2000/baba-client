@@ -12,7 +12,7 @@ import { UserService } from './user.service';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = "https://baba.jrdatashu.win";
+  private baseUrl = "https://baba.datastep.solutions";
 
   constructor(private http: HttpClient, private router: Router, private userService: UserService) {
 

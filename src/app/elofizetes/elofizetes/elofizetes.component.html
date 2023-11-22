@@ -13,9 +13,14 @@
                                 <div class="card-body" *ngFor="let courseexpires of courseDetailsExpires">
                                     <p class="card-text-name">{{courseexpires.title}}</p>
                                     <p class="card-text pt-1">Hozzáférés vége: {{courseexpires.end_date}}</p>
-                                    <div class="text-end">
+                                    <div *ngIf="!courseexpires.videostore" class="text-end">
                                         <button class="btn bcolor mt-3"
                                             [routerLink]="'/kurzusok/' + coursee.title">Foglalkozások
+                                            <br>megnyitása</button>
+                                    </div>
+                                    <div *ngIf="courseexpires.videostore" class="text-end">
+                                        <button class="btn bcolor mt-3"
+                                            [routerLink]="'/user/videotar_elofizetett'">Videótéka
                                             <br>megnyitása</button>
                                     </div>
                                 </div>
@@ -80,6 +85,7 @@
                             <div class="card-div mx-auto">
                                 <div class="card-body" *ngFor="let product of products">
                                     <p class="card-text-name">{{ product.title }}</p>
+                                    <div [innerHTML]="product.desc"></div>
                                     <p *ngIf="product.list_price" class="card-text">Lista ár: {{product.list_price}}</p>
                                     <p class="card-text">Ár: {{product.price}}</p>
                                     <p class="card-text">Előfizetés hossza: {{product.month}} 

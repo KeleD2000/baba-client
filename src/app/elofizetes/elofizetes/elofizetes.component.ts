@@ -94,71 +94,68 @@ export class ElofizetesComponent {
                         var name = loginData.current_user.name;
                       }
                     }
-                    if(loginData){
-                      if (name === objProf.name) {
-                        var userId = vv[j].id;
-                        console.log(userId);
-                        this.fooldalService.getProfileCustomer().subscribe((profile) => {
-                          for (const [k, v] of Object.entries(profile)) {
-                            if (k === 'data') {
-                              for (let j in v) {
-                                if (userId === v[j].relationships.uid.data.id) {
-                                  objBilling.country_code = v[j].attributes.address.country_code;
-                                  objBilling.locality = v[j].attributes.address.locality;
-                                  objBilling.postal_code = v[j].attributes.address.postal_code;
-                                  objBilling.address_line1 = v[j].attributes.address.address_line1;
-                                  objBilling.address_line2 = v[j].attributes.address.address_line2;
-                                  objBilling.given_name = v[j].attributes.address.given_name;
-                                  objBilling.family_name = v[j].attributes.address.family_name;
+                    if (name === objProf.name) {
+                      var userId = vv[j].id;
+                      console.log(userId);
+                      this.fooldalService.getProfileCustomer().subscribe((profile) => {
+                        for (const [k, v] of Object.entries(profile)) {
+                          if (k === 'data') {
+                            for (let j in v) {
+                              if (userId === v[j].relationships.uid.data.id) {
+                                objBilling.country_code = v[j].attributes.address.country_code;
+                                objBilling.locality = v[j].attributes.address.locality;
+                                objBilling.postal_code = v[j].attributes.address.postal_code;
+                                objBilling.address_line1 = v[j].attributes.address.address_line1;
+                                objBilling.address_line2 = v[j].attributes.address.address_line2;
+                                objBilling.given_name = v[j].attributes.address.given_name;
+                                objBilling.family_name = v[j].attributes.address.family_name;
+                              }
+                            }
+                          }
+                        }
+                        this.productDatas = {
+                          "data": {
+                            "type": value[i].relationships.order_id.data.type,
+                            "id": value[i].relationships.order_id.data.id,
+                            "attributes": {
+                              "billing_information": {
+                                "address": {
+                                  "country_code": objBilling.country_code,
+                                  "locality": objBilling.locality,
+                                  "postal_code": objBilling.postal_code,
+                                  "address_line1": objBilling.address_line1,
+                                  "address_line2": objBilling.address_line2,
+                                  "given_name": objBilling.given_name,
+                                  "family_name": objBilling.family_name,
+                                },
+                                "tax_number": {
+                                  "type": null,
+                                  "value": null
+                                }
+                              }
+                            },
+                            "relationships": {
+                              "uid": {
+                                "data": {
+                                  "type": "user--user",
+                                  "id": userId
                                 }
                               }
                             }
                           }
-                          this.productDatas = {
-                            "data": {
-                              "type": value[i].relationships.order_id.data.type,
-                              "id": value[i].relationships.order_id.data.id,
-                              "attributes": {
-                                "billing_information": {
-                                  "address": {
-                                    "country_code": objBilling.country_code,
-                                    "locality": objBilling.locality,
-                                    "postal_code": objBilling.postal_code,
-                                    "address_line1": objBilling.address_line1,
-                                    "address_line2": objBilling.address_line2,
-                                    "given_name": objBilling.given_name,
-                                    "family_name": objBilling.family_name,
-                                  },
-                                  "tax_number": {
-                                    "type": null,
-                                    "value": null
-                                  }
-                                }
-                              },
-                              "relationships": {
-                                "uid": {
-                                  "data": {
-                                    "type": "user--user",
-                                    "id": userId
-                                  }
-                                }
+                        };
+                        var orderId = value[i].relationships.order_id.data.id;
+                        this.fooldalService.addProductWithCart(this.productDatas, orderId).subscribe((p) => {
+                          for (const [keyP, valueP] of Object.entries(p)) {
+                            if (keyP === 'data') {
+                              for (let k in valueP) {
+                                console.log(valueP.id);
+                                localStorage.setItem('productId', valueP.id.toString());
                               }
                             }
-                          };
-                          var orderId = value[i].relationships.order_id.data.id;
-                          this.fooldalService.addProductWithCart(this.productDatas, orderId).subscribe((p) => {
-                            for (const [keyP, valueP] of Object.entries(p)) {
-                              if (keyP === 'data') {
-                                for (let k in valueP) {
-                                  if (valueP.id !== undefined && valueP.id !== null) {
-                                    localStorage.setItem('productId', valueP.id.toString());
-                                  }
-                                }
-                              }
-                            }
-                          })
+                          }
                         });
-                      }
+                      });
                     }
                   }
                 }
@@ -173,7 +170,6 @@ export class ElofizetesComponent {
         this.router.navigate(['/signin'], { queryParams: { from: 'elofizetes' } });
       }
     });
-
   }
 
   ngOnInit() {
@@ -255,19 +251,21 @@ export class ElofizetesComponent {
     //active licenszzek
     this.fooldalService.enrolledCourseLicens().subscribe(s => {
       for (let j in this.courseDetails) {
-        console.log(this.courseDetails[j]);
         var uuid = this.courseDetails[j].uuid;
         for (const [key, value] of Object.entries(s)) {
           if (key === 'data') {
             for (let i in value) {
-              console.log(value[i]);
               if (value[i].state === 'active') {
                 this.active = true;
                 const obj = {
                   title: '',
                   uuid: '',
+                  videostore: false,
                   end_date: ''
                 };
+                if(value[i].product_variation.product_id.type === 'product--videostore'){
+                  obj.videostore = true;
+                }
                 // Módosított feltétel: Mindig hozzáadja az objektumot, ha az adott elem aktív
                 if (value[i].product_variation.product_id.field_course) {
                   obj.uuid = value[i].product_variation.product_id.field_course.id;
@@ -275,13 +273,14 @@ export class ElofizetesComponent {
                 obj.title = value[i].product_variation.product_id.title;
                 obj.end_date = value[i].expires.substring(0, 10);
                 this.courseDetailsExpires.push(obj);
+                console.log(this.courseDetailsExpires)
               }
             }
           }
         }
       }
     });
-    
+
 
     this.fooldalService.getAllProducts().subscribe(s => {
       for (const [key, value] of Object.entries(s)) {
@@ -292,9 +291,15 @@ export class ElofizetesComponent {
               month: '',
               list_price: '',
               price: '',
+              desc: '' as SafeHtml,
               type: '',
               type_id: ''
             };
+
+            if(value[i].body !== null){
+              const convert = this.htmlconvertService.convertToHtml(value[i].body.value);
+              objProduct.desc = convert;
+            }
             if (value[i].variations.length > 0) {
               objProduct.type = value[i].variations[0].type;
               objProduct.type_id = value[i].variations[0].id;
@@ -324,7 +329,7 @@ export class ElofizetesComponent {
           }
         }
       }
-      //
+      console.log(this.products);
     });
 
     this.fooldalService.getAllVideoStoreProducts().subscribe(s => {
@@ -333,14 +338,20 @@ export class ElofizetesComponent {
           for (let l in vvv) {
             for (let x in vvv[l].variations) {
               if (vvv[l].variations[x].sku !== 'VTFREE') {
+                console.log(vvv[l]);
                 const objProduct = {
                   title: '',
                   month: '',
                   list_price: '',
                   price: '',
+                  desc: '' as SafeHtml,
                   type: '',
                   type_id: ''
                 };
+                if(vvv[l].body !== null){
+                  const convert = this.htmlconvertService.convertToHtml(vvv[l].body.value);
+                  objProduct.desc = convert;
+                }
                 objProduct.type = vvv[l].variations[x].type;
                 objProduct.type_id = vvv[l].variations[x].id;
                 const regex = /(.+?) - (\d+ hónap)/;
@@ -351,14 +362,14 @@ export class ElofizetesComponent {
                   objProduct.title = cutTitle;
                   objProduct.month = cutMonth;
                 }
-                if(vvv[l].variations[x].list_price !== null){
+                if (vvv[l].variations[x].list_price !== null) {
                   objProduct.list_price = vvv[l].variations[x].list_price.formatted;
                 }
                 objProduct.price = vvv[l].variations[x].price.formatted;
                 if (Object.values(objProduct).some(value => value !== '')) {
                   this.products.push(objProduct);
                 }
-              } 
+              }
             }
           }
         }
@@ -386,7 +397,6 @@ export class ElofizetesComponent {
         for (const [key, value] of Object.entries(s)) {
           if (key === 'data') {
             for (let i in value) {
-              console.log(value[i]);
               if (value[i].product_variation.type !== 'unknown') {
                 if (value[i].state === 'pending' || value[i].state === 'canceled') {
                   const obj = {
@@ -423,7 +433,6 @@ export class ElofizetesComponent {
                       obj.discount_price = value[i].product_variation.price.formatted;
                     }
                   }
-                  console.log(obj);
                   this.courseNonEnrollmentsDetailsExpires.push(obj);
                 }
               }
