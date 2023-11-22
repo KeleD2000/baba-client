@@ -60,9 +60,9 @@
                                 <div class="card-body"
                                     *ngFor="let courseNonExpires of courseNonEnrollmentsDetailsExpires">
                                     <p class="card-text-name">{{ courseNonExpires.title }}</p>
-                                    <p class="card-text" [innerHTML]="courseNonExpires.describe"></p>
-                                    <p *ngIf="courseNonExpires.price" class="card-text">Lista ár: {{ courseNonExpires.price }}</p>
-                                    <p class="card-text">Ár: {{ courseNonExpires.discount_price }}</p>
+                                    <p class="card-text" [innerHTML]="courseNonExpires.desc"></p>
+                                    <p *ngIf="courseNonExpires.price" class="card-text">Lista ár: {{ courseNonExpires.list_price }}</p>
+                                    <p class="card-text">Ár: {{ courseNonExpires.price }}</p>
                                     <p class="card-text">Előfizetés hossza: {{courseNonExpires.month}}
                                     </p>
                                     <div class="text-end">
