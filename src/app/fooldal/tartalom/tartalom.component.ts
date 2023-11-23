@@ -11,7 +11,7 @@ import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 })
 export class TartalomComponent {
   content: any[] = [];
-  baseUrl: string = "https://baba.jrdatashu.win";
+  baseUrl: string = "https://baba.datastep.solutions";
   isTextCondensed: boolean = false;
   isTextBackgroundGreen: boolean = false;
 
@@ -27,6 +27,7 @@ export class TartalomComponent {
               this.fooldalService.getFooldal(v.id).subscribe((page) =>{
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
+                    console.log(value.field_paragraphs[k]);
                     const obj = {content: "" as SafeHtml, img_url: "", img_layout: "", text_condensed: "" as SafeHtml, button_content: "" as SafeHtml, text_highlighted_content: "" as SafeHtml, video: "", video_thumbnail:""};
                     if(value.field_paragraphs[k].type === 'paragraph--image_full'){
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;

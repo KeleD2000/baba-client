@@ -57,16 +57,50 @@
                         <div class="row no-gutters">
                             <div class="card-div mx-auto">
                                 <p class="card-title p-2">Ez is érdekelhet</p>
+                                <div *ngFor="let courseNonExpires of courseNonEnrollmentsDetailsExpires">
+                                    <ng-container *ngIf="!isCourseActive(courseNonExpires.sku)">
+                                        <div class="card-body">
+                                            <p class="card-text-name">{{ courseNonExpires.title }}</p>
+                                            <p class="card-text" [innerHTML]="courseNonExpires.desc"></p>
+                                            <p *ngIf="courseNonExpires.price" class="card-text">Lista ár: {{
+                                                courseNonExpires.list_price }}</p>
+                                            <p class="card-text">Ár: {{ courseNonExpires.price }}</p>
+                                            <p class="card-text">Előfizetés hossza: {{courseNonExpires.month}}
+                                            </p>
+                                            <div class="text-end">
+                                                <button class="btn bcolor mt-3"
+                                                    (click)="addCart(courseNonExpires.type, courseNonExpires.type_id)">Előfizetek</button>
+                                            </div>
+                                            <div class="line"></div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--videótéka termékek-->
+
+        <div class="container">
+            <div class="row" *ngIf="vidCourseNonEnrollmentsDetailsExpires.length > 0">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="card-div mx-auto">
                                 <div class="card-body"
-                                    *ngFor="let courseNonExpires of courseNonEnrollmentsDetailsExpires">
+                                    *ngFor="let courseNonExpires of vidCourseNonEnrollmentsDetailsExpires">
                                     <p class="card-text-name">{{ courseNonExpires.title }}</p>
                                     <p class="card-text" [innerHTML]="courseNonExpires.desc"></p>
-                                    <p *ngIf="courseNonExpires.price" class="card-text">Lista ár: {{ courseNonExpires.list_price }}</p>
+                                    <p *ngIf="courseNonExpires.price" class="card-text">Lista ár: {{
+                                        courseNonExpires.list_price }}</p>
                                     <p class="card-text">Ár: {{ courseNonExpires.price }}</p>
                                     <p class="card-text">Előfizetés hossza: {{courseNonExpires.month}}
                                     </p>
                                     <div class="text-end">
-                                        <button class="btn bcolor mt-3" (click)="addCart(courseNonExpires.type, courseNonExpires.type_id)">Előfizetek</button>
+                                        <button class="btn bcolor mt-3"
+                                            (click)="addCart(courseNonExpires.type, courseNonExpires.type_id)">Előfizetek</button>
                                     </div>
                                 </div>
                             </div>
@@ -88,9 +122,10 @@
                                     <div [innerHTML]="product.desc"></div>
                                     <p *ngIf="product.list_price" class="card-text">Lista ár: {{product.list_price}}</p>
                                     <p class="card-text">Ár: {{product.price}}</p>
-                                    <p class="card-text">Előfizetés hossza: {{product.month}} 
+                                    <p class="card-text">Előfizetés hossza: {{product.month}}
                                     <div class="text-end">
-                                        <button routerLink="/fizetes" class="btn bcolor mt-3" (click)="addCart(product.type, product.type_id)">Előfizetek</button>
+                                        <button routerLink="/fizetes" class="btn bcolor mt-3"
+                                            (click)="addCart(product.type, product.type_id)">Előfizetek</button>
                                     </div>
                                 </div>
                             </div>

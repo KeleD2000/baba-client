@@ -34,10 +34,15 @@
     padding-bottom: 45px;
 }
 
-
 .card-text-name {
     color: #0A606F;
     font-size: 18px;
+}
+
+.line {
+    border-bottom: 1.5px solid #00F8F2;
+    margin: 35px auto;
+    width: 740px;
 }
 
 .card-div {

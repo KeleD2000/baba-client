@@ -11,7 +11,7 @@ import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 })
 export class LombikraComponent {
   content: any[] = [];
-  baseUrl: string = "https://baba.jrdatashu.win";
+  baseUrl: string = "https://baba.datastep.solutions";
   isTextCondensed: boolean = false;
   isTextBackgroundGreen: boolean = false;
 

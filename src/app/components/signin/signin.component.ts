@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Login } from 'src/app/models/Login';
 import { AuthService } from 'src/app/services/auth.service';
+import { FooldalService } from 'src/app/services/fooldal.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -23,8 +24,9 @@ export class SigninComponent {
   loginForm: FormGroup;
   loginError?: string;
   showLoginAlert: boolean = false;
+  allUserUsername: any[] = [];
 
-  constructor(private authService: AuthService, private route: Router, private userService: UserService, private activedRoute: ActivatedRoute) {
+  constructor(private authService: AuthService, private route: Router, private userService: UserService, private activedRoute: ActivatedRoute, private fooldalService: FooldalService) {
     this.loginForm = new FormGroup(
       {
         username: new FormControl('', [Validators.required]),
@@ -41,15 +43,19 @@ export class SigninComponent {
       }
       this.authService.login(user).subscribe((loggedIn) => {
         if (loggedIn) {
-          console.log(loggedIn);
+          for(const [key, value] of Object.entries(loggedIn)){
+            console.log(key, value);
+            if(key === 'current_user'){
+              var username = value.name;
+            }
+            if(key === 'api-key'){
+              localStorage.setItem('api-key', JSON.stringify(value));
+            }
+          }
           this.userService.setLoggedInUser(loggedIn);
-          this.authService.getApiKey().subscribe( api => {
-            console.log(api);
-          })
           localStorage.setItem("login", JSON.stringify(loggedIn));
-          console.log(this.activedRoute.snapshot.queryParams['from'])
           if (this.activedRoute.snapshot.queryParams['from'] === 'elofizetes') {
-            this.route.navigateByUrl('/fizetes');
+            this.route.navigateByUrl('/elofizetes');
           } else if (this.authService.isAdmin()) {
             this.route.navigateByUrl('/admin/videotar');
             
@@ -58,6 +64,27 @@ export class SigninComponent {
             console.log(loggedIn);
           }
         }
+        this.fooldalService.getAllUsers().subscribe((user) => {
+          for (const [kk, vv] of Object.entries(user)) {
+            if (kk === 'data') {
+              for (let j in vv) {
+                const currentUsername = vv[j].attributes.name;
+        
+                console.log(currentUsername);
+        
+                if (currentUsername === username) {
+                  console.log(currentUsername);
+                  console.log(username);
+                  console.log(vv[j]);
+                  localStorage.setItem("user_id", JSON.stringify(vv[j].id));
+                  // Ha megtaláltuk a megfelelő felhasználót, akkor kiléphetünk a ciklusból
+                  break;
+                }
+              }
+            }
+          }
+        });
+        
       }, error => {
         this.showLoginAlert = true;
         console.log(error.error.message);

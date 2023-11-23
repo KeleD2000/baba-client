@@ -18,6 +18,7 @@ export class ElofizetesComponent {
   courseDetailsExpires: any[] = [];
   courseNonEnrollmentDetails: any[] = [];//nem feliratkozott
   courseNonEnrollmentsDetailsExpires: any[] = [];
+  vidCourseNonEnrollmentsDetailsExpires: any[] = [];
   course: any[] = [];
   courseCommercie: any[] = [];
   products: any[] = [];
@@ -29,6 +30,7 @@ export class ElofizetesComponent {
   cuoponDatas: any = {};
   licensProduct: any[] = [];
   productsForLicens: any[] = [];
+  productsVidForLicens: any[] = [];
 
   public cuoponIdProduct: string = "";
 
@@ -97,6 +99,7 @@ export class ElofizetesComponent {
                         var name = loginData.current_user.name;
                       }
                     }
+
                     if (name === objProf.name) {
                       var userId = vv[j].id;
                       console.log(userId);
@@ -159,6 +162,73 @@ export class ElofizetesComponent {
                           }
                         });
                       });
+                    } else {
+                        var userId2 = localStorage.getItem('user_id');
+                        if (userId2 !== null) {
+                          var userIdIfNotLog = userId2.replace(/"/g, '');
+                          console.log(userId);
+                        } else {
+                          console.log('A "user_id" kulcs nem található a localStorage-ban.');
+                        }
+                      this.fooldalService.getProfileCustomer().subscribe((profile) => {
+                        for (const [k, v] of Object.entries(profile)) {
+                          if (k === 'data') {
+                            for (let j in v) {
+                              if (userIdIfNotLog === v[j].relationships.uid.data.id) {
+                                objBilling.country_code = v[j].attributes.address.country_code;
+                                objBilling.locality = v[j].attributes.address.locality;
+                                objBilling.postal_code = v[j].attributes.address.postal_code;
+                                objBilling.address_line1 = v[j].attributes.address.address_line1;
+                                objBilling.address_line2 = v[j].attributes.address.address_line2;
+                                objBilling.given_name = v[j].attributes.address.given_name;
+                                objBilling.family_name = v[j].attributes.address.family_name;
+                              }
+                            }
+                          }
+                        }
+                        this.productDatas = {
+                          "data": {
+                            "type": value[i].relationships.order_id.data.type,
+                            "id": value[i].relationships.order_id.data.id,
+                            "attributes": {
+                              "billing_information": {
+                                "address": {
+                                  "country_code": objBilling.country_code,
+                                  "locality": objBilling.locality,
+                                  "postal_code": objBilling.postal_code,
+                                  "address_line1": objBilling.address_line1,
+                                  "address_line2": objBilling.address_line2,
+                                  "given_name": objBilling.given_name,
+                                  "family_name": objBilling.family_name,
+                                },
+                                "tax_number": {
+                                  "type": null,
+                                  "value": null
+                                }
+                              }
+                            },
+                            "relationships": {
+                              "uid": {
+                                "data": {
+                                  "type": "user--user",
+                                  "id": userIdIfNotLog
+                                }
+                              }
+                            }
+                          }
+                        };
+                        var orderId = value[i].relationships.order_id.data.id;
+                        this.fooldalService.addProductWithCart(this.productDatas, orderId).subscribe((p) => {
+                          for (const [keyP, valueP] of Object.entries(p)) {
+                            if (keyP === 'data') {
+                              for (let k in valueP) {
+                                console.log(valueP.id);
+                                localStorage.setItem('productId', valueP.id.toString());
+                              }
+                            }
+                          }
+                        });
+                      });
                     }
                   }
                 }
@@ -173,6 +243,10 @@ export class ElofizetesComponent {
         this.router.navigate(['/signin'], { queryParams: { from: 'elofizetes' } });
       }
     });
+  }
+
+  isCourseActive(sku: string): boolean {
+    return this.licensProduct.some(item => item.sku === sku);
   }
 
   ngOnInit() {
@@ -276,7 +350,6 @@ export class ElofizetesComponent {
                 obj.title = value[i].product_variation.product_id.title;
                 obj.end_date = value[i].expires.substring(0, 10);
                 this.courseDetailsExpires.push(obj);
-                console.log(this.courseDetailsExpires)
               }
             }
           }
@@ -332,7 +405,6 @@ export class ElofizetesComponent {
           }
         }
       }
-      console.log(this.products);
     });
 
     this.fooldalService.getAllVideoStoreProducts().subscribe(s => {
@@ -400,7 +472,6 @@ export class ElofizetesComponent {
           if (key === 'data') {
             for (let i in value) {
               if (value[i].state === 'active') {
-                console.log(value[i]);
                 const licensObj = {
                   title: '',
                   sku: ''
@@ -408,34 +479,28 @@ export class ElofizetesComponent {
                 licensObj.title = value[i].product_variation.title;
                 licensObj.sku = value[i].product_variation.sku;
                 this.licensProduct.push(licensObj);
-                console.log(this.licensProduct)
-                this.productsForLicens.forEach(productsObj => {
-                  if (productsObj.sku != licensObj.sku) {
-                    console.log(`Nem Egyező SKU: ${productsObj.sku}`);
-                    console.log(productsObj);
-                    this.courseNonEnrollmentsDetailsExpires.push(productsObj);
-                  }
-                });
               }
-
             }
           }
         }
-        
+
       });
       this.fooldalService.getAllProducts().subscribe((productDefault) => {
         for (const [kk, vv] of Object.entries(productDefault)) {
           if (kk === 'data') {
             for (let j in vv) {
-              console.log(vv[j].variations[0]);
               var productsObj = {
                 title: '',
                 sku: '',
                 desc: '' as SafeHtml,
                 list_price: '',
                 price: '',
-                month: ''
+                month: '',
+                type: '',
+                type_id: ''
               }
+              productsObj.type = vv[j].variations[0].type;
+              productsObj.type_id = vv[j].variations[0].id;
               productsObj.sku = vv[j].variations[0].sku;
               if (vv[j].body) {
                 const convert = this.htmlconvertService.convertToHtml(vv[j].body.value);
@@ -455,49 +520,68 @@ export class ElofizetesComponent {
               }
               this.productsForLicens.push(productsObj);
               console.log(this.productsForLicens);
-              
+
             }
           }
         }
+        this.productsForLicens.forEach(productsObj => {
+          if (!this.licensProduct.some(item => item.sku === productsObj.sku) &&
+            !this.courseNonEnrollmentsDetailsExpires.some(item => item.sku === productsObj.sku)) {
+            console.log(productsObj);
+            console.log(this.licensProduct)
+            this.courseNonEnrollmentsDetailsExpires.push(productsObj);
+          }
+        });
+        console.log(this.courseNonEnrollmentsDetailsExpires);
       });
       this.fooldalService.getAllVideoStoreProducts().subscribe((productDefault) => {
         for (const [kkk, vvv] of Object.entries(productDefault)) {
           if (kkk === 'data') {
             for (let j in vvv) {
-              console.log(vvv[j].variations[0]);
               for (let x in vvv[j].variations) {
-                console.log(vvv[j].variations[x]);
-                var productsObj = {
+                var productVidObj = {
                   title: '',
                   sku: '',
                   desc: '' as SafeHtml,
                   list_price: '',
                   price: '',
-                  month: ''
+                  month: '',
+                  type: '',
+                  type_id: ''
                 }
-                productsObj.sku = vvv[j].variations[x].sku;
+                console.log(vvv[j]);
+                productVidObj.type = vvv[j].variations[x].type;
+                productVidObj.type_id = vvv[j].variations[x].id;
+                productVidObj.sku = vvv[j].variations[x].sku;
                 if (vvv[j].body) {
                   const convert = this.htmlconvertService.convertToHtml(vvv[j].body.value);
-                  productsObj.desc = convert;
+                  productVidObj.desc = convert;
                 }
                 if (vvv[j].variations[x].list_price !== null) {
-                  productsObj.list_price = vvv[j].variations[x].list_price.formatted;
+                  productVidObj.list_price = vvv[j].variations[x].list_price.formatted;
                 }
-                productsObj.price = vvv[j].variations[x].price.formatted;
+                productVidObj.price = vvv[j].variations[x].price.formatted;
                 const regex = /(.+?) - (\d+ hónap)/;
                 const founded = vvv[j].variations[x].title.match(regex);
                 if (founded) {
                   const cutTitle = founded[1].trim();
                   const cutMonth = founded[2].trim();
-                  productsObj.title = cutTitle;
-                  productsObj.month = cutMonth;
+                  productVidObj.title = cutTitle;
+                  productVidObj.month = cutMonth;
                 }
-                this.productsForLicens.push(productsObj);
-                console.log(this.productsForLicens);
+                this.productsVidForLicens.push(productVidObj);
+                console.log(this.productsVidForLicens);
               }
             }
           }
         }
+        this.productsVidForLicens.forEach(productsObj => {
+          if (!this.licensProduct.some(item => item.sku === productsObj.sku) &&
+            !this.vidCourseNonEnrollmentsDetailsExpires.some(item => item.sku === productsObj.sku)) {
+            this.vidCourseNonEnrollmentsDetailsExpires.push(productsObj);
+            console.log(this.vidCourseNonEnrollmentsDetailsExpires);
+          }
+        });
       });
 
       /*this.fooldalService.enrolledCourseLicens().subscribe(s => {

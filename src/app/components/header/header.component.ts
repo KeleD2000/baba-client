@@ -44,6 +44,9 @@ export class HeaderComponent {
     }
     this.router.navigateByUrl("/fooldal");
     localStorage.removeItem('product');
+    localStorage.removeItem('display_name');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('api-key');
   }
 
   ngOnInit() {
@@ -109,33 +112,9 @@ export class HeaderComponent {
       }
     });
 
-    this.fooldalService.enrolledUser().subscribe((t) => {
-      console.log(t);
-      for (const [key, value] of Object.entries(t)) {
-        const obj = {
-          title: "",
-          cid: 0
-        }
-        for (let c in value) {
-          for (let v in value[c]) {
-            if (v === 'title') {
-              obj.title = value[c][v][0].value;
-            }
-            if (v === 'cid') {
-              obj.cid = value[c][v][0].value;
-            }
-
-          }
-        }
-        if (obj.title !== '') {
-          this.enrolledCourse.push(obj)
-        }
-
-      }
-
-    });
-
-    
+    this.fooldalService.enrolledUser().subscribe( u => {
+      console.log(u);
+    })
 
   }
 }

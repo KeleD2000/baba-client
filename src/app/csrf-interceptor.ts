@@ -11,7 +11,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
     constructor(private fooldalService: FooldalService, private authService: AuthService) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
         // Ellenőrizd, hogy a kérés a megfelelő szolgáltatás URL-ét tartalmazza-e
-        if (request.url.includes('https://baba.datastep.solutions/jsonapi/node/videostore') || request.url.includes('https://baba.datastep.solutions/api/courseoutline') || request.url.includes('https://baba.datastep.solutions/api/courses?enrolled=0') || request.url.includes('https://baba.datastep.solutions/api/courses?enrolled=1') || request.url.includes('https://baba.datastep.solutions/jsonapi/path_alias/path_alias') || request.url.includes('https://baba.datastep.solutions/api/courses') || request.url.includes('https://baba.datastep.solutions/api/favorite-videos') || request.url.includes('https://baba.datastep.solutions/api/flag-entity') || request.url.includes('https://baba.datastep.solutions/jsonapi/licenses/role') || request.url.includes('https://baba.datastep.solutions/jsonapi/profile/customer') || request.url.includes('https://baba.datastep.solutions/jsonapi/orders/default') || request.url.includes('https://baba.datastep.solutions/jsonapi/checkout') || request.url.includes('https://baba.datastep.solutions/jsonapi/promotion-coupons') || request.url.includes('https://baba.datastep.solutions/jsonapi/course_object_fulfillment/course_object_fulfillment') || request.url.includes('https://baba.datastep.solutions/jsonapi/products/videostore')) {
+        if (request.url.includes('https://baba.datastep.solutions/jsonapi/node/videostore') || request.url.includes('https://baba.datastep.solutions/api/courseoutline') || request.url.includes('https://baba.datastep.solutions/jsonapi/path_alias/path_alias') || request.url.includes('https://baba.datastep.solutions/api/courses') || request.url.includes('https://baba.datastep.solutions/api/favorite-videos') || request.url.includes('https://baba.datastep.solutions/api/flag-entity') || request.url.includes('https://baba.datastep.solutions/jsonapi/licenses/role') || request.url.includes('https://baba.datastep.solutions/jsonapi/profile/customer') || request.url.includes('https://baba.datastep.solutions/jsonapi/orders/default') || request.url.includes('https://baba.datastep.solutions/jsonapi/checkout') || request.url.includes('https://baba.datastep.solutions/jsonapi/promotion-coupons') || request.url.includes('https://baba.datastep.solutions/jsonapi/course_object_fulfillment/course_object_fulfillment') || request.url.includes('https://baba.datastep.solutions/jsonapi/products/videostore')) {
           // Lekérdezzük a CSRF tokent
           return from(this.fooldalService.getToken()).pipe(
             switchMap((token) => {
@@ -19,10 +19,11 @@ export class CsrfInterceptorService implements HttpInterceptor {
               if (uid !== undefined) {
                 return from(this.authService.getUserId(uid)).pipe(
                   switchMap((apiKey: any) => {
-                 
+                    const storedApiKey = localStorage.getItem('user_api_key') || 'default_api_key';
+                    const converted = storedApiKey.replace(/"/g, '');
                     const headers = {
                       'X-CSRF-Token': token,
-                      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+                      'api-key': converted
                     };
                     const modifiedRequest = request.clone({
                       setHeaders: headers,
@@ -35,7 +36,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
                     // akkor csak a token-t adjuk hozzá a kéréshez
                     const headers = {
                       'X-CSRF-Token': token,
-                      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+                      'api-key': "48362b0788e1a3d62257e4ca36603006"
                     };
                     const modifiedRequest = request.clone({
                       setHeaders: headers,
@@ -47,7 +48,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
                 // Ha nincs UID, csak a token-t adjuk hozzá a kéréshez
                 const headers = {
                   'X-CSRF-Token': token,
-                  'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+                  'api-key': "48362b0788e1a3d62257e4ca36603006"
                 };
                 const modifiedRequest = request.clone({
                   setHeaders: headers,

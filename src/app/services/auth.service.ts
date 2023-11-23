@@ -62,14 +62,6 @@ export class AuthService {
     return this.http.get(`${this.baseUrl}/jsonapi/user/user?filter[uid][value]=${uid}`, { headers });
   }
 
-  getApiKey(){
-    const headers = new HttpHeaders({
-      'X-CSRF-Token' : 'hfn2HQxMP7yKY6gYxxzXMY-fYRIC7pOSeK6ShmW-lKs'
-    })
-    return this.http.get(`${this.baseUrl}/api/key-auth`);
-  }
-
-
   isAdmin(): boolean {
     const authenticated = this.isAuthenticated();
     if (authenticated) {
