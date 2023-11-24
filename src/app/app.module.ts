@@ -34,7 +34,6 @@ import { SpecialCharacterDirective } from './directives/special-character.direct
 import { GyikComponent } from './components/gyik/gyik.component';
 
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyBSwXraHIkw4DG5uRRsfD_FFqAhMWG5X_w",
   authDomain: "babafeszkelo-51994.firebaseapp.com",

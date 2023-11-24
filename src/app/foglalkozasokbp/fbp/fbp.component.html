@@ -38,7 +38,39 @@
     </ng-container>
     <ng-container *ngIf="content.youtube_video && !content.img_url && !content.content">
         <div class="col-lg-12 text-center">
-            <iframe class="iframe-size" [src]="content.youtube_video | fbpsafe : 'resourceUrl'" frameborder="0"></iframe>
+            <iframe class="iframe-size" [src]="content.youtube_video | fbpsafe : 'resourceUrl'"
+                frameborder="0"></iframe>
         </div>
     </ng-container>
+    <ng-container>
+        <div class="container">
+            <div class="row">
+              <div class="col-md-6 offset-md-3 text-center">
+                <p class="hall-title">Aktuális foglalkozások</p>
+              </div>
+            </div>
+          
+            <div *ngFor="let hall of hallProducts" class="row">
+              <div class="col-md-6">
+                <p class="pink-title">{{hall.title}}</p>
+                <div class="row">
+                  <div class="col-md-6">
+                    <p><span class="details">Dátum:</span> {{hall.date}}</p>
+                    <p><span class="details">Helyszín:</span> {{hall.place}}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <app-google-map></app-google-map>
+                  </div>
+                </div>
+                <p>{{hall.price}}</p>
+                <div [innerHTML]="hall.desc"></div>
+                <button>Előjegyzés</button>
+                <button>Jelentkezem</button>
+              </div>
+              <div class="line"></div>
+            </div>
+          </div>
+    </ng-container>
 </div>
+
+

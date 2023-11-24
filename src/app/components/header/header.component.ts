@@ -111,10 +111,5 @@ export class HeaderComponent {
         }
       }
     });
-
-    this.fooldalService.enrolledUser().subscribe( u => {
-      console.log(u);
-    })
-
   }
 }

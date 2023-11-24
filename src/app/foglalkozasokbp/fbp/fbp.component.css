@@ -84,3 +84,24 @@
   width: 540px;
   height: 320px;
 }
+
+.hall-title{
+  color: #0A606F;
+  font-family:'Roboto Condensed', sans-serif;
+  font-size: 20px;
+}
+
+.pink-title{
+  color: #F54D9F;
+  font-family: 16px;
+}
+
+.details{
+  color: #0A606F;
+}
+
+.line {
+  border-bottom: 1.5px solid #00F8F2;
+  margin: 35px auto;
+  width: 740px;
+}

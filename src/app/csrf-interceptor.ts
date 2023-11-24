@@ -19,11 +19,12 @@ export class CsrfInterceptorService implements HttpInterceptor {
               if (uid !== undefined) {
                 return from(this.authService.getUserId(uid)).pipe(
                   switchMap((apiKey: any) => {
-                    const storedApiKey = localStorage.getItem('user_api_key') || 'default_api_key';
+                    const storedApiKey = localStorage.getItem('api-key') || 'default_api_key';
                     const converted = storedApiKey.replace(/"/g, '');
+                    console.log(converted);
                     const headers = {
                       'X-CSRF-Token': token,
-                      'api-key': converted
+                      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
                     };
                     const modifiedRequest = request.clone({
                       setHeaders: headers,
@@ -36,7 +37,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
                     // akkor csak a token-t adjuk hozzá a kéréshez
                     const headers = {
                       'X-CSRF-Token': token,
-                      'api-key': "48362b0788e1a3d62257e4ca36603006"
+                      'api-key': "default_api_key"
                     };
                     const modifiedRequest = request.clone({
                       setHeaders: headers,
@@ -48,7 +49,7 @@ export class CsrfInterceptorService implements HttpInterceptor {
                 // Ha nincs UID, csak a token-t adjuk hozzá a kéréshez
                 const headers = {
                   'X-CSRF-Token': token,
-                  'api-key': "48362b0788e1a3d62257e4ca36603006"
+                  'api-key': "default_api_key"
                 };
                 const modifiedRequest = request.clone({
                   setHeaders: headers,
