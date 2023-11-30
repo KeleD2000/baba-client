@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, SecurityContext } from '@angular/core';
+import { format, parseISO, isEqual, isBefore, isAfter } from 'date-fns';
+import { ChangeDetectorRef, Component, ElementRef, Renderer2, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { FooldalService } from 'src/app/services/fooldal.service';
@@ -18,27 +19,93 @@ export class FbpComponent {
   baseUrl: string = "https://baba.datastep.solutions";
   isTextCondensed: boolean = false;
   isTextBackgroundGreen: boolean = false;
+  showModal1: boolean = false;
+  showModal2: boolean = false;
+  modalTitle1: string = '';
+  modalTitle2: string = '';
+  modalContent1: string = '';
+  modalContent2: string = '';
+  isLoggedIn: boolean = false;
   private hallSubscription: Subscription | undefined;
 
   constructor(private fooldalService: FooldalService, private datePipe: DatePipe,
-    private htmlconvertService: HtmlconvertService, private sanitizer: DomSanitizer) { }
+    private htmlconvertService: HtmlconvertService, private sanitizer: DomSanitizer,
+    private cdr: ChangeDetectorRef,
+    private renderer: Renderer2) { }
 
   extractVideoIdAndTime(url: string): { videoId: string | null, time: string | null } {
     const videoIdRegex = /[?&]v=([^&#]*)/i;
     const timeRegex = /[?&]t=([^&#]*)/i;
-  
+
     const videoIdMatch = videoIdRegex.exec(url);
     const timeMatch = timeRegex.exec(url);
-  
+
     const videoId = videoIdMatch ? videoIdMatch[1] : null;
     const time = timeMatch ? timeMatch[1] : null;
-  
+
     return { videoId, time };
   }
+
+  isLastItem(index: number): boolean {
+    return index === this.hallProducts.length - 1;
+  }
+
+  openPayModal() {
+    const modal1 = document.getElementById('exampleModal1');
+    if (modal1) {
+      modal1.style.display = 'block';
+      modal1.classList.add('show');
+    }
+
+    this.showModal1 = true;
+    this.renderer.addClass(document.body, 'no-scroll');
+
+    this.modalTitle1 = 'Előjegyzés';
+
+  }
+
+  openBookModal() {
+    const modal2 = document.getElementById('exampleModal2');
   
+    if (modal2) {
+      modal2.style.display = 'block';
+      modal2.classList.add('show');
+    }
+  
+    this.showModal2 = true; // Módosítás itt
+  
+    this.renderer.addClass(document.body, 'no-scroll');
+
+    this.modalTitle1 = 'Facebook';
+  }
   
 
+  closeModal(modalNumber: number) {
+    const modal1 = document.getElementById('exampleModal1');
+    const modal2 = document.getElementById('exampleModal2');
+
+    if (modal1 && modal2) {
+      modal1.style.display = 'none';
+      modal1.classList.remove('show');
+      modal2.style.display = 'none';
+      modal2.classList.remove('show');
+    }
+
+    this.showModal1 = false;
+    this.showModal2 = false;
+    this.renderer.removeClass(document.body, 'no-scroll');
+  }
+
   ngOnInit() {
+    const isUserLoggedIn = localStorage.getItem('login');
+    if(isUserLoggedIn){
+      this.isLoggedIn = true;
+      console.log(this.isLoggedIn);
+    }else{
+      this.isLoggedIn = false;
+      console.log(this.isLoggedIn);
+    }
+
     this.fooldalService.getId().subscribe((i) => {
       for (const [key, value] of Object.entries(i)) {
         if (Array.isArray(value)) {
@@ -86,9 +153,9 @@ export class FbpComponent {
                     } else if (value.field_paragraphs[k].type === 'paragraph--video') {
                       obj.video = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url
                       obj.video_thumbnail = this.baseUrl + value.field_paragraphs[k].field_video.field_thumbnail.field_media_image.uri.url;
-                    }else if(value.field_paragraphs[k].type === 'paragraph--youtube_video'){
+                    } else if (value.field_paragraphs[k].type === 'paragraph--youtube_video') {
                       const videoId = this.extractVideoIdAndTime(value.field_paragraphs[k].field_youtube_video.field_media_oembed_video).videoId;
-                      obj.youtube_video = "https://www.youtube.com/embed/"+ videoId
+                      obj.youtube_video = "https://www.youtube.com/embed/" + videoId
                     }
                     this.content.push(obj);
 
@@ -101,10 +168,10 @@ export class FbpComponent {
       }
     });
 
-    this.fooldalService.getHallSessionProduct().subscribe( hall => {
-      for( const [key, value] of Object.entries(hall)){
-        if(key === 'data'){
-          for(let i in value){
+    this.fooldalService.getHallSessionProduct().subscribe(hall => {
+      for (const [key, value] of Object.entries(hall)) {
+        if (key === 'data') {
+          for (let i in value) {
             console.log(value[i]);
             const hallObj = {
               title: '',
@@ -114,12 +181,14 @@ export class FbpComponent {
               date: '',
               desc: '' as SafeHtml,
               max_member: '',
-              price: ''
+              price: '',
+              is_booked: false,
+              is_can_pay: false
             }
             hallObj.title = value[i].title;
             hallObj.place = value[i].field_location.field_label;
             let rawDate = value[i].field_date;
-            let formattedDate = rawDate ? this.datePipe.transform(rawDate, 'yyyy. MM. dd. – HH:mm') : '';
+            let formattedDate = rawDate ? this.datePipe.transform(rawDate, 'yyyy.MM.dd. – HH:mm') : '';
             hallObj.date = formattedDate || ''
             let converted = this.htmlconvertService.convertToHtml(value[i].body.value);
             hallObj.desc = converted;
@@ -129,17 +198,31 @@ export class FbpComponent {
             const coordSplit = coord.split(',');
             const NumberLat = Number(coordSplit[0]);
             const NumberLong = Number(coordSplit[1]);
+            const todayDate: string = format(new Date(), 'yyyy.MM.dd');
+            const onlyDate: string = formattedDate ? formattedDate.split(' – ')[0] : '';
+            const convertedTodayDate = format(new Date(todayDate), 'yyyy-MM-dd');
+            const convertedOnlyDate = format(new Date(onlyDate), 'yyyy-MM-dd');
+            const convertTodayDate = parseISO(convertedTodayDate);
+            const convertOnlyDate = parseISO(convertedOnlyDate);
+            console.log(convertTodayDate);
+            console.log(convertOnlyDate);
+            if (isEqual(convertOnlyDate, convertTodayDate) || isBefore(convertOnlyDate, convertTodayDate)) {
+              hallObj.is_can_pay = true
+            } else if (isAfter(convertOnlyDate, convertTodayDate)) {
+              hallObj.is_booked = true;
+            }
             hallObj.lat = NumberLat;
             hallObj.long = NumberLong;
             this.hallProducts.push(hallObj);
             localStorage.setItem('hall', JSON.stringify(this.hallProducts));
+            this.cdr.detectChanges();
           }
         }
       }
     });
     console.log(this.hallProducts)
   }
-  
+
   ngOnDestroy() {
     // Leiratkozás a hallSubscription-ról, hogy elkerüljük a memórialeakokat
     if (this.hallSubscription) {

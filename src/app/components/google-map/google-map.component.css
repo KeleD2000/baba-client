@@ -1,0 +1,11 @@
+.size {
+    width: 85%;
+    height: 100%;
+}
+
+@media(max-width: 565px) {
+    .size {
+        width: 100px;
+        height: 100px;
+    }
+}

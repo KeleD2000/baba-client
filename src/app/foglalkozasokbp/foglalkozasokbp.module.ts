@@ -5,6 +5,7 @@ import { FoglalkozasokbpRoutingModule } from './foglalkozasokbp-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { FbpsafePipe } from '../pipes/fbpsafe.pipe';
 import { GoogleMapComponent } from '../components/google-map/google-map.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -17,7 +18,8 @@ import { GoogleMapComponent } from '../components/google-map/google-map.componen
   imports: [
     CommonModule,
     FoglalkozasokbpRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ],
   providers:[DatePipe]
 })

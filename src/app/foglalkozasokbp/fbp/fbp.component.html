@@ -1,76 +1,133 @@
 <div class="row mb-3" [ngClass]="{'background align-items-center': content.img_url && content.content}"
-    *ngFor="let content of content">
-    <ng-container *ngIf="content.img_url && content.content">
-        <div class="col-lg-6 p-0">
-            <img class="img" *ngIf="content.img_layout == 'img-left'" [src]="content.img_url" alt="" srcset="">
-            <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-right'"></div>
-        </div>
-        <div class="col-lg-6 p-0">
-            <img class="img" *ngIf="content.img_layout == 'img-right'" [src]="content.img_url" alt="" srcset="">
-            <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-left'"></div>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="content.content && !content.img_url">
-        <div class="col-lg-12">
-            <div [innerHTML]="content.content"></div>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="!content.content && content.img_url">
-        <img class="img" [src]="content.img_url" alt="">
-    </ng-container>
-    <ng-container *ngIf="content.button_content && !content.content && !content.img_url">
-        <div class="text-center">
-            <button type="button" class="btn btn-primary button-style" [innerHTML]="content.button_content"></button>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
-        <div [innerHTML]="content.text_condensed" [ngClass]="{'text-con' : isTextCondensed}"></div>
-    </ng-container>
-    <ng-container
-        *ngIf="content.text_highlighted_content && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
-        <div [innerHTML]="content.text_highlighted_content" [ngClass]="{'bgGreen' : isTextBackgroundGreen}"></div>
-    </ng-container>
-    <ng-container
-        *ngIf="content.video && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content && !content.button_content">
-        <app-video-player style="padding-top: 15px;"
-            [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: content.video_thumbnail, sources: [{ src: content.video, type: 'video/mp4' , label: '1080p' },{ src: content.video, type: 'video/mp4' , label: '720p' }, { src: content.video, type: 'video/mp4' , label: '360p' }]}">
-        </app-video-player>
-    </ng-container>
-    <ng-container *ngIf="content.youtube_video && !content.img_url && !content.content">
-        <div class="col-lg-12 text-center">
-            <iframe class="iframe-size" [src]="content.youtube_video | fbpsafe : 'resourceUrl'"
-                frameborder="0"></iframe>
-        </div>
-    </ng-container>
-    <ng-container>
-        <div class="container">
-            <div class="row">
-              <div class="col-md-6 offset-md-3 text-center">
-                <p class="hall-title">Aktuális foglalkozások</p>
-              </div>
-            </div>
-          
-            <div *ngFor="let hall of hallProducts" class="row">
-              <div class="col-md-6">
-                <p class="pink-title">{{hall.title}}</p>
-                <div class="row">
-                  <div class="col-md-6">
-                    <p><span class="details">Dátum:</span> {{hall.date}}</p>
-                    <p><span class="details">Helyszín:</span> {{hall.place}}</p>
-                  </div>
-                  <div class="col-md-6">
-                    <app-google-map></app-google-map>
-                  </div>
-                </div>
-                <p>{{hall.price}}</p>
-                <div [innerHTML]="hall.desc"></div>
-                <button>Előjegyzés</button>
-                <button>Jelentkezem</button>
-              </div>
-              <div class="line"></div>
-            </div>
+  *ngFor="let content of content">
+  <ng-container *ngIf="content.img_url && content.content">
+    <div class="col-lg-6 p-0">
+      <img class="img" *ngIf="content.img_layout == 'img-left'" [src]="content.img_url" alt="" srcset="">
+      <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-right'"></div>
+    </div>
+    <div class="col-lg-6 p-0">
+      <img class="img" *ngIf="content.img_layout == 'img-right'" [src]="content.img_url" alt="" srcset="">
+      <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-left'"></div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="content.content && !content.img_url">
+    <div class="col-lg-12">
+      <div [innerHTML]="content.content"></div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!content.content && content.img_url">
+    <img class="img" [src]="content.img_url" alt="">
+  </ng-container>
+  <ng-container *ngIf="content.button_content && !content.content && !content.img_url">
+    <div class="text-center">
+      <button type="button" class="btn btn-primary button-style" [innerHTML]="content.button_content"></button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
+    <div [innerHTML]="content.text_condensed" [ngClass]="{'text-con' : isTextCondensed}"></div>
+  </ng-container>
+  <ng-container
+    *ngIf="content.text_highlighted_content && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
+    <div [innerHTML]="content.text_highlighted_content" [ngClass]="{'bgGreen' : isTextBackgroundGreen}"></div>
+  </ng-container>
+  <ng-container
+    *ngIf="content.video && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content && !content.button_content">
+    <app-video-player style="padding-top: 15px;"
+      [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: content.video_thumbnail, sources: [{ src: content.video, type: 'video/mp4' , label: '1080p' },{ src: content.video, type: 'video/mp4' , label: '720p' }, { src: content.video, type: 'video/mp4' , label: '360p' }]}">
+    </app-video-player>
+  </ng-container>
+  <ng-container *ngIf="content.youtube_video && !content.img_url && !content.content">
+    <div class="col-lg-12 text-center">
+      <iframe class="iframe-size" [src]="content.youtube_video | fbpsafe : 'resourceUrl'" frameborder="0"></iframe>
+    </div>
+  </ng-container>
+</div>
+<ng-container>
+  <div class="container mt-2">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 text-center">
+        <p class="hall-title">Aktuális foglalkozások</p>
+      </div>
+    </div>
+    <div *ngFor="let hall of hallProducts; let i = index" class="row mb-3">
+      <div class="col-xs-12 col-sm-6">
+        <p class="pink-title">{{hall.title}}</p>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6">
+            <p><span class="details">Dátum:</span> {{hall.date}}</p>
+            <p><span class="details">Helyszín:</span> {{hall.place}}</p>
           </div>
-    </ng-container>
+          <div class="col-xs-12 col-sm-6">
+            <app-google-map></app-google-map>
+          </div>
+
+          <p><span class="details">Ár:</span> {{hall.price}}</p>
+          <div [innerHTML]="hall.desc"></div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div class="text-end margin-button">
+          <button *ngIf="hall.is_booked && !this.isLoggedIn" class="btn btn-primary button-style"
+            (click)="openBookModal()">Előjegyzés</button>
+            <button *ngIf="hall.is_booked && this.isLoggedIn" class="btn btn-primary button-style"
+            (click)="openPayModal()">Előjegyzés</button>
+          <button *ngIf="hall.is_can_pay" class="btn btn-primary button-style"
+            >Jelentkezem</button>
+        </div>
+      </div>
+      <div class="line" *ngIf="!isLastItem(i)"></div>
+    </div>
+
+  </div>
+</ng-container>
+<!-- Modal 1 - Csak szöveges tartalom -->
+<div class="overlay" *ngIf="showModal1"></div>
+<div class="modal fade modalc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  id="exampleModal1" [class.show]="showModal1" *ngFor="let hall of hallProducts;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{ modalTitle1 }}</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+            (click)="closeModal(1)"></button>
+        </div>
+        <div class="modal-body">
+          <p>Köszönjük érdeklődésed a {{hall.title}} foglalkozás kapcsán. Mihelyt a tényleges jelentkezés megnyitásra kerül e-mailben értesítünk.<br>Era</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal(1)">Bezárás</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
-
+<!-- Modal 2 - Input mező és gomb -->
+<div class="overlay" *ngIf="showModal2"></div>
+<div class="modal fade modalc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  id="exampleModal2" [class.show]="showModal2">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Előjegyzés</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+            (click)="closeModal(2)"></button>
+        </div>
+        <div class="modal-body text-center">
+          <p>Email cím:</p>
+          <input type="text">
+          <p>Jelszó:</p>
+          <input type="text" >
+          <div class="mt-3 text-end">
+            <button type="button" class="btn btn-primary button-style">Küldés</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal(2)">Bezárás</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
