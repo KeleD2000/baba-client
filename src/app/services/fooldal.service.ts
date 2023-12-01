@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class FooldalService {
-  private baseUrl = "https://baba.datastep.solutions";
+  private baseUrl = "https://baba.datastep.solutions:8443";
 
 
   getBaseUrl() {
@@ -357,6 +357,13 @@ export class FooldalService {
       'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     })
     return this.http.get(`${this.baseUrl}/jsonapi/products/hallsession`, {headers});
+  }
+
+  postHallBook(data: any){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/vnd.api+json'
+    })
+    return this.http.post(`${this.baseUrl}/jsonapi/hallsession_appointment/default`, data, {headers});
   }
 
 }

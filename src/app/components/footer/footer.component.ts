@@ -10,6 +10,7 @@ import { faCopyright } from '@fortawesome/free-regular-svg-icons';
 export class FooterComponent {
   faFB = faFacebook;
   showModal: boolean = false;
+  showModal2: boolean = false;
   faCopy = faCopyright;
   fatikTok = faTiktok;
   faInsta= faInstagram;
@@ -17,6 +18,20 @@ export class FooterComponent {
   modalContent: string = '';
 
   constructor(private renderer: Renderer2){
+
+  }
+
+  openMessage() {
+    const modal2 = document.getElementById('exampleModal2');
+
+    if (modal2) {
+      modal2.style.display = 'block';
+      modal2.classList.add('show');
+    }
+
+    this.showModal2 = true; // Módosítás itt
+
+    this.renderer.addClass(document.body, 'no-scroll');
 
   }
 
@@ -58,13 +73,17 @@ export class FooterComponent {
   }
   
 
-  closeModal() {
+  closeModal(modalNumber: number) {
     const modal = document.getElementById('exampleModal');
-    if (modal) {
+    const modal2 = document.getElementById('exampleModal2');
+    if (modal && modal2) {
       modal.style.display = 'none';
       modal.classList.remove('show');
+      modal2.style.display = 'none';
+      modal2.classList.remove('show');
     }
     this.showModal = false;
+    this.showModal2 = false;
     this.renderer.removeClass(document.body, 'no-scroll');
   }
 

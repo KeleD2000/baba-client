@@ -17,7 +17,7 @@ export class KedvencVideokComponent {
   faArrowUp = faArrowAltCircleUp;
   faRegularHeart = faRegularHeart;
   faSolidHeart = faSolidHeart;
-  baseUrl: string = "https://baba.jrdatashu.win";
+  baseUrl: string = "https://baba.datastep.solutions:8443";
   isArrow: boolean = false;
   likedData: any = {};
 

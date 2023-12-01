@@ -1,60 +1,101 @@
-<footer class="footer footerstyle" >
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-6">
-          <h3>Kapcsolat </h3>
-          <div>
-            Balogh Erika E.V.
-          </div>
-          <div>
-            adószám: 55388087-1-41
-          </div>
-          <div routerLink="/GYIK" style="cursor: pointer;">
-            GYIK
-          </div>
+<footer class="footer footerstyle">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm">
+        <h3>Kapcsolat </h3>
+        <div>
+          Balogh Erika E.V.
         </div>
-        <div class="col-6 text-end">
-          <div> 
-            <a class="footera afooter" style="margin-right: 10px;" (click)="openModal('fb')"><fa-icon [icon]="faFB"></fa-icon></a>
-            <a class="footera afooter" style="margin-right: 10px;" (click)="openModal('tiktok')"><fa-icon [icon]="fatikTok"></fa-icon></a>
-            <a class="footera afooter" (click)="openModal('insta')"><fa-icon [icon]="faInsta"></fa-icon></a>
-          </div>
-          <div><a class="footera afooter" routerLink="aszf">ÁSZF</a></div>
-          <div><a class="footera afooter" routerLink="gdpr">Adatkezelés</a></div>
-          <div><span>powered by: <a class="footera" href="https://datastep.solutions/">Datastep Hungary Kft.</a></span></div>
+        <div>
+          adószám: 55388087-1-41
+        </div>
+        <div routerLink="/GYIK" style="cursor: pointer;">
+          GYIK
+        </div>
+        <div>
+          erika@babafeszkelo.hu
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <div class="d-flex align-items-center justify-content-center mt-2">
-            <fa-icon style="margin-right: 5px;" [icon]="faCopy"></fa-icon>
-            <p class="ml-2 mb-0">Minden jog fentartva</p> 
-          </div>
-          <p>Tudomásom és beleegyezésem nélkül tilos az oldal szöveges, képi és videó tartalmainak kimásolása, terjesztése. Sok munkám van benne, kérlek tartsd tiszteletben a szerzői és előadói jogokat!</p>
+      <div class="col-sm d-flex justify-content-center align-items-center">
+        <button class="btn btn-primary button-style" (click)="openMessage()">Hírlevél feliratkozás</button>
+      </div>
+      <div class="col-sm text-end">
+        <div>
+          <a class="footera afooter" style="margin-right: 10px;" (click)="openModal('fb')"><fa-icon
+              [icon]="faFB"></fa-icon></a>
+          <a class="footera afooter" style="margin-right: 10px;" (click)="openModal('tiktok')"><fa-icon
+              [icon]="fatikTok"></fa-icon></a>
+          <a class="footera afooter" (click)="openModal('insta')"><fa-icon [icon]="faInsta"></fa-icon></a>
         </div>
-      </div>      
+        <div><a class="footera afooter" routerLink="aszf">ÁSZF</a></div>
+        <div><a class="footera afooter" routerLink="gdpr">Adatkezelés</a></div>
+        <div><span>powered by: <a class="footera" href="https://datastep.solutions/">Datastep Hungary Kft.</a></span>
+        </div>
+      </div>
     </div>
-    <div class="overlay" *ngIf="showModal"></div>
-<div class="modal fade modalc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="d-flex align-items-center justify-content-center mt-2">
+          <fa-icon style="margin-right: 5px;" [icon]="faCopy"></fa-icon>
+          <p class="ml-2 mb-0">Minden jog fentartva</p>
+        </div>
+        <p>Tudomásom és beleegyezésem nélkül tilos az oldal szöveges, képi és videó tartalmainak kimásolása,
+          terjesztése. Sok munkám van benne, kérlek tartsd tiszteletben a szerzői és előadói jogokat!</p>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" *ngIf="showModal"></div>
+  <div class="modal fade modalc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
     id="exampleModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-          <form>
-              <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">{{ modalTitle }}</h5>
-                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
-                  </button>
-              </div>
-              <div class="modal-body">
-                  <div>{{ modalContent }}</div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Bezárás</button>
-              </div>
-          </form>
+        <form>
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{ modalTitle }}</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" (click)="closeModal(1)">
+            </button>
+          </div>
+          <div class="modal-body">
+            <div>{{ modalContent }}</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal(1)">Bezárás</button>
+          </div>
+        </form>
       </div>
+    </div>
   </div>
-  
-</div>
-  
-  </footer>
+  <div class="overlay" *ngIf="showModal2"></div>
+  <div class="modal fade modalc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    id="exampleModal2">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Hírlevél</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" (click)="closeModal(2)">
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <p>Iratkozz fel hírlevelünkre!</p>
+            <p>vmi kis rövid szöveg</p>
+            <p class="mt-2">Email cím:</p>
+            <input type="text">
+            <p class="mt-2">Vezetéknév:</p>
+            <input type="text">
+            <p class="mt-2">Keresztnév:</p>
+            <input type="text">
+            <div class="mt-3 text-end">
+              <button type="button" class="btn btn-primary button-style">Feliratkozás</button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal(2)">Bezárás</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</footer>

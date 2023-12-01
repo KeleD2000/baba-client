@@ -44,7 +44,6 @@ export class SigninComponent {
       this.authService.login(user).subscribe((loggedIn) => {
         if (loggedIn) {
           for(const [key, value] of Object.entries(loggedIn)){
-            console.log(key, value);
             if(key === 'current_user'){
               var username = value.name;
             }
@@ -54,28 +53,26 @@ export class SigninComponent {
           }
           this.userService.setLoggedInUser(loggedIn);
           localStorage.setItem("login", JSON.stringify(loggedIn));
-          if (this.activedRoute.snapshot.queryParams['from'] === 'elofizetes') {
-            this.route.navigateByUrl('/elofizetes');
-          } else if (this.authService.isAdmin()) {
-            this.route.navigateByUrl('/admin/videotar');
-            
-          } else {
-            this.route.navigateByUrl('/elofizetes');
-            console.log(loggedIn);
-          }
+          this.activedRoute.queryParams.subscribe(params => {
+            if (params['from'] === 'elofizetes') {
+              this.route.navigateByUrl('/elofizetes');
+            } else if (params['from'] === 'foglalkozasok-teremben') {
+              this.route.navigateByUrl('/foglalkozasok-teremben');
+            } else if (this.authService.isAdmin()) {
+              this.route.navigateByUrl('/admin/videotar');
+            } else {
+              this.route.navigateByUrl('/elofizetes');
+            }
+          });
+          
         }
         this.fooldalService.getAllUsers().subscribe((user) => {
           for (const [kk, vv] of Object.entries(user)) {
             if (kk === 'data') {
               for (let j in vv) {
                 const currentUsername = vv[j].attributes.name;
-        
-                console.log(currentUsername);
-        
+      
                 if (currentUsername === username) {
-                  console.log(currentUsername);
-                  console.log(username);
-                  console.log(vv[j]);
                   localStorage.setItem("user_id", JSON.stringify(vv[j].id));
                   // Ha megtaláltuk a megfelelő felhasználót, akkor kiléphetünk a ciklusból
                   break;
@@ -87,7 +84,6 @@ export class SigninComponent {
         
       }, error => {
         this.showLoginAlert = true;
-        console.log(error.error.message);
         this.loginError = error.error.message;
         setTimeout(() => {
           this.showLoginAlert = false;

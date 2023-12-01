@@ -60,43 +60,64 @@ export class OsszegzesComponent {
                   for(let j in v){
                     if(v[j].title === productTitle){
                       console.log(v[j].body.value.toString());
-                      /*const createPayPal = {
-                        "intent": "CAPTURE",
-                        "purchase_units": [
+                      const createPayPal = {
+                        "intent" : "CAPTURE",
+                        "purchase_units" : [
                           {
-                            "items": [
+                            "items" : [
                               {
-                                "name": v[j].title,
-                                "description":v[j].body.value.toString(),
-                                "quantity": "1",
-                                "unit_amount": {
-                                  "currency_code": v[j].variations[0].price.currency_code,
-                                  "value": productPrice
+                                "name" : v[j].title,
+                                "description" : v[j].title,
+                                "quantity" : "1",
+                                "unit_amount" : {
+                                  "currency_code" : "HUF",
+                                  "value" : convertedPrice
                                 }
                               }
                             ],
-                            "amount": {
-                              "currency_code": v[j].variations[0].price.currency_code,
-                              "value": productPrice,
-                              "breakdown": {
-                                "item_total": {
-                                  "currency_code": v[j].variations[0].price.currency_code,
-                                  "value": productPrice
+                            "amount" : {
+                              "currency_code" : v[j].variations[0].price.currency_code,
+                              "value" : convertedPrice,
+                              "breakdown" : {
+                                "item_total" : {
+                                  "currency_code" : v[j].variations[0].price.currency_code,
+                                  "value" : convertedPrice
                                 }
                               }
                             }
                           }
                         ],
-                        "application_context": {
-                          "return_url": "https://babafeszkelo-51994.web.app/sikeres_fizetes",
-                          "cancel_url": "https://babafeszkelo-51994.web.app/sikertelen_fizetes"
+                        "application_context" : {
+                          "return_url" : "http://localhost:4200/sikeres_fizetes",
+                          "cancel_url" : "http://localhost:4200/sikertelen_fizetes"
                         }
                       }
                       console.log(createPayPal);
                       console.log(accessToken);
                       this.fooldalService.createPayPalOrder(createPayPal, accessToken).subscribe( p => {
-                        console.log(p);
-                      })*/
+                        for(const [kk, vv] of Object.entries(p)){
+                          if(kk === 'id'){
+                            localStorage.setItem('paypalApi', vv);
+                          }
+                          if(kk === 'links'){
+                            for(let k in vv){
+                              window.location.href = vv[1].href;
+                              
+                            }
+                          }
+                        }
+                      });
+                    }
+                  }
+                }
+              }
+            });
+            this.fooldalService.getHallSessionProduct().subscribe( s => {
+              for(const [k,v] of Object.entries(s)){
+                if(k === 'data'){
+                  for(let j in v){
+                    if(v[j].title === productTitle){
+                      console.log(v[j].body.value.toString());
                       const createPayPal = {
                         "intent" : "CAPTURE",
                         "purchase_units" : [
