@@ -33,9 +33,9 @@ export class HeaderComponent {
       var login = JSON.parse(token);
       this.authService.fetchCsrfToken().subscribe((csrfToken: string) => {
         if (csrfToken) {
-          window.location.reload();
           this.authService.logout(login.logout_token, csrfToken).subscribe(logout => {
             console.log(logout);
+            window.location.reload();
           });
         }
       }, (error) => {

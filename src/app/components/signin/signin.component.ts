@@ -89,17 +89,6 @@ export class SigninComponent {
           this.showLoginAlert = false;
         }, 3000);
       });
-    } else {
-      if (this.loginForm.get('username')?.hasError('required')) {
-        this.loginError = 'Felhasználó név megadása kötelező.';
-      } else if (this.loginForm.get('password')?.hasError('required')) {
-        this.loginError = 'Jelszó megadása kötelező.';
-      }
-  
-      this.showLoginAlert = true;
-      setTimeout(() => {
-        this.showLoginAlert = false;
-      }, 3000);
     }
   }
   

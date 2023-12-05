@@ -15,6 +15,8 @@ export class SignupComponent {
 
   registerForm: FormGroup;
   passwordInputStarted: boolean = false;
+  loginError?: string;
+  showLoginAlert: boolean = false;
 
   constructor(private authService: AuthService,private router: Router) {
     this.registerForm =  new FormGroup(
@@ -51,12 +53,9 @@ export class SignupComponent {
     return countryCodes[country] || ''; // Alapértelmezett érték, ha nincs találat
   }
 
-  onSubmitTry(){
-    console.log(this.registerForm.valid);
-  }
-
   onSubmit() {
     console.log(this.registerForm.valid);
+
     if (this.registerForm.valid) {
       const userData: Register = {
         mail: { value: this.registerForm.get('email')?.value },
@@ -86,7 +85,7 @@ export class SignupComponent {
                       "address_line1": this.registerForm.get('street')?.value,
                       "address_line2": this.registerForm.get('snumber')?.value,
                       "given_name": this.registerForm.get('first_name')?.value,
-                      "family_name": this.registerForm.get('last_name')?.value
+                      "family_name": this.registerForm.get('last_name')?.value,
                     }
                   },
                   "relationships": {
@@ -105,7 +104,15 @@ export class SignupComponent {
             }
           }
         }
-      });
+      }, error => {
+        this.showLoginAlert = true;
+        this.loginError = error.error.message;
+        setTimeout(() => {
+          this.showLoginAlert = false;
+        }, 3000);
+      }
+    
+      );
     }
   }
 
