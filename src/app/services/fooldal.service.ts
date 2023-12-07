@@ -366,4 +366,8 @@ export class FooldalService {
     return this.http.post(`${this.baseUrl}/jsonapi/hallsession_appointment/default`, data, {headers});
   }
 
+  getPromotions(){
+    return this.http.get(`${this.baseUrl}/jsonapi/promotions`)
+  }
+
 }

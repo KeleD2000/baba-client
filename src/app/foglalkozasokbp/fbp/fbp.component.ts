@@ -41,14 +41,12 @@ export class FbpComponent {
     private htmlconvertService: HtmlconvertService, private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef, private renderer: Renderer2, private router: Router) {
     this.bookForm = new FormGroup({
-      email: new FormControl(''),
-      username: new FormControl('')
+      email: new FormControl('')
     });
   }
 
   sendBookForm() {
     if (this.bookForm.valid) {
-      var username = this.bookForm.get('username')?.value;
       var email = this.bookForm.get('email')?.value
     }
     const bookData = {
@@ -57,8 +55,7 @@ export class FbpComponent {
         "attributes": {
           "status": true,
           "field_email": email,
-          "field_email_at": this.convertedDate,
-          "field_name": username
+          "field_email_at": this.convertedDate
         },
         "relationships": {
           "field_product": {
@@ -111,7 +108,6 @@ export class FbpComponent {
         if (key === 'data') {
           for (let i in value) {
             if(value[i].attributes.name === loggedUserName){
-              var loggedUsername = value[i].attributes.name;
               var loggedEmail = value[i].attributes.mail;
               const bookData = {
                 "data": {
@@ -119,8 +115,7 @@ export class FbpComponent {
                   "attributes": {
                     "status": true,
                     "field_email": loggedEmail,
-                    "field_email_at": this.loggedInConvertedDate,
-                    "field_name": loggedUsername
+                    "field_email_at": this.loggedInConvertedDate
                   },
                   "relationships": {
                     "field_product": {

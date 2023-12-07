@@ -19,11 +19,15 @@ export class ElofizetesComponent {
   courseNonEnrollmentDetails: any[] = [];//nem feliratkozott
   courseNonEnrollmentsDetailsExpires: any[] = [];
   vidCourseNonEnrollmentsDetailsExpires: any[] = [];
+  promRole: any[] = [];
   course: any[] = [];
   courseCommercie: any[] = [];
   products: any[] = [];
   private loggedInUserSubscription?: Subscription;
   loggedUser: any;
+  percentage: number = 0;
+  promotionObject: any = {};
+  promotionsArray: any[] = [];
   postDataProducts: any = {};
   active: boolean = false;
   productDatas: any = {};
@@ -163,13 +167,13 @@ export class ElofizetesComponent {
                         });
                       });
                     } else {
-                        var userId2 = localStorage.getItem('user_id');
-                        if (userId2 !== null) {
-                          var userIdIfNotLog = userId2.replace(/"/g, '');
-                          console.log(userId);
-                        } else {
-                          console.log('A "user_id" kulcs nem található a localStorage-ban.');
-                        }
+                      var userId2 = localStorage.getItem('user_id');
+                      if (userId2 !== null) {
+                        var userIdIfNotLog = userId2.replace(/"/g, '');
+                        console.log(userId);
+                      } else {
+                        console.log('A "user_id" kulcs nem található a localStorage-ban.');
+                      }
                       this.fooldalService.getProfileCustomer().subscribe((profile) => {
                         for (const [k, v] of Object.entries(profile)) {
                           if (k === 'data') {
@@ -288,14 +292,54 @@ export class ElofizetesComponent {
       }
     })
 
+    //promoció
+    this.fooldalService.getPromotions().subscribe(p => {
+      for (const [key, value] of Object.entries(p)) {
+        if (key === 'data') {
+          for (let i in value) {
+            console.log(value[i]);
+            this.promotionObject = {
+              name: '',
+              roles: '',
+              percentage: ''
+            }
+            this.promotionObject.name = value[i].attributes.name;
+            if (value[i].attributes.conditions.length > 0) {
+              const rolesObject = value[i].attributes.conditions[0].target_plugin_configuration.roles;
+              const propertyNames = Object.keys(rolesObject);
+              if (propertyNames.length > 0) {
+                this.promotionObject.roles = rolesObject[propertyNames[0]].toString();
+              }
+            }
+            if (value[i].attributes.offer.target_plugin_configuration.percentage) {
+              this.promotionObject.percentage = value[i].attributes.offer.target_plugin_configuration.percentage;
+            }
+            this.promotionsArray.push(this.promotionObject);
+          }
+        }
+      }
+      console.log(this.promotionsArray);
+      for (let i in this.promotionsArray) {
+        this.promRole.push(this.promotionsArray[i].roles);
+      }
+      //bejelentkezve van e
+      const isAuthenticated = this.authService.isAuthenticated();
+      if (isAuthenticated) {
+        this.loggedUser = JSON.parse(isAuthenticated);
+        for (let j in this.loggedUser.current_user.roles) {
+          var loggedProm = this.loggedUser.current_user.roles[j]
+          for (let i in this.promRole) {
+            if(this.promRole[i] === loggedProm){
+             
+              this.percentage = Number(this.promotionObject.percentage);
+              console.log(this.percentage);
+            }
+          }
+        }
+      }
+    });
 
 
-    //bejelentkezve van e
-    const isAuthenticated = this.authService.isAuthenticated();
-    if (isAuthenticated) {
-      this.loggedUser = JSON.parse(isAuthenticated);
-      //console.log(this.loggedUser);
-    }
 
     //feliratkozott kurzusok
     this.fooldalService.enrolledUser().subscribe((course) => {
@@ -440,6 +484,7 @@ export class ElofizetesComponent {
                   objProduct.list_price = vvv[l].variations[x].list_price.formatted;
                 }
                 objProduct.price = vvv[l].variations[x].price.formatted;
+                console.log(this.percentage);
                 if (Object.values(objProduct).some(value => value !== '')) {
                   this.products.push(objProduct);
                 }
@@ -509,7 +554,18 @@ export class ElofizetesComponent {
               if (vv[j].variations[0].list_price !== null) {
                 productsObj.list_price = vv[j].variations[0].list_price.formatted;
               }
-              productsObj.price = vv[j].variations[0].price.formatted;
+              console.log(vv[j].variations[0].price.formatted);
+              const split = vv[j].variations[0].price.formatted.split(',');
+              const priceToConvert = split[0].replace(/\s/g, '');
+              const price = Number(priceToConvert);
+              console.log(this.percentage);
+              console.log(price);
+              const per10 = price * this.percentage;
+              const pricePer10minus = price - per10;
+              console.log(pricePer10minus);
+              const formattedString = pricePer10minus.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ").replace('.', ',');
+              productsObj.price = formattedString;
+
               const regex = /(.+?) - (\d+ hónap)/;
               const founded = vv[j].variations[0].title.match(regex);
               if (founded) {
@@ -560,7 +616,16 @@ export class ElofizetesComponent {
                 if (vvv[j].variations[x].list_price !== null) {
                   productVidObj.list_price = vvv[j].variations[x].list_price.formatted;
                 }
-                productVidObj.price = vvv[j].variations[x].price.formatted;
+                const split = vvv[j].variations[x].price.formatted.split(',');
+                const priceToConvert = split[0].replace(/\s/g, '');
+                const price = Number(priceToConvert);
+                console.log(this.percentage);
+                console.log(price);
+                const per10 = price * this.percentage;
+                const pricePer10minus = price - per10;
+                console.log(pricePer10minus);
+                const formattedString = pricePer10minus.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, " ").replace('.', ',');
+                productVidObj.price = formattedString;
                 const regex = /(.+?) - (\d+ hónap)/;
                 const founded = vvv[j].variations[x].title.match(regex);
                 if (founded) {
@@ -583,89 +648,6 @@ export class ElofizetesComponent {
           }
         });
       });
-
-      /*this.fooldalService.enrolledCourseLicens().subscribe(s => {
-        for (const [key, value] of Object.entries(s)) {
-          if (key === 'data') {
-            for (let i in value) {
-              if (value[i].product_variation.type !== 'unknown') {
-                if (value[i].state === 'pending' || value[i].state === 'canceled') {
-                  const obj = {
-                    uuid: '',
-                    title: '',
-                    describe: '' as SafeHtml,
-                    price: '',
-                    discount_price: '',
-                    month: '',
-                    type: '',
-                    type_id: ''
-
-                  };
-                  console.log();
-                  if (value[i].product_variation.product_id) {
-                    obj.type = value[i].product_variation.product_id.variations[0].type;
-                    obj.type_id = value[i].product_variation.product_id.variations[0].id;
-                    obj.uuid = value[i].product_variation.product_id.field_course.id;
-                    const regex = /(.+?) - (\d+ hónap)/;
-                    const founded = value[i].product_variation.product_id.variations[0].title.match(regex);
-                    if (founded) {
-                      const cutTitle = founded[1].trim();
-                      const cutMonth = founded[2].trim();
-                      obj.title = cutTitle;
-                      obj.month = cutMonth;
-                    }
-                    obj.describe = this.htmlconvertService.convertToHtml(value[i].product_variation.product_id.body.value);
-                    for (let j in value[i].product_variation.list_price) {
-                      if (value[i].product_variation.list_price) {
-                        obj.price = value[i].product_variation.list_price.formatted;
-                      }
-                    }
-                    for (let j in value[i].product_variation.price) {
-                      obj.discount_price = value[i].product_variation.price.formatted;
-                    }
-                  }
-                  this.courseNonEnrollmentsDetailsExpires.push(obj);
-                }
-              }
-            }
-          }
-        }
-      });*/
-      /*
-      this.fooldalService.enrolledCourseLicens().subscribe(s => {
-        for (const [key, value] of Object.entries(s)) {
-          if (key === 'data') {
-            for (let i in value) {
-              var commerceUuid = value[i].product_variation.product_id.field_course.id
-              for (let j in this.course) {
-                const objC = {
-                  title: '',
-                  price: '',
-                  discount_price: '',
-                  s_length_number: '',
-                  s_length_m_y: ''
-                }
-                if (this.course[j].uuidCourse === commerceUuid) {
-                  objC.title = this.course[j].title;
-                  for (let j in value[i].product_variation.list_price) {
-                    objC.price = value[i].product_variation.list_price.formatted;
-                    objC.discount_price = value[i].product_variation.price.formatted;
-                  }
-                  for (let j in value[i].expiration_type.target_plugin_configuration.interval) {
-                    objC.s_length_number = value[i].expiration_type.target_plugin_configuration.interval.interval;
-                    objC.s_length_m_y = value[i].expiration_type.target_plugin_configuration.interval.period;
-                  }
-                  if (Object.values(objC).some(value => value !== '')) {
-                    this.courseCommercie.push(objC);
-                  }
-                }
-              }
-            }
-          }
-        }
-      })
-      console.log(this.courseCommercie);
-  */
     });
 
 
