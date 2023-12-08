@@ -7,12 +7,12 @@ import { FooldalService } from './services/fooldal.service';
 
 
 @Injectable()
-export class CsrfInterceptorService implements HttpInterceptor {
+export class AdminInterceptorService implements HttpInterceptor {
   private baseUrl = 'https://baba.datastep.solutions:8443';
     constructor(private fooldalService: FooldalService, private authService: AuthService) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
         // Ellenőrizd, hogy a kérés a megfelelő szolgáltatás URL-ét tartalmazza-e
-        if (request.url.includes(this.baseUrl + '/user/register?_format=json' || this.baseUrl + '/jsonapi/node/videostore') || request.url.includes(this.baseUrl + '/api/courseoutline') || request.url.includes(this.baseUrl + '/jsonapi/path_alias/path_alias') || request.url.includes(this.baseUrl + '/api/courses') || request.url.includes(this.baseUrl +'/api/favorite-videos') || request.url.includes(this.baseUrl +'/api/flag-entity') || request.url.includes(this.baseUrl + '/jsonapi/licenses/role') || request.url.includes(this.baseUrl + '/jsonapi/profile/customer') || request.url.includes(this.baseUrl + '/jsonapi/orders/default') || request.url.includes(this.baseUrl + '/jsonapi/checkout') || request.url.includes(this.baseUrl + '/jsonapi/promotion-coupons') || request.url.includes(this.baseUrl + '/jsonapi/course_object_fulfillment/course_object_fulfillment') || request.url.includes(this.baseUrl + '/jsonapi/products/videostore') || request.url.includes(this.baseUrl + '/api/courses?enrolled=1') || request.url.includes(this.baseUrl + '/api/courses?enrolled=0')) {
+        if (request.url.includes(this.baseUrl + '/jsonapi/promotions' || this.baseUrl + '/user/register?_format=json') || request.url.includes(this.baseUrl + '/jsonapi/path_alias/path_alias') || request.url.includes(this.baseUrl +'/api/favorite-videos') || request.url.includes(this.baseUrl +'/api/flag-entity') || request.url.includes(this.baseUrl + '/jsonapi/profile/customer') || request.url.includes(this.baseUrl + '/jsonapi/orders/default') || request.url.includes(this.baseUrl + '/jsonapi/checkout') || request.url.includes(this.baseUrl + '/jsonapi/promotion-coupons') || request.url.includes(this.baseUrl + '/jsonapi/course_object_fulfillment/course_object_fulfillment')) {
           // Lekérdezzük a CSRF tokent
           return from(this.fooldalService.getToken()).pipe(
             switchMap((token) => {
@@ -20,12 +20,9 @@ export class CsrfInterceptorService implements HttpInterceptor {
               if (uid !== undefined) {
                 return from(this.authService.getUserId(uid)).pipe(
                   switchMap((apiKey: any) => {
-                    const storedApiKey = localStorage.getItem('api-key') || 'default_api_key';
-                    const converted = storedApiKey.replace(/"/g, '');
-                    console.log(converted);
                     const headers = {
                       'X-CSRF-Token': token,
-                      'api-key': converted
+                      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
                     };
                     const modifiedRequest = request.clone({
                       setHeaders: headers,

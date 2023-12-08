@@ -49,7 +49,7 @@
             </div>
         </div>
     </div>
-    <div id="erdekel" *ngIf="loggedUser">
+    <div id="erdekel" *ngIf="loggedUser && !this.hasProm">
         <div class="container">
             <div class="row" *ngIf="courseNonEnrollmentsDetailsExpires.length > 0">
                 <div class="col-md-12">
@@ -96,6 +96,67 @@
                                     <p *ngIf="courseNonExpires.price" class="card-text">Lista ár: {{
                                         courseNonExpires.list_price }}</p>
                                     <p class="card-text">Ár: {{ courseNonExpires.price }}</p>
+                                    <p class="card-text">Előfizetés hossza: {{courseNonExpires.month}}
+                                    </p>
+                                    <div class="text-end">
+                                        <button class="btn bcolor mt-3"
+                                            (click)="addCart(courseNonExpires.type, courseNonExpires.type_id)">Előfizetek</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="erdekel" *ngIf="loggedUser && this.hasProm">
+        <div class="container">
+            <div class="row" *ngIf="courseNonEnrollmentsDetailsExpiresProm.length > 0">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="card-div mx-auto">
+                                <p class="card-title p-2">Ez is érdekelhet</p>
+                                <div *ngFor="let courseNonExpires of courseNonEnrollmentsDetailsExpiresProm">
+                                    <ng-container *ngIf="!isCourseActive(courseNonExpires.sku)">
+                                        <div class="card-body">
+                                            <p class="card-text-name">{{courseNonExpires.title}}</p>
+                                            <p class="card-text" [innerHTML]="courseNonExpires.desc"></p>
+                                            <p *ngIf="courseNonExpires.price" class="card-text">Teljes ár: {{
+                                                courseNonExpires.list_price }}</p>
+                                            <p class="card-text">Kedvezményes ár: {{ courseNonExpires.price }}</p>
+                                            <p class="card-text">Előfizetés hossza: {{courseNonExpires.month}}
+                                            </p>
+                                            <div class="text-end">
+                                                <button class="btn bcolor mt-3"
+                                                    (click)="addCart(courseNonExpires.type, courseNonExpires.type_id)">Előfizetek</button>
+                                            </div>
+                                            <div class="line"></div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--videótéka termékek-->
+
+        <div class="container">
+            <div class="row" *ngIf="vidCourseNonEnrollmentsDetailsExpiresProm.length > 0">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="card-div mx-auto">
+                                <div class="card-body"
+                                    *ngFor="let courseNonExpires of vidCourseNonEnrollmentsDetailsExpiresProm">
+                                    <p class="card-text-name">{{ courseNonExpires.title }}</p>
+                                    <p class="card-text" [innerHTML]="courseNonExpires.desc"></p>
+                                    <p *ngIf="courseNonExpires.price" class="card-text">Teljes ár: {{
+                                        courseNonExpires.list_price }}</p>
+                                    <p class="card-text">Kedvezményes ár: {{ courseNonExpires.price }}</p>
                                     <p class="card-text">Előfizetés hossza: {{courseNonExpires.month}}
                                     </p>
                                     <div class="text-end">

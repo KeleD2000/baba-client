@@ -32,6 +32,7 @@ import { SharedService } from './services/shared.service';
 import { VideoStatusService } from './services/video-status.service';
 import { SpecialCharacterDirective } from './directives/special-character.directive';
 import { GyikComponent } from './components/gyik/gyik.component';
+import { AdminInterceptorService } from './admin-interceptor';
 
 
 const firebaseConfig = {
@@ -76,6 +77,11 @@ const firebaseConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CsrfInterceptorService,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AdminInterceptorService,
       multi: true,
     },
     HtmlconvertService, SharedService, VideoStatusService

@@ -17,6 +17,7 @@ export class HeaderComponent {
   displayName: string = '';
   enrolledCourse: any[] = [];
   subscriber: boolean = false;
+  videostore: boolean = false;
 
   constructor(
     private router: Router,
@@ -50,6 +51,23 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
+    this.fooldalService.enrolledUser().subscribe( enrolled => {
+      for(const [key, value] of Object.entries(enrolled)){
+        if(key === 'courses'){
+          for(let i in value){
+            const enrolledCourseDetails = {
+              title: '',
+              cid: ''
+            }
+            enrolledCourseDetails.title = value[i].title[0].value;
+            enrolledCourseDetails.cid = value[i].cid[0].value;
+
+            this.enrolledCourse.push(enrolledCourseDetails);
+          }
+        }
+      }
+    })
+
     this.fooldalService.getAllUsers().subscribe(s => {
       for (const [key, value] of Object.entries(s)) {
         if (key === 'data') {
@@ -94,10 +112,10 @@ export class HeaderComponent {
               if (loginData && loginData.current_user && loginData.current_user.name) {
                 const name = loginData.current_user.name;
                 if (name === user.name) {
-                  if (user.roles === 'subscriber') {
-                    this.subscriber = true;
+                  if (user.roles === 'videostore') {
+                    this.videostore = true;
                   } else {
-                    this.subscriber = false;
+                    this.videostore = false;
                   }
                   break; // Kilépés a ciklusból
                 }
@@ -111,9 +129,5 @@ export class HeaderComponent {
         }
       }
     });
-
-    this.fooldalService.enrolledUser().subscribe( user => {
-      console.log(user);
-    })
   }
 }
