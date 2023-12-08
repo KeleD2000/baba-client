@@ -60,7 +60,7 @@ export class SignupComponent {
       const userData: Register = {
         mail: { value: this.registerForm.get('email')?.value },
         name: { value: this.registerForm.get('email')?.value },
-        display_name: { value: this.registerForm.get('username')?.value },
+        display_name: { value: this.registerForm.get('display_name')?.value },
         field_birth_date: { value: this.registerForm.get('birthdate')?.value.replace(/\./g, "-") },
         pass: { value: this.registerForm.get('password')?.value }
 

@@ -66,6 +66,7 @@ export class FizetesComponent {
                   var mail = objProfile.email;
                   objId = valuee[i].id;
                   this.fooldalService.getProfileCustomer().subscribe(p => {
+                    console.log(p)
                     for (const [key, value] of Object.entries(p)) {
                       if (key === 'data') {
                         for (let i in value) {

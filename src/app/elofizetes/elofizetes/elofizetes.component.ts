@@ -257,6 +257,9 @@ export class ElofizetesComponent {
   }
 
   ngOnInit() {
+    this.fooldalService.getProfileCustomer().subscribe( vmi => {
+      console.log(vmi);
+    })
     //usereknek a lekérése és ellenőrzése
     this.fooldalService.getAllUsers().subscribe(s => {
       for (const [key, value] of Object.entries(s)) {
