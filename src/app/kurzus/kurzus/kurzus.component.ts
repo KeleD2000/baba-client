@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, NgZone } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
@@ -29,7 +29,7 @@ export class KurzusComponent {
   videoIds: any[] = [];
   lessonColor: string = 'darkgray';
   visible: boolean = false;
-  private currentLesson: any;
+  private currentLesson: any[] = [];
   private isFirstFalseAfterTrue: boolean = true;
   public videoEnded?: boolean;
   private obj = {
@@ -44,7 +44,8 @@ export class KurzusComponent {
   constructor(private fooldalService: FooldalService,
     private htmlconvertService: HtmlconvertService,
     private router: ActivatedRoute,
-    private videoStatusService: VideoStatusService
+    private videoStatusService: VideoStatusService,
+    private zone: NgZone
   ) {
 
   }
@@ -127,12 +128,13 @@ export class KurzusComponent {
                 if (Array.isArray(v[i].lessons)) {
                   console.log(v[i]);
                   this.checkAndSetVideoEnded(v[i]);
-                  this.currentLesson = v[i];
+                  if (v[i].lessons.length > 0) {
+                    this.currentLesson.push(v[i]);
+                    console.log(this.currentLesson);
+                  }
 
                 }
                 this.block.push(this.obj);
-
-
               }
 
               //console.log(this.block);
@@ -152,47 +154,53 @@ export class KurzusComponent {
     console.log(this.currentLesson);
   }
 
-  onLessonInfoClick(event: Event): void {
+  async onLessonInfoClick(event: Event): Promise<void> {
     const clickedElement = event.target as HTMLElement;
+    if (clickedElement.tagName === 'A' && this.currentLesson.length > 0) {
+      let patchExecuted = false; // Új változó a patch művelet végrehajtásának nyilvántartására
+      const lessonsToPatch = [];
   
-    // Ellenőrizd, hogy az esemény a <a> elemről származik-e
-    if (clickedElement.tagName === 'A') {
-      // Megakadályozzuk az alapértelmezett oldalváltást
-      event.preventDefault();
+      for (let k in this.currentLesson) {
+        for (let j in this.currentLesson[k].lessons) {
+          const lesson = this.currentLesson[k].lessons[j];
+          console.log(lesson.fulfillment);
   
-      // Végzed el a kívánt műveletet (pl. writeLessonCheck)
-      this.writeLessonCheck();
+          // Csak azokat a leckéket tároljuk el, ahol a feltétel teljesül
+          if (lesson.fulfillment.complete.length <= 0) {
+            lessonsToPatch.push(lesson);
+          }
+        }
   
-      // Most lehet engedélyezni az oldalváltást
-      // Példa: egy késleltetett átdobás egy másik oldalra
-      setTimeout(() => {
-        const href = clickedElement.getAttribute('href');
-        window.location.href = href || '';
-      }, 1000); // pl. 1 másodperc késleltetés
-    }
-  }
+        // Ha van olyan lecke, amit patchelni kell, kilépünk mindkét ciklusból
+        if (lessonsToPatch.length > 0) {
+          patchExecuted = true;
+          break;
+        }
+      }
   
-
-  private writeLessonCheck(): void {
-    // Az aktuális lecke a this.currentLesson változóban található
-    
-    if (this.currentLesson) {
-      for (let j in this.currentLesson.lessons) {
+      // Patch műveletet csak akkor hajtjuk végre, ha van olyan lecke, amit patchelni kell
+      if (patchExecuted) {
+        const firstLessonToPatch = lessonsToPatch[0];
         const watchedBody = {
           "data": {
             "type": "course_object_fulfillment--course_object_fulfillment",
-            "id": this.currentLesson.lessons[j].fulfillment.uuid[0].value,
+            "id": firstLessonToPatch.fulfillment.uuid[0].value,
             "attributes": {
               "complete": true
             }
           }
-        }
-        this.fooldalService.patchVideoWatched(watchedBody, this.currentLesson.lessons[j].fulfillment.uuid[0].value).subscribe(v => {
-          console.log(v);
-        })
+        };
+  
+        // Várjuk meg a patchelést, csak az első megfelelő leckére
+        console.log(firstLessonToPatch);
+        console.log(watchedBody);
+        await this.fooldalService.patchVideoWatched(watchedBody, firstLessonToPatch.fulfillment.uuid[0].value).toPromise();
+
+        window.location.reload();
       }
     }
   }
+  
 
   private checkAndSetVideoEnded(vElement: any): void {
     let firstMatch = true;
