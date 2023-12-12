@@ -29,24 +29,25 @@ export class KurzusComponent {
   videoIds: any[] = [];
   lessonColor: string = 'darkgray';
   visible: boolean = false;
+  private currentLesson: any;
   private isFirstFalseAfterTrue: boolean = true;
-  public videoEnded?: boolean ;
+  public videoEnded?: boolean;
   private obj = {
     tema_title: '',
     tema_description: '',
     lessons: [] as {}[]
   };
-  firstBlock : boolean = true;
-  
+  firstBlock: boolean = true;
 
-  
+
+
   constructor(private fooldalService: FooldalService,
     private htmlconvertService: HtmlconvertService,
     private router: ActivatedRoute,
     private videoStatusService: VideoStatusService
   ) {
 
-   }
+  }
 
   toggleTextOverflow(lesson: any) {
     lesson.isTextOverflow = !lesson.isTextOverflow;
@@ -94,12 +95,12 @@ export class KurzusComponent {
     return match ? match[1] : null;
   }
 
-
   ngOnInit(): void {
     this.courseTitle = this.router.snapshot.params['title'];
     this.fooldalService.getCoursesId().subscribe((cids: string[]) => {
       for (const cid of cids) {
         this.fooldalService.enrolledUserOutline(cid).subscribe((out) => {
+          console.log(out);
           for (const [key, v] of Object.entries(out)) {
             if (v.title != undefined && v.title[0].value != this.router.snapshot.params['title']) {
               continue;
@@ -122,9 +123,12 @@ export class KurzusComponent {
                   this.obj.tema_description = v[i].node.body[0].value;
 
                 }
-                
+
                 if (Array.isArray(v[i].lessons)) {
-                 this.checkAndSetVideoEnded(v[i]);
+                  console.log(v[i]);
+                  this.checkAndSetVideoEnded(v[i]);
+                  this.currentLesson = v[i];
+
                 }
                 this.block.push(this.obj);
 
@@ -145,7 +149,49 @@ export class KurzusComponent {
         });
       }
     });
+    console.log(this.currentLesson);
+  }
 
+  onLessonInfoClick(event: Event): void {
+    const clickedElement = event.target as HTMLElement;
+  
+    // Ellenőrizd, hogy az esemény a <a> elemről származik-e
+    if (clickedElement.tagName === 'A') {
+      // Megakadályozzuk az alapértelmezett oldalváltást
+      event.preventDefault();
+  
+      // Végzed el a kívánt műveletet (pl. writeLessonCheck)
+      this.writeLessonCheck();
+  
+      // Most lehet engedélyezni az oldalváltást
+      // Példa: egy késleltetett átdobás egy másik oldalra
+      setTimeout(() => {
+        const href = clickedElement.getAttribute('href');
+        window.location.href = href || '';
+      }, 1000); // pl. 1 másodperc késleltetés
+    }
+  }
+  
+
+  private writeLessonCheck(): void {
+    // Az aktuális lecke a this.currentLesson változóban található
+    
+    if (this.currentLesson) {
+      for (let j in this.currentLesson.lessons) {
+        const watchedBody = {
+          "data": {
+            "type": "course_object_fulfillment--course_object_fulfillment",
+            "id": this.currentLesson.lessons[j].fulfillment.uuid[0].value,
+            "attributes": {
+              "complete": true
+            }
+          }
+        }
+        this.fooldalService.patchVideoWatched(watchedBody, this.currentLesson.lessons[j].fulfillment.uuid[0].value).subscribe(v => {
+          console.log(v);
+        })
+      }
+    }
   }
 
   private checkAndSetVideoEnded(vElement: any): void {
@@ -159,7 +205,7 @@ export class KurzusComponent {
     }
 
     for (let j in vElement.lessons) {
-      
+
       const lesson_obj = {
         video_id: '',
         lessons_title: '',
@@ -180,30 +226,33 @@ export class KurzusComponent {
         this.videoEnded = videoEnded;
         console.log('videoEnded változás:', videoEnded);
         console.log(vElement.fulfillment.complete);
-
-        if (firstMatch && lesson_obj.video_id !== '' && !lesson_obj.completed && this.videoEnded && this.firstBlock) {
-          console.log('videoEnded változás:', this.videoEnded);
-          lesson_obj.video_ended = true;
-          console.log(lesson_obj);
-          console.log(vElement.lessons[j].fulfillment.uuid[0].value);
-          const watchedBody = {
-            "data" : {
-                "type" : "course_object_fulfillment--course_object_fulfillment",
-                "id" : vElement.lessons[j].fulfillment.uuid[0].value,
+        if (vElement.lessons[j].fulfillment !== null) {
+          if (firstMatch && lesson_obj.video_id !== '' && !lesson_obj.completed && this.videoEnded && this.firstBlock) {
+            console.log('videoEnded változás:', this.videoEnded);
+            lesson_obj.video_ended = true;
+            console.log(lesson_obj);
+            console.log(vElement.lessons[j].fulfillment.uuid[0].value);
+            const watchedBody = {
+              "data": {
+                "type": "course_object_fulfillment--course_object_fulfillment",
+                "id": vElement.lessons[j].fulfillment.uuid[0].value,
                 "attributes": {
-                    "complete" : true
+                  "complete": true
                 }
+              }
             }
+            this.fooldalService.patchVideoWatched(watchedBody, vElement.lessons[j].fulfillment.uuid[0].value).subscribe(v => {
+              console.log(v);
+              window.location.reload();
+            })
+
+            this.videoEnded = false;
+            firstMatch = false;
+            this.firstBlock = false;
+            videoEndedSubscription.unsubscribe();
+          }
         }
-        this.fooldalService.patchVideoWatched(watchedBody, vElement.lessons[j].fulfillment.uuid[0].value).subscribe( v => {
-          console.log(v);
-        })
-          
-          this.videoEnded = false;
-          firstMatch = false;
-          this.firstBlock  = false;
-          videoEndedSubscription.unsubscribe();
-        }
+
       });
 
       lesson_obj.lessons_title = vElement.lessons[j].lesson.field_label[0].value;

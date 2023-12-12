@@ -15,14 +15,6 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Felhasználó név</label>
-                    <input formControlName="username" type="text" class="form-control">
-                    <div *ngIf="registerForm.get('username')?.errors?.['required'] && (registerForm.get('username')?.dirty || registerForm.get('username')?.touched)"
-                        class="error-message">
-                        Felhasználó név megadása kötelező
-                    </div>
-                </div>
-                <div class="mb-3">
                     <label class="form-label">Hogyan szólítsunk</label>
                     <input formControlName="display_name" type="text" class="form-control">
                     <div *ngIf="registerForm.get('display_name')?.errors?.['required'] && (registerForm.get('display_name')?.dirty || registerForm.get('display_name')?.touched)"
@@ -111,7 +103,7 @@
                     <input formControlName="country" type="text" class="form-control">
                     <div *ngIf="registerForm.get('country')?.errors?.['required'] && (registerForm.get('country')?.dirty || registerForm.get('country')?.touched)"
                         class="error-message">
-                        Város megadása kötelező
+                        Ország megadása kötelező
                     </div>
                 </div>
                 <div class="mb-3" *ngIf="loginError && showLoginAlert" [@fadeInOut]>

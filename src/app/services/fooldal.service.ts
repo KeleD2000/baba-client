@@ -370,4 +370,8 @@ export class FooldalService {
     return this.http.get(`${this.baseUrl}/jsonapi/promotions`)
   }
 
+
+  getCountryCode(){
+    return this.http.get(`${this.baseUrl}/api/countrylist`);
+  }
 }

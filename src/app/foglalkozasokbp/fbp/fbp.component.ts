@@ -28,6 +28,7 @@ export class FbpComponent {
   modalContent1: string = '';
   modalContent2: string = '';
   selectedProductId: string = '';
+  todayDateVsHallDate: boolean = true;
   convertedDate!: Date;
   loggedInSelectedProductId: string = '';
   loggedInConvertedDate!: Date;
@@ -280,7 +281,8 @@ export class FbpComponent {
               var_type: '',
               convertedDate: '',
               is_booked: false,
-              is_can_pay: false
+              is_can_pay: false,
+              todayDateVsHallDate: true
             }
             hallObj.title = value[i].title;
             hallObj.place = value[i].field_location.field_label;
@@ -307,6 +309,10 @@ export class FbpComponent {
             const convertOnlyDate = parseISO(convertedOnlyDate);
             console.log(convertTodayDate);
             console.log(convertOnlyDate);
+            if(isBefore(convertOnlyDate, convertTodayDate)){
+              hallObj.todayDateVsHallDate = false;
+              
+            }
             if (isEqual(convertOnlyDate, convertTodayDate) || isBefore(convertOnlyDate, convertTodayDate)) {
               hallObj.is_can_pay = true
             } else if (isAfter(convertOnlyDate, convertTodayDate)) {

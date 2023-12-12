@@ -2,16 +2,13 @@
     <div class="arrow-steps clearfix">
         <div class="step"> <span>Adatok</span> </div>
         <div class="step"> <span>Összegzés</span> </div>
-        <div class="step current"><span> Végelegesítés</span> </div>
+        <div class="step current"><span> Véglegesítés</span> </div>
     </div>
 </div>
-<div class="message m-5 p-3 mx-auto">
+<div class="text-center message m-5 p-3 mx-auto">
     Sikeres megrendelés. Számládat hamarosan e-mailen küldjük.
 </div>
-<div class="m-5" *ngFor="let product of toPayProduct">
+<div class="text-center m-5" *ngFor="let product of toPayProduct">
     <p class="cart-content">Megrendelt kurzus</p>
-    <div class="flex-container mb-2">
-        <span class="course-name">{{product.title}}</span>
-        <button  [routerLink]="'/kurzusok/' + product.title" class="btn btn-primary">Irány a kurzus</button>
-    </div>
+    <span class="course-name">{{product.title}}</span>
 </div>
