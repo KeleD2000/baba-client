@@ -67,11 +67,11 @@
       </div>
       <div class="col-xs-12 col-sm-6" *ngIf="hall.todayDateVsHallDate">
         <div class="text-end margin-button">
-          <button *ngIf="hall.is_booked && !this.isLoggedIn" class="btn btn-primary button-style"
+          <button *ngIf="hall.is_booked && !this.isLoggedIn" class="btn btn-primary button-style custom"
             (click)="openBookModal(hall.product_id, hall.convertedDate)">Előjegyzés</button>
-          <button *ngIf="hall.is_booked && this.isLoggedIn" class="btn btn-primary button-style"
+          <button *ngIf="hall.is_booked && this.isLoggedIn" class="btn btn-primary button-style custom"
             (click)="openBookModalInLogged(hall.product_id, hall.convertedDate)">Előjegyzés</button>
-          <button *ngIf="hall.is_can_pay" class="btn btn-primary button-style" (click)="addCart(hall.var_type, hall.var_id)">Jelentkezem</button>
+          <button *ngIf="hall.is_can_pay" class="btn btn-primary button-style custom" (click)="addCart(hall.var_type, hall.var_id)">Jelentkezem</button>
         </div>
       </div>
       <div class="line" *ngIf="!isLastItem(i)"></div>
@@ -120,10 +120,6 @@
             <div class="mt-3">
               <p>Email cím:</p>
               <input formControlName="email" type="text">
-            </div>
-            <div class="mt-3">
-              <p>Hogyan szólitsunk:</p>
-              <input formControlName="name" type="text">
             </div>
           </form>
           <div class="mt-3 text-end">

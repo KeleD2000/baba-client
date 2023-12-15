@@ -54,10 +54,9 @@ export class AuthService {
   }
 
   getUserId(uid: string) {
-    const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
     return this.http.get(`${this.baseUrl}/jsonapi/user/user?filter[uid][value]=${uid}`, { headers });
   }
@@ -96,16 +95,13 @@ export class AuthService {
     return this.http.get<string>(`${this.baseUrl}/session/token`, { responseType: 'text' as 'json' });
   }
 
-  resetPassword(email: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    const data = {
-      mail: email
-    };
-    return this.http.post(`${this.baseUrl}/user/password?_format=json`, JSON.stringify(data), httpOptions);
+  resetPassword(data: any){
+    const headers =  new HttpHeaders({
+      "Content-Type" : "application/vnd.api+json"
+    });
+    return this.http.post(`${this.baseUrl}/jsonapi/user/password/reset`, data, {headers});
   }
+
+
 
 }

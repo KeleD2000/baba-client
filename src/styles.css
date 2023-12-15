@@ -37,6 +37,12 @@ button.btn.btn-primary.button-style{
     border:none;
 }
 
+button.btn.btn-primary.button-style.custom{
+    background-color: #F54D9F;
+    border:none;
+    width: 120px;
+}
+
 .text-con *{
     font-family: 'Roboto Condensed', sans-serif;
 }

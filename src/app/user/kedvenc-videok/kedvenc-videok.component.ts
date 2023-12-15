@@ -96,7 +96,7 @@ export class KedvencVideokComponent {
           obj.video_url_360p = this.baseUrl + value.field_converted_360p;
           obj.video_url_720p = this.baseUrl + value.field_converted_720p;
           obj.video_url_1080p = this.baseUrl + value.field_converted_1080p;
-          obj.thumbnail = value.thumbnail;
+          obj.thumbnail = this.baseUrl + value.field_thumbnail;
         }
         obj.mid = value.mid;
         this.favoriteVideos.push(obj);

@@ -132,22 +132,37 @@ li:hover .cat-image span {
     color: #F54D9F;
 }
 
-@media screen and (max-width: 991px){
-    .like-button{
-        top: 110px  !important;
+@media screen and (max-width: 991px) {
+    .like-button {
+        top: 110px !important;
     }
 }
 
-.read-more-button{
-    color:#F54D9F;
+.read-more-button {
+    color: #F54D9F;
     padding: 5px 10px;
     cursor: pointer;
-  }
-  
+}
 
-  .truncated-text {
-    max-height: 115px; /* A videó magasságához igazítsd */
+
+.truncated-text {
+    max-height: 115px;
+    /* A videó magasságához igazítsd */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
-  }
+}
+
+.overlay {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.modal {
+    z-index: 9999;
+}

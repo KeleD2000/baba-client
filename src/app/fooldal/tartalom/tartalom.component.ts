@@ -33,7 +33,9 @@ export class TartalomComponent {
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
                     }else if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
                       obj.content = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
-                      obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_inline.field_media_image.uri.url;
+                      if(value.field_paragraphs[k].field_image_inline.field_media_image){
+                        obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_inline.field_media_image.uri.url;
+                      }
                       obj.img_layout = value.field_paragraphs[k].field_layout;
                     }else if(value.field_paragraphs[k].type === 'paragraph--text'){
                       if(value.field_paragraphs[k].field_content !== undefined){
@@ -63,6 +65,7 @@ export class TartalomComponent {
                         this.isTextBackgroundGreen = false;
                       } 
                     }else if(value.field_paragraphs[k].type === 'paragraph--video'){
+                      console.log(value.field_paragraphs[k].field_video);
                       obj.video = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url
                       obj.video_thumbnail = this.baseUrl + value.field_paragraphs[k].field_video.field_thumbnail.field_media_image.uri.url;
                       console.log(obj.video_thumbnail);

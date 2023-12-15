@@ -15,13 +15,11 @@
                                     <p class="card-text pt-1">Hozzáférés vége: {{courseexpires.end_date}}</p>
                                     <div *ngIf="!courseexpires.videostore" class="text-end">
                                         <button class="btn bcolor mt-3"
-                                            [routerLink]="'/kurzusok/' + coursee.title">Foglalkozások
-                                            <br>megnyitása</button>
+                                            [routerLink]="'/kurzusok/' + coursee.title">Foglalkozások megnyitása</button>
                                     </div>
                                     <div *ngIf="courseexpires.videostore" class="text-end">
                                         <button class="btn bcolor mt-3"
-                                            [routerLink]="'/user/videotar_elofizetett'">Videótéka
-                                            <br>megnyitása</button>
+                                            [routerLink]="'/user/videotar_elofizetett'">Videótéka megnyitása</button>
                                     </div>
                                 </div>
                             </div>

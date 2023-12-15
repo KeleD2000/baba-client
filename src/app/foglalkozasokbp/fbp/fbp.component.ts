@@ -33,7 +33,9 @@ export class FbpComponent {
   loggedInSelectedProductId: string = '';
   loggedInConvertedDate!: Date;
   isLoggedIn: boolean = false;
+  userUuid: string = '';
   productDatas: any = {};
+  bookData: any = {};
   postDataProducts: any = {};
   bookForm!: FormGroup
   private hallSubscription: Subscription | undefined;
@@ -42,15 +44,13 @@ export class FbpComponent {
     private htmlconvertService: HtmlconvertService, private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef, private renderer: Renderer2, private router: Router) {
     this.bookForm = new FormGroup({
-      email: new FormControl(''),
-      name: new FormControl('')
+      email: new FormControl('')
     });
   }
 
   sendBookForm() {
     if (this.bookForm.valid) {
       var email = this.bookForm.get('email')?.value
-      var name = this.bookForm.get('name')?.value
     }
     const bookData = {
       "data": {
@@ -58,8 +58,7 @@ export class FbpComponent {
         "attributes": {
           "status": true,
           "field_email": email,
-          "field_email_at": this.convertedDate,
-          "field_name" : name
+          "field_email_at": this.convertedDate
         },
         "relationships": {
           "field_product": {
@@ -103,24 +102,25 @@ export class FbpComponent {
 
     if (storedDataString) {
 
-        const storedDataObject = JSON.parse(storedDataString);
-        var loggedUserName = storedDataObject.current_user.name
-    } 
+      const storedDataObject = JSON.parse(storedDataString);
+      var loggedUserName = storedDataObject.current_user.name
+    }
 
     this.fooldalService.getAllUsers().subscribe(user => {
       for (const [key, value] of Object.entries(user)) {
         if (key === 'data') {
           for (let i in value) {
-            if(value[i].attributes.name === loggedUserName){
+            if (value[i].attributes.name === loggedUserName) {
               var loggedEmail = value[i].attributes.mail;
-              const bookData = {
+              this.userUuid = value[i].id;
+              console.log(this.userUuid);
+              this.bookData = {
                 "data": {
                   "type": "hallsession_appointment--default",
                   "attributes": {
                     "status": true,
                     "field_email": loggedEmail,
-                    "field_email_at": this.loggedInConvertedDate,
-                    "field_name" : loggedUserName
+                    "field_email_at": this.loggedInConvertedDate
                   },
                   "relationships": {
                     "field_product": {
@@ -128,13 +128,20 @@ export class FbpComponent {
                         "type": "product--hallsession",
                         "id": this.loggedInSelectedProductId
                       }
+                    },
+                    "uid": {
+                      "data": {
+                        "type": "user--user",
+                        "id": this.userUuid
+                      }
                     }
                   }
                 }
+
               }
-              this.fooldalService.postHallBook(bookData).subscribe( user => {
+              this.fooldalService.postHallBook(this.bookData).subscribe(user => {
                 console.log(user);
-              })
+              });
             }
           }
         }
@@ -309,9 +316,9 @@ export class FbpComponent {
             const convertOnlyDate = parseISO(convertedOnlyDate);
             console.log(convertTodayDate);
             console.log(convertOnlyDate);
-            if(isBefore(convertOnlyDate, convertTodayDate)){
+            if (isBefore(convertOnlyDate, convertTodayDate)) {
               hallObj.todayDateVsHallDate = false;
-              
+
             }
             if (isEqual(convertOnlyDate, convertTodayDate) || isBefore(convertOnlyDate, convertTodayDate)) {
               hallObj.is_can_pay = true
@@ -447,13 +454,13 @@ export class FbpComponent {
                         });
                       });
                     } else {
-                        var userId2 = localStorage.getItem('user_id');
-                        if (userId2 !== null) {
-                          var userIdIfNotLog = userId2.replace(/"/g, '');
-                          console.log(userId);
-                        } else {
-                          console.log('A "user_id" kulcs nem található a localStorage-ban.');
-                        }
+                      var userId2 = localStorage.getItem('user_id');
+                      if (userId2 !== null) {
+                        var userIdIfNotLog = userId2.replace(/"/g, '');
+                        console.log(userId);
+                      } else {
+                        console.log('A "user_id" kulcs nem található a localStorage-ban.');
+                      }
                       this.fooldalService.getProfileCustomer().subscribe((profile) => {
                         for (const [k, v] of Object.entries(profile)) {
                           if (k === 'data') {

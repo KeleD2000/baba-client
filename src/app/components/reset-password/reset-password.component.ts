@@ -21,16 +21,19 @@ export class ResetPasswordComponent {
     )
   }
 
-  resetPw(){
-    if(this.resetpw.valid){
+  resetPw() {
+    if (this.resetpw.valid) {
       console.log(this.resetpw.get('email')?.value);
-      this.authService.resetPassword(this.resetpw.get('email')?.value).subscribe((response) => {
-        if (response && Object.keys(response).length > 0) {
-          // Sikeres válasz, itt tudod kezelni az adatokat
-          console.log('Sikeres válasz:', response);
-        } else {
-          console.error('Üres válasz vagy érvénytelen adatok.');
+      const resetPw = {
+        "data": {
+          "type": "user--password-reset",
+          "attributes": {
+            "mail": this.resetpw.get('email')?.value
+          }
         }
+      }
+      this.authService.resetPassword(resetPw).subscribe( pw => {
+        console.log(pw);
       });
     }
   }

@@ -1,25 +1,30 @@
 <div class="container">
   <p class="p_text">Videótéka</p>
   <div class="d-flex justify-content-between">
-    <button [routerLink]="'/user/videotar_elofizetett'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'napi'}"
-      (click)="toggleButtonState('napi')">Napi ajánlat</button>
-    <button [routerLink]="'/user/kedvenc-videok'" type="button" class="btn btn-primary m-4" [ngClass]="{'active-button' : isButtonActive === 'kedvenc'}"
-      (click)="toggleButtonState('kedvenc')">Kedvenc videóim</button>
+    <button [routerLink]="'/user/videotar_elofizetett'" type="button" class="btn btn-primary m-4"
+      [ngClass]="{'active-button' : isButtonActive === 'napi'}" (click)="toggleButtonState('napi')">Napi
+      ajánlat</button>
+    <button [routerLink]="'/user/kedvenc-videok'" type="button" class="btn btn-primary m-4"
+      [ngClass]="{'active-button' : isButtonActive === 'kedvenc'}" (click)="toggleButtonState('kedvenc')">Kedvenc
+      videóim</button>
   </div>
   <div>
     <p class="text-left">Válaszd ki, hol tartasz éppen:</p>
-    <ul *ngFor="let cat of objCat; let i = index" [ngClass]="{'active-cat': isCategoryActive(cat)}" (click)="toggleCategory(cat, i)">
+    <ul *ngFor="let cat of objCat; let i = index" [ngClass]="{'active-cat': isCategoryActive(cat)}"
+      (click)="toggleCategory(cat, i)">
       <li>
-        <span [class.active-icon]="i === activeCategoryIndex"><fa-icon class="icon" [icon]="faCirc"></fa-icon></span> {{ cat.catTitle }}
+        <span [class.active-icon]="i === activeCategoryIndex"><fa-icon class="icon" [icon]="faCirc"></fa-icon></span> {{
+        cat.catTitle }}
       </li>
     </ul>
     <div *ngIf="activeCategoryIndex >= 0" id="catImageContainer">
       <img class="img" [src]="objCat[activeCategoryIndex].photo_url" alt="{{ objCat[activeCategoryIndex].catTitle }}">
-      <span id="catDescSpan" [innerHTML]="showSummary ? objCat[activeCategoryIndex].catSummary : objCat[activeCategoryIndex].catDesc"></span>
+      <span id="catDescSpan"
+        [innerHTML]="showSummary ? objCat[activeCategoryIndex].catSummary : objCat[activeCategoryIndex].catDesc"></span>
       <p class="read-more-button text-end" (click)="toggleCatDesc()">
         {{ showFullCatDesc ? 'Kevesebb' : 'Tovább' }}
       </p>
-    </div>    
+    </div>
   </div>
   <div class="text-center">
     <button type="button" class="btn btn-primary m-4" (click)="loadRecommendedVideos()">Kérem az ajánlott
@@ -40,15 +45,38 @@
         </div>
         <div class="lesson-info">
           <h3>{{ vid.vidTitle }}</h3>
-          <div [innerHTML]="vid.vidDesc" [class.truncated-text]="vid.isTextOverflow"></div>    
-          <p class="read-more-button text-right" *ngIf="isTextOverflowing(vid.vidDesc)" (click)="toggleTextOverflow(vid)">{{ vid.isTextOverflow ? 'TOVÁBB' : 'KEVESEBB' }}</p>
-        </div>       
-        <button *ngIf="!isItFavorite" type="button" class="like-button" (click)="toggleLike()">
-          <fa-icon style="display: flex;" [icon]="isLiked ? faSolidHeart : faRegularHeart"></fa-icon>
+          <div [innerHTML]="vid.vidDesc" [class.truncated-text]="vid.isTextOverflow"></div>
+          <p class="read-more-button text-right" *ngIf="isTextOverflowing(vid.vidDesc)"
+            (click)="toggleTextOverflow(vid)">{{ vid.isTextOverflow ? 'TOVÁBB' : 'KEVESEBB' }}</p>
+        </div>
+        <button *ngIf="!vid.isItFavorite" type="button" class="like-button" (click)="toggleLike(vid.mid)">
+          <fa-icon style="display: flex;" [icon]="vid.isLiked ? faSolidHeart : faRegularHeart"></fa-icon>
         </button>
-        <button *ngIf="isItFavorite" type="button" class="like-button" (click)="toggleLike()">
-          <fa-icon style="display: flex;" [icon]="isLiked ? faSolidHeart : faSolidHeart"></fa-icon>
+        <button *ngIf="vid.isItFavorite" type="button" class="like-button" (click)="toggleLike(vid.mid)">
+          <fa-icon style="display: flex;" [icon]="vid.isLiked ? faRegularHeart : faSolidHeart"></fa-icon>
         </button>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" *ngIf="showModal"></div>
+  <div class="modal fade modalc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    id="exampleModal1" [class.show]="showModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{ modalTitle }}</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+              (click)="closeModal()"></button>
+          </div>
+          <div class="modal-body">
+            <p>{{this.loginError}}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+              (click)="closeModal()">Bezárás</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

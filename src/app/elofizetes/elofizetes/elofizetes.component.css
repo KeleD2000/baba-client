@@ -2,6 +2,8 @@
     background-color: #E6009F;
     color: white;
     font-family: 'Roboto Condensed', sans-serif;
+    width: 195px;
+    text-align: center;
 }
 
 .card {

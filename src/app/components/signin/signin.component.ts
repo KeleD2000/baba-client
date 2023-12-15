@@ -84,6 +84,7 @@ export class SigninComponent {
         
       }, error => {
         this.showLoginAlert = true;
+        console.log(error);
         this.loginError = error.error.message;
         setTimeout(() => {
           this.showLoginAlert = false;

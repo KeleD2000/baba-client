@@ -1,15 +1,23 @@
-import { Component, SecurityContext } from '@angular/core';
+import { Component, Renderer2, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { faCircle, faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faSolidHeart, faArrowAltCircleDown, faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 
 @Component({
   selector: 'app-viditeka',
   templateUrl: './viditeka.component.html',
-  styleUrls: ['./viditeka.component.css']
+  styleUrls: ['./viditeka.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      state('in', style({ opacity: 1 })),
+      transition(':enter', [style({ opacity: 0 }), animate(300)]),
+      transition(':leave', animate(300, style({ opacity: 0 })))
+    ])
+  ]
 })
 export class ViditekaComponent {
   favoriteVideos: any[] = [];
@@ -23,20 +31,37 @@ export class ViditekaComponent {
   faRegularHeart = faRegularHeart;
   faSolidHeart = faSolidHeart;
   baseUrl: string = "https://baba.datastep.solutions:8443";
-  isLiked: boolean = false;
   isArrow: boolean = false;
   isButtonActive: string = 'napi';
   isItFavorite: boolean = false;
   likedData: any = {};
+  loginError?: string;
+  showLoginAlert: boolean = false;
   buttonChange: string = '';
   partialCatDesc: string = ''; // Az első 5 sor a kategória szövegéből
   isFullCatDescVisible: boolean = false;
+  showModal: boolean = false;
+  modalTitle: string = '';
+  modalContent: string = '';
   showFullCatDesc: boolean = false; // Zászló a teljes kategória leírásának megjelenítéséhez
   showSummary: boolean = false;
 
 
-  constructor(private fooldalService: FooldalService, private htmlConvert: HtmlconvertService, private sanitizer: DomSanitizer) {
+  constructor(private fooldalService: FooldalService, private htmlConvert: HtmlconvertService,
+    private sanitizer: DomSanitizer, private renderer: Renderer2
+  ) {
 
+  }
+
+  closeModal() {
+    const modal1 = document.getElementById('exampleModal1');
+    if (modal1) {
+      modal1.style.display = 'none';
+      modal1.classList.remove('show');
+    }
+    this.showModal = false;
+    this.renderer.removeClass(document.body, 'no-scroll');
+    window.location.reload();
   }
 
   toggleCatDesc() {
@@ -87,22 +112,43 @@ export class ViditekaComponent {
     return isOverflowing;
   }
 
-  toggleLike() {
-    this.isLiked = !this.isLiked;
-    this.fooldalService.getFavoritesVideos().subscribe(v => {
-      this.favoriteVideos.push(v);
-      for (let i in this.favoriteVideos) {
-        console.log(this.favoriteVideos[i]);
-        if (this.favoriteVideos[i].length <= 10) {
-          this.fooldalService.likedVideos(this.likedData).subscribe(liked => {
-            console.log(this.likedData);
-            console.log(liked);
-          });
-        } else {
-          console.log("Error");
-        }
+  toggleLike(videoMid: number) {
+    const videoIndex = this.objVid.findIndex(vid => vid.mid === videoMid);
+    if (videoIndex !== -1) {
+      this.objVid[videoIndex].isLiked = !this.objVid[videoIndex].isLike
+      this.likedData = {
+        "entity_type": "media",
+        "entity_id": videoMid,
+        "flag_id": "favorite_videos"
+
       }
-    });
+      this.fooldalService.getFavoritesVideos().subscribe(v => {
+        this.favoriteVideos.push(v);
+        for (let i in this.favoriteVideos) {
+          if (this.favoriteVideos[i].length <= 10) {
+            this.fooldalService.likedVideos(this.likedData).subscribe(liked => {
+              console.log(liked);
+            }, error => {
+              if (error.status === 422) {
+                this.loginError = error.error.message;
+              }
+              const modal1 = document.getElementById('exampleModal1');
+              if (modal1) {
+                modal1.style.display = 'block';
+                modal1.classList.add('show');
+              }
+              this.showModal = true; 
+              this.renderer.addClass(document.body, 'no-scroll');
+              if(this.loginError){
+                this.modalTitle = "Elérted a maximálisan beállítható videó mennyiségét";
+              }
+            });
+          } else {
+            console.log("Error");
+          }
+        }
+      });
+    }
   }
 
   toggleButtonState(buttonId: any) {
@@ -142,27 +188,30 @@ export class ViditekaComponent {
     cat.isImageVisible = false;
   }
 
+
   loadRecommendedVideos() {
     if (this.activeCategoryIndex >= 0) {
       const selectedCategory = this.objCat[this.activeCategoryIndex];
       this.fooldalService.getCurrentVideos(selectedCategory.tid).subscribe((v) => {
-        console.log(v);
         // Ellenőrizzük, hogy van-e videó az adott kategóriához
+        console.log(v);
+
         if (v && Object.keys(v).length > 0) {
-          var objVid = {
-            vidTitle: '',
-            vidDesc: '' as SafeHtml,
-            video_url: '',
-            video_url_360: '',
-            video_url_720: '',
-            video_url_1080: '',
-            thumbnail: '',
-            mid: 0,
-            isTextOverflow: true,
-            showButton: ''
-          }
           for (const [key, value] of Object.entries(v)) {
-            console.log(value);
+            var objVid = {
+              vidTitle: '',
+              vidDesc: '' as SafeHtml,
+              video_url: '',
+              video_url_360: '',
+              video_url_720: '',
+              video_url_1080: '',
+              thumbnail: '',
+              mid: 0,
+              isTextOverflow: true,
+              showButton: '',
+              isLiked: false,
+              isItFavorite: false
+            }
             /*
             objVid.vidTitle = value.videostore.title[0].value;
             let desc = value.videostore.body[0].value;
@@ -180,32 +229,28 @@ export class ViditekaComponent {
             objVid.video_url_1080 = this.baseUrl + value.video_url_1080p;
             objVid.mid = value.media.mid[0].value;
             objVid.thumbnail = this.baseUrl + value.thumbnail;
+            console.log(objVid);
+            this.objVid.push(objVid);
 
           }
+          this.fooldalService.getFavoritesVideos().subscribe(fav => {
+            for (const [k, v] of Object.entries(fav)) {
+              for (let i in this.objVid) {
+                console.log(this.objVid[i].mid);
+                if (Number(v.mid) === this.objVid[i].mid) {
+                  this.objVid[i].isItFavorite = true;
+
+                }
+              }
+            }
+          });
 
 
 
-          this.objVid = [objVid]; // Frissítsd az objVid tömböt
 
-          this.likedData = {
-            "entity_type": "media",
-            "entity_id": objVid.mid,
-            "flag_id": "favorite_videos"
-
-          }
-          console.log(this.objVid);
         } else {
           this.objVid = []; // Nincs videó az adott kategóriához, üres tömb
         }
-
-        this.fooldalService.getFavoritesVideos().subscribe(fav => {
-          for (const [k, v] of Object.entries(fav)) {
-            console.log(v.mid);
-            if (Number(v.mid) === objVid.mid) {
-              this.isItFavorite = true;
-            }
-          }
-        })
       });
     }
   }
@@ -226,8 +271,6 @@ export class ViditekaComponent {
             };
             obj.weight = value[i].attributes.weight;
             obj.photo_id = value[i].relationships.field_category_image.data.id;
-            console.log(value[i].attributes.field_description.processed);
-            console.log(value[i].attributes.field_description.summary);
             let desc = value[i].attributes.field_description.processed;
             obj.catDesc = this.sanitizer.bypassSecurityTrustHtml(desc);
             let sum = value[i].attributes.field_description.summary;
@@ -251,7 +294,6 @@ export class ViditekaComponent {
 
         // Rendezd a tömböt a weight property alapján
         this.objCat.sort((a, b) => a.weight - b.weight);
-        console.log(this.objCat);
 
         this.showSummary = true;
       }
