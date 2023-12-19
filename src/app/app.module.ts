@@ -35,6 +35,7 @@ import { GyikComponent } from './components/gyik/gyik.component';
 import { AdminInterceptorService } from './admin-interceptor';
 
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyBSwXraHIkw4DG5uRRsfD_FFqAhMWG5X_w",
   authDomain: "babafeszkelo-51994.firebaseapp.com",

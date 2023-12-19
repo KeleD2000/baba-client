@@ -35,7 +35,16 @@ export class RolamComponent {
                 for(const [key, value] of Object.entries(page)){
                   for(var k in value.field_paragraphs){
                     console.log(value.field_paragraphs[k]);
-                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: "", youtube_video: "",text_condensed: "" as SafeHtml, button_content: "" as SafeHtml, text_highlighted_content: "" as SafeHtml, video:"", video_thumbnail:""};
+                    const obj = {content: "" as SafeHtml, img_url: "", img_layout: "", youtube_video: "",
+                    text_condensed: "" as SafeHtml, button_content: "" as SafeHtml, 
+                    text_highlighted_content: "" as SafeHtml, video:"", video_thumbnail:"",
+                    alignmentSettings: {
+                      isCenterText: false,
+                      isJustifiedText: false,
+                      isRightText: false,
+                      isLeftText: false
+                    }
+                  };
                     if(value.field_paragraphs[k].type === 'paragraph--image_full'){
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
                     }else if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
@@ -43,6 +52,15 @@ export class RolamComponent {
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_inline.field_media_image.uri.url;
                       obj.img_layout = value.field_paragraphs[k].field_layout;
                     }else if(value.field_paragraphs[k].type === 'paragraph--text'){
+                      console.log(value.field_paragraphs[k].field_alignment);
+                      const alignment = value.field_paragraphs[k].field_alignment;
+    
+                      obj.alignmentSettings = {
+                        isCenterText: alignment === 'align-center',
+                        isJustifiedText: alignment === 'align-justified',
+                        isRightText: alignment === 'align-right',
+                        isLeftText: alignment === 'align-left'
+                    };
                       if(value.field_paragraphs[k].field_content !== undefined){
                         const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
                         obj.content = paragraph_value;

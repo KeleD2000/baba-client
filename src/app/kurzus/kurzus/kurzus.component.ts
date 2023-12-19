@@ -135,6 +135,7 @@ export class KurzusComponent {
 
                 }
                 this.block.push(this.obj);
+                console.log(this.block);
               }
 
               //console.log(this.block);

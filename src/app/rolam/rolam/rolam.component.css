@@ -1,8 +1,31 @@
-:host ::ng-deep .MsoNormal{
+.text-center-drupal {
     color: black;
     font-size: medium;
     text-align: center;
-    
+}
+
+.text-left-drupal {
+    color: black;
+    font-size: medium;
+    text-align: left;
+}
+
+.text-right-drupal {
+    color: black;
+    font-size: medium;
+    text-align: right;
+}
+
+.text-justified-drupal {
+    text-align: justify;
+    line-height: 107%;
+
+}
+
+.text-con {
+    font-size: 24px;
+    color: #F54D9F;
+    text-align: center;
 }
 
 .img{

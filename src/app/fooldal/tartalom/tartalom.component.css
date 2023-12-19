@@ -1,40 +1,58 @@
-:host ::ng-deep .MsoNormal{
+.text-center-drupal {
     color: black;
     font-size: medium;
     text-align: center;
-    
 }
 
-:host ::ng-deep .MsoLeft{
+.text-left-drupal {
     color: black;
     font-size: medium;
     text-align: left;
 }
 
-:host ::ng-deep .MsoWhite{
-    color:white;
+.text-right-drupal {
+    color: black;
+    font-size: medium;
+    text-align: right;
+}
+
+.text-justified-drupal {
+    text-align: justify;
+    line-height: 107%;
+
+}
+
+:host ::ng-deep .MsoWhite {
+    color: white;
     text-align: center;
 }
 
-.img{
+.text-con {
+    font-size: 24px;
+    color: #F54D9F;
+    text-align: center;
+}
+
+.img {
     width: 100%;
     height: auto;
 }
-.p-10{
+
+.p-10 {
     padding: 10px;
 }
 
-.p-text{
+.p-text {
     padding: 10px;
     text-align: center;
 }
 
-.background{
+.background {
     background-color: #0A606F;
 }
 
 @media screen and (max-width: 768px) {
-    .column{
+    .column {
         width: 100% !important;
     }
-  }
+}

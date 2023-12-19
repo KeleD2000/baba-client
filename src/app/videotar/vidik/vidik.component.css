@@ -1,95 +1,96 @@
-:host ::ng-deep .MsoNormal{
+.text-center-drupal {
     color: black;
     font-size: medium;
     text-align: center;
-    
 }
 
-:host ::ng-deep .MsoLeft{
+.text-left-drupal {
     color: black;
     font-size: medium;
     text-align: left;
 }
 
-:host ::ng-deep .MsoWhite{
-    color:white;
-    text-align: center;
+.text-right-drupal {
+    color: black;
+    font-size: medium;
+    text-align: right;
 }
 
-:host ::ng-deep .MsoLineHeight{
+.text-justified-drupal {
     text-align: justify;
     line-height: 107%;
+
 }
 
-:host ::ng-deep .MsoWhiteLeftText{
+:host ::ng-deep .MsoWhiteLeftText {
     color: white;
 }
 
-:host ::ng-deep .MsoPink{
+.text-con {
     font-size: 24px;
     color: #F54D9F;
     text-align: center;
 }
 
-.img{
+.img {
     width: 100%;
     height: auto;
 }
 
-.img-left1{
-    width: 100%;
-    height: auto;
-    padding: 10px;
-    
-}
-
-.img-left2{
+.img-left1 {
     width: 100%;
     height: auto;
     padding: 10px;
+
 }
 
-.img-right{
+.img-left2 {
     width: 100%;
     height: auto;
     padding: 10px;
-    
 }
 
-.p-text{
+.img-right {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+
+}
+
+.p-text {
     padding: 10px;
     text-align: center;
-    
+
 }
 
-.li-text{
+.li-text {
     padding: 10px;
 }
 
-.background{
+.background {
     background-color: #0A606F;
 }
 
-.p-10{
+.p-10 {
     padding: 10px;
 }
 
-.iframe-size{
+.iframe-size {
     width: 540px;
     height: 320px;
 }
 
 @media screen and (max-width: 768px) {
-    .column{
+    .column {
         width: 100% !important;
     }
-    iframe{
+
+    iframe {
         width: 90% !important;
     }
-  }
+}
 
-.iframe-container{
+.iframe-container {
     display: flex;
     justify-content: center;
 }
-

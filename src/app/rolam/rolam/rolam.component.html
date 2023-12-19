@@ -11,7 +11,12 @@
     </ng-container>
     <ng-container *ngIf="content.content && !content.img_url">
         <div class="col-lg-12">
-            <div [innerHTML]="content.content"></div>
+            <div [innerHTML]="content.content" [ngClass]="{
+                'text-center-drupal' : content.alignmentSettings.isCenterText, 
+                'text-justified-drupal' : content.alignmentSettings.isJustifiedText,
+                'text-right-drupal' : content.alignmentSettings.isRightText,
+                'text-left-drupal' : content.alignmentSettings.isLeftText
+                }"></div>
         </div>
     </ng-container>
     <ng-container *ngIf="!content.content && content.img_url">
