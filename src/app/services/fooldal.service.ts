@@ -65,100 +65,90 @@ export class FooldalService {
   }
 
   getVideos() {
-    const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
     return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`, { headers });
   }
 
   deleteVideos(id: string) {
-    const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
     return this.http.delete(`${this.baseUrl}/jsonapi/node/videostore/` + id, { headers });
   }
 
   createMediaVideo(data: any) {
-    const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
     return this.http.post(`${this.baseUrl}/jsonapi/media/video`, data, { headers });
   }
 
   createMediaImage(data: any) {
-    const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
     return this.http.post(`${this.baseUrl}/jsonapi/media/image`, data, { headers });
   }
 
   sendVideo(data: FormData, filename: string, id: string) {
-    const auth = btoa('admin:c');
     const encodedFilename = encodeURIComponent(filename);
     const headers = new HttpHeaders({
       'Content-Type': 'application/octet-stream',
       'Accept': 'application/vnd.api+json',
       'Content-Disposition': 'file; filename="' + encodedFilename + '"',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
 
     return this.http.post(`${this.baseUrl}/jsonapi/media/video/` + id + '/field_media_video_file', data.get('file'), { headers });
   }
 
   sendImage(data: FormData, filename: string, id: string) {
-    const auth = btoa('admin:c');
     const encodedFilename = encodeURIComponent(filename);
     const headers = new HttpHeaders({
       'Content-Type': 'application/octet-stream',
       'Accept': 'application/vnd.api+json',
       'Content-Disposition': 'file; filename="' + encodedFilename + '"',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
 
     return this.http.post(`${this.baseUrl}/jsonapi/media/image/` + id + '/field_media_image', data.get('file'), { headers });
   }
 
   patchVideo(data: any, video_id: string) {
-    const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
       'Accept': 'application/vnd.api+json',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
     return this.http.patch(`${this.baseUrl}/jsonapi/media/video/` + video_id, data, { headers });
   }
 
   createThumbnail(data: any) {
-    const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
     return this.http.post(`${this.baseUrl}/jsonapi/media/image`, data, { headers });
   }
 
   createVideoParagraph(data: any) {
-    const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
     return this.http.post(`${this.baseUrl}/jsonapi/paragraph/video`, data, { headers });
   }
 
   sendVideoStore(data: any) {
-    const auth = btoa('admin:c');
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
-      Authorization: 'Basic ' + auth
+      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
     return this.http.post(`${this.baseUrl}/jsonapi/node/videostore`, data, { headers });
   }

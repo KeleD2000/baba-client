@@ -22,8 +22,20 @@
 
 }
 
-:host ::ng-deep .MsoWhite{
-    color:white;
+.text-pink {
+    color: #E6009F
+}
+
+.text-blue {
+    color: #0A606F;
+}
+
+.text-italic {
+    font-style: italic;
+}
+
+:host ::ng-deep .MsoWhite {
+    color: white;
     text-align: center;
 }
 
@@ -33,46 +45,46 @@
     text-align: center;
 }
 
-.img{
+.img {
     width: 100%;
     height: auto;
 }
 
-.img-left1{
+.img-left1 {
     width: 100%;
     height: auto;
     padding: 10px;
-    
+
 }
 
-.img-left2{
+.img-left2 {
     width: 100%;
     height: auto;
     padding: 10px;
 }
 
-.img-right{
+.img-right {
     width: 100%;
     height: auto;
     padding: 10px;
-    
+
 }
 
-.p-10{
+.p-10 {
     padding: 10px;
 }
 
-.p-text{
+.p-text {
     padding: 10px;
     text-align: center;
 }
 
-.background{
+.background {
     background-color: #0A606F;
 }
 
 @media screen and (max-width: 768px) {
-    .column{
+    .column {
         width: 100% !important;
     }
-  }
+}

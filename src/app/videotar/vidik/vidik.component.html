@@ -1,4 +1,5 @@
-<div class="row mb-3" [ngClass]="{'background align-items-center': content.img_url && content.content}" *ngFor="let content of content">
+<div class="row mb-3" [ngClass]="{'background align-items-center': content.img_url && content.content}"
+    *ngFor="let content of content">
     <ng-container *ngIf="content.img_url && content.content">
         <div class="col-lg-6 p-0">
             <img class="img" *ngIf="content.img_layout == 'img-left'" [src]="content.img_url" alt="" srcset="">
@@ -11,11 +12,14 @@
     </ng-container>
     <ng-container *ngIf="content.content && !content.img_url">
         <div class="col-lg-12">
-            <div [innerHTML]="content.content"  [ngClass]="{
+            <div [innerHTML]="content.content" [ngClass]="{
                 'text-center-drupal' : content.alignmentSettings.isCenterText, 
                 'text-justified-drupal' : content.alignmentSettings.isJustifiedText,
                 'text-right-drupal' : content.alignmentSettings.isRightText,
-                'text-left-drupal' : content.alignmentSettings.isLeftText
+                'text-left-drupal' : content.alignmentSettings.isLeftText,
+                'text-pink' : content.textColorSettings.isPink,
+                'text-blue' : content.textColorSettings.isBlue,
+                'text-italic' : content.textColorSettings.isItalic
                 }"></div>
         </div>
     </ng-container>
@@ -24,7 +28,8 @@
     </ng-container>
     <ng-container *ngIf="content.youtube_video && !content.img_url && !content.content">
         <div class="col-lg-12 text-center">
-            <iframe class="iframe-size" [src]="content.youtube_video | vidisafe : 'resourceUrl'" frameborder="0" ></iframe>
+            <iframe class="iframe-size" [src]="content.youtube_video | vidisafe : 'resourceUrl'"
+                frameborder="0"></iframe>
         </div>
     </ng-container>
     <ng-container *ngIf="content.button_content && !content.content && !content.img_url">
@@ -35,12 +40,14 @@
     <ng-container *ngIf="content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
         <div [innerHTML]="content.text_condensed" [ngClass]="{'text-con' : isTextCondensed}"></div>
     </ng-container>
-    <ng-container *ngIf="content.text_highlighted_content && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
+    <ng-container
+        *ngIf="content.text_highlighted_content && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
         <div [innerHTML]="content.text_highlighted_content" [ngClass]="{'bgGreen' : isTextBackgroundGreen}"></div>
     </ng-container>
-    <ng-container *ngIf="content.video && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content && !content.button_content">
+    <ng-container
+        *ngIf="content.video && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content && !content.button_content">
         <app-video-player style="padding-top: 15px;"
-        [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: content.video_thumbnail, sources: [{ src: content.video, type: 'video/mp4' , label: '1080p' },{ src: content.video, type: 'video/mp4' , label: '720p' }, { src: content.video, type: 'video/mp4' , label: '360p' }]}">
+            [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: content.video_thumbnail, sources: [{ src: content.video, type: 'video/mp4' , label: '1080p' },{ src: content.video, type: 'video/mp4' , label: '720p' }, { src: content.video, type: 'video/mp4' , label: '360p' }]}">
         </app-video-player>
     </ng-container>
 </div>

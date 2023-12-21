@@ -137,6 +137,8 @@ export class VideotarComponent {
         if (key === "data") {
           for (const k in videos) {
             const video = videos[k];
+            console.log(video);
+            console.log(video.field_rotation.name);
             if (video.field_category.name === obj.title && Array.isArray(video.field_video)) {
               const findedRotation = obj.rotation.find((i: any) => i.title === video.field_rotation.name);
               if (findedRotation) {

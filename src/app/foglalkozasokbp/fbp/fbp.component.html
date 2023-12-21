@@ -12,11 +12,14 @@
   </ng-container>
   <ng-container *ngIf="content.content && !content.img_url">
     <div class="col-lg-12">
-      <div [innerHTML]="content.content"  [ngClass]="{
+      <div [innerHTML]="content.content" [ngClass]="{
         'text-center-drupal' : content.alignmentSettings.isCenterText, 
         'text-justified-drupal' : content.alignmentSettings.isJustifiedText,
         'text-right-drupal' : content.alignmentSettings.isRightText,
-        'text-left-drupal' : content.alignmentSettings.isLeftText
+        'text-left-drupal' : content.alignmentSettings.isLeftText,
+        'text-pink' : content.textColorSettings.isPink,
+        'text-blue' : content.textColorSettings.isBlue,
+        'text-italic' : content.textColorSettings.isItalic
         }"></div>
     </div>
   </ng-container>
@@ -76,7 +79,8 @@
             (click)="openBookModal(hall.product_id, hall.convertedDate)">Előjegyzés</button>
           <button *ngIf="hall.is_booked && this.isLoggedIn" class="btn btn-primary button-style custom"
             (click)="openBookModalInLogged(hall.product_id, hall.convertedDate)">Előjegyzés</button>
-          <button *ngIf="hall.is_can_pay" class="btn btn-primary button-style custom" (click)="addCart(hall.var_type, hall.var_id)">Jelentkezem</button>
+          <button *ngIf="hall.is_can_pay" class="btn btn-primary button-style custom"
+            (click)="addCart(hall.var_type, hall.var_id)">Jelentkezem</button>
         </div>
       </div>
       <div class="line" *ngIf="!isLastItem(i)"></div>

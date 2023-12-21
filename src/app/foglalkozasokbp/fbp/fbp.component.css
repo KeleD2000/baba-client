@@ -22,6 +22,18 @@
 
 }
 
+.text-pink{
+  color:#E6009F
+}
+
+.text-blue{
+  color: #0A606F;
+}
+
+.text-italic{
+  font-style: italic;
+}
+
 :host ::ng-deep .MsoWhite{
   color:white;
   text-align: center;

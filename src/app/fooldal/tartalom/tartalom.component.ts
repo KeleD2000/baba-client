@@ -36,6 +36,11 @@ export class TartalomComponent {
                       isJustifiedText: false,
                       isRightText: false,
                       isLeftText: false
+                    },
+                    textColorSettings: {
+                      isPink: false,
+                      isBlue: false,
+                      isItalic: false
                     }
                   };
                     if(value.field_paragraphs[k].type === 'paragraph--image_full'){
@@ -47,7 +52,7 @@ export class TartalomComponent {
                       }
                       obj.img_layout = value.field_paragraphs[k].field_layout;
                     }else if(value.field_paragraphs[k].type === 'paragraph--text'){
-                      console.log(value.field_paragraphs[k].field_alignment);
+                      console.log(value.field_paragraphs[k]);
                       const alignment = value.field_paragraphs[k].field_alignment;
     
                       obj.alignmentSettings = {
@@ -56,6 +61,15 @@ export class TartalomComponent {
                         isRightText: alignment === 'align-right',
                         isLeftText: alignment === 'align-left'
                     };
+
+                      const textColor = value.field_paragraphs[k].field_format;
+                      obj.textColorSettings = {
+                        isPink: textColor === 'color-pink',
+                        isBlue: textColor === 'color-blue',
+                        isItalic: textColor === 'style-italic'
+
+                    };
+
                       if(value.field_paragraphs[k].field_content !== undefined){
                         const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
                         obj.content = paragraph_value;

@@ -39,6 +39,11 @@ export class BabafeszkeloComponent {
                       isJustifiedText: false,
                       isRightText: false,
                       isLeftText: false
+                    },
+                    textColorSettings: {
+                      isPink: false,
+                      isBlue: false,
+                      isItalic: false
                     }
                   };
                     if (value.field_paragraphs[k].type === 'paragraph--image_full') {
@@ -57,6 +62,14 @@ export class BabafeszkeloComponent {
                         isRightText: alignment === 'align-right',
                         isLeftText: alignment === 'align-left'
                     };
+
+                    const textColor = value.field_paragraphs[k].field_format;
+                    obj.textColorSettings = {
+                      isPink: textColor === 'color-pink',
+                      isBlue: textColor === 'color-blue',
+                      isItalic: textColor === 'style-italic'
+
+                  };
                       if (value.field_paragraphs[k].field_content !== undefined) {
                         const paragraph_value = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
                         obj.content = paragraph_value;
