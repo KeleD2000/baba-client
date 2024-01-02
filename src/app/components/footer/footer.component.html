@@ -59,7 +59,8 @@
             <div>{{ modalContent }}</div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal(1)">Bezárás</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+              (click)="closeModal(1)">Bezárás</button>
           </div>
         </form>
       </div>
@@ -70,7 +71,7 @@
     id="exampleModal2">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <form>
+        <form [formGroup]="emailForm">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Hírlevél</h5>
             <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" (click)="closeModal(2)">
@@ -79,20 +80,31 @@
           <div class="modal-body text-center">
             <p>Iratkozz fel hírlevelünkre!</p>
             <p>vmi kis rövid szöveg</p>
-            <p class="mt-2">Email cím:</p>
-            <input type="text">
-            <p class="mt-2">Vezetéknév:</p>
-            <input type="text">
-            <p class="mt-2">Keresztnév:</p>
-            <input type="text">
+
+            <div class="form-group">
+              <label class="mt-2">Email cím:</label>
+              <input formControlName="email" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="mt-2">Vezetéknév:</label>
+              <input formControlName="last_name" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="mt-2">Keresztnév:</label>
+              <input formControlName="first_name" type="text" class="form-control">
+            </div>
+
             <div class="mt-3 text-end">
-              <button type="button" class="btn btn-primary button-style">Feliratkozás</button>
+              <button type="button" class="btn btn-primary button-style" (click)="sentEmail()">Feliratkozás</button>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal(2)">Bezárás</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+              (click)="closeModal(2)">Bezárás</button>
           </div>
         </form>
+
+
       </div>
     </div>
 

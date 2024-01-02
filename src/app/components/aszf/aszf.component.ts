@@ -10,7 +10,7 @@ import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 })
 export class AszfComponent {
   content: any[] = [];
-  baseUrl: string = "https://baba.datastep.solutions:8443";
+  baseUrl: string = "https://baba.datastep.solutions";
   isTextCondensed: boolean = false;
   isTextBackgroundGreen: boolean = false;
 
