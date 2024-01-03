@@ -18,7 +18,7 @@ export class FbpComponent {
   content: any[] = [];
   hallProducts: any[] = [];
   hallProductsMaps: any[] = [];
-  baseUrl: string = "https://baba.datastep.solutions";
+  baseUrl: string = "https://baba.datastep.solutions:8443";
   isTextCondensed: boolean = false;
   isTextBackgroundGreen: boolean = false;
   showModal1: boolean = false;

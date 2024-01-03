@@ -11,7 +11,7 @@ import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 })
 export class TartalomComponent {
   content: any[] = [];
-  baseUrl: string = "https://baba.datastep.solutions";
+  baseUrl: string = "https://baba.datastep.solutions:8443";
   isTextCondensed: boolean = false;
   isTextBackgroundGreen: boolean = false;
 

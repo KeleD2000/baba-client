@@ -112,14 +112,14 @@ export class ViditekaComponent {
     return isOverflowing;
   }
 
-  toggleLike(videoMid: number) {
-    const videoIndex = this.objVid.findIndex(vid => vid.mid === videoMid);
+  toggleLike(videoNid: number) {
+    const videoIndex = this.objVid.findIndex(vid => vid.nid === videoNid);
     if (videoIndex !== -1) {
       this.objVid[videoIndex].isLiked = !this.objVid[videoIndex].isLike
       this.likedData = {
-        "entity_type": "media",
-        "entity_id": videoMid,
-        "flag_id": "favorite_videos"
+        "entity_type": "node",
+        "entity_id": videoNid,
+        "flag_id": "favorite_videostore"
 
       }
       this.fooldalService.getFavoritesVideos().subscribe(v => {
@@ -207,6 +207,7 @@ export class ViditekaComponent {
               video_url_1080: '',
               thumbnail: '',
               mid: 0,
+              nid: 0,
               isTextOverflow: true,
               showButton: '',
               isLiked: false,
@@ -228,6 +229,7 @@ export class ViditekaComponent {
             objVid.video_url_720 = this.baseUrl + value.video_url_720p;
             objVid.video_url_1080 = this.baseUrl + value.video_url_1080p;
             objVid.mid = value.media.mid[0].value;
+            objVid.nid = value.videostore.nid[0].value
             objVid.thumbnail = this.baseUrl + value.thumbnail;
             console.log(objVid);
             this.objVid.push(objVid);
@@ -236,8 +238,8 @@ export class ViditekaComponent {
           this.fooldalService.getFavoritesVideos().subscribe(fav => {
             for (const [k, v] of Object.entries(fav)) {
               for (let i in this.objVid) {
-                console.log(this.objVid[i].mid);
-                if (Number(v.mid) === this.objVid[i].mid) {
+                console.log(this.objVid[i].nid);
+                if (Number(v.nid) === this.objVid[i].nid) {
                   this.objVid[i].isItFavorite = true;
 
                 }

@@ -24,7 +24,8 @@
           </ng-container>
         </div>
         <div class="lesson-info">
-          <h3>{{ fav.name }}</h3>        
+          <h3>{{ fav.title }}</h3>     
+          <div [innerHTML]="fav.vidDesc"></div>   
         </div>
         <button type="button" class="like-button" (click)="toggleLike(fav)">
           <fa-icon style="display: flex;" [icon]="!fav.isLiked ? faSolidHeart : faRegularHeart"></fa-icon>

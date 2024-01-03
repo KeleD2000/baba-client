@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { faCircle, faHeart as faRegularHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as faSolidHeart, faArrowAltCircleDown, faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
-import { SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class KedvencVideokComponent {
   isArrow: boolean = false;
   likedData: any = {};
 
-  constructor(private fooldalService: FooldalService) { }
+  constructor(private fooldalService: FooldalService, private sanitizer: DomSanitizer) { }
 
   toggleTextOverflow(vid: any) {
     vid.isTextOverflow = !vid.isTextOverflow;
@@ -31,15 +31,15 @@ export class KedvencVideokComponent {
   toggleLike(video: any) {
     video.isLiked = !video.isLiked;
   
-    const index = this.favoriteVideos.findIndex((v) => v.mid === video.mid);
+    const index = this.favoriteVideos.findIndex((v) => v.nid === video.nid);
     if (index !== -1) {
       this.favoriteVideos.splice(index, 1); // Az elem eltávolítása a tömbből
     }
   
     const likedData = {
-      "entity_type": "media",
-      "entity_id": video.mid,
-      "flag_id": "favorite_videos"
+      "entity_type": "node",
+      "entity_id": video.nid,
+      "flag_id": "favorite_videostore"
     };
   
     this.fooldalService.likedVideos(likedData).subscribe(liked => {
@@ -66,10 +66,9 @@ export class KedvencVideokComponent {
   ngOnInit() {
     this.fooldalService.getFavoritesVideos().subscribe(v => {
       for (const [key, value] of Object.entries(v)) {
-        console.log(key, value);
         const obj =
         {
-          name: '',
+          title: '',
           isLiked: false, // Hozzáadja az isLiked tulajdonságot minden elemhez
           y_video_url: "",
           video_url: "",
@@ -77,9 +76,10 @@ export class KedvencVideokComponent {
           video_url_720p: "",
           video_url_1080p: "",
           thumbnail: "",
-          mid: 0
+          vidDesc: '' as SafeHtml,
+          nid: 0
         }
-        obj.name = value.name;
+        obj.title = value.title;
         
         if (value.field_media_oembed_video) {
           const videoId = this.extractVideoId(value.field_media_oembed_video);
@@ -92,13 +92,15 @@ export class KedvencVideokComponent {
           obj.thumbnail = "";
         } else {
           obj.y_video_url = "";
+          var desc = value.body
+          obj.vidDesc = this.sanitizer.bypassSecurityTrustHtml(desc);
           obj.video_url = this.baseUrl + value.field_media_video_file;
           obj.video_url_360p = this.baseUrl + value.field_converted_360p;
           obj.video_url_720p = this.baseUrl + value.field_converted_720p;
           obj.video_url_1080p = this.baseUrl + value.field_converted_1080p;
           obj.thumbnail = this.baseUrl + value.field_thumbnail;
         }
-        obj.mid = value.mid;
+        obj.nid = value.nid;
         this.favoriteVideos.push(obj);
       }
     });

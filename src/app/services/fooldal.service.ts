@@ -226,7 +226,7 @@ export class FooldalService {
   }
 
   getFavoritesVideos() {
-    return this.http.get(`${this.baseUrl}/api/favorite-videos`);
+    return this.http.get(`${this.baseUrl}/api/favorite-videostore`);
   }
 
   likedVideos(data: any) {

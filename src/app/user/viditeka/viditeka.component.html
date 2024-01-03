@@ -49,10 +49,10 @@
           <p class="read-more-button text-right" *ngIf="isTextOverflowing(vid.vidDesc)"
             (click)="toggleTextOverflow(vid)">{{ vid.isTextOverflow ? 'TOVÁBB' : 'KEVESEBB' }}</p>
         </div>
-        <button *ngIf="!vid.isItFavorite" type="button" class="like-button" (click)="toggleLike(vid.mid)">
+        <button *ngIf="!vid.isItFavorite" type="button" class="like-button" (click)="toggleLike(vid.nid)">
           <fa-icon style="display: flex;" [icon]="vid.isLiked ? faSolidHeart : faRegularHeart"></fa-icon>
         </button>
-        <button *ngIf="vid.isItFavorite" type="button" class="like-button" (click)="toggleLike(vid.mid)">
+        <button *ngIf="vid.isItFavorite" type="button" class="like-button" (click)="toggleLike(vid.nid)">
           <fa-icon style="display: flex;" [icon]="vid.isLiked ? faRegularHeart : faSolidHeart"></fa-icon>
         </button>
       </div>

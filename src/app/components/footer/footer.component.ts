@@ -2,8 +2,6 @@ import { Component, Renderer2 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { faFacebook, faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faCopyright } from '@fortawesome/free-regular-svg-icons';
-import { Letters } from 'src/app/models/Letters';
-import { MailchimpService } from 'src/app/services/mailchimp.service';
 
 @Component({
   selector: 'app-footer',
@@ -21,7 +19,7 @@ export class FooterComponent {
   modalContent: string = '';
   emailForm: FormGroup;
 
-  constructor(private renderer: Renderer2, private mailchimpService: MailchimpService){
+  constructor(private renderer: Renderer2){
     this.emailForm = new FormGroup(
       {
         email: new FormControl(''),
@@ -29,36 +27,6 @@ export class FooterComponent {
         last_name: new FormControl('')
       }
     )
-  }
-
-  sentEmail(){
-    if(this.emailForm.valid){
-      const datas : Letters = {
-        email_address : this.emailForm.get('email')?.value,
-        status: "subscribed",
-        merge_fields: {
-          FNAME: this.emailForm.get('first_name')?.value,
-          LNAME: this.emailForm.get('last_name')?.value,
-        }
-      }
-      this.mailchimpService.addEmailToMailChimp(datas).subscribe( l => {
-        console.log(l)
-      });
-    }
-  }
-
-  openMessage() {
-    const modal2 = document.getElementById('exampleModal2');
-
-    if (modal2) {
-      modal2.style.display = 'block';
-      modal2.classList.add('show');
-    }
-
-    this.showModal2 = true; // Módosítás itt
-
-    this.renderer.addClass(document.body, 'no-scroll');
-
   }
 
   openModal(platform: string) {
