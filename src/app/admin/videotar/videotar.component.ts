@@ -88,7 +88,6 @@ export class VideotarComponent {
         for (const k in value) {
           for (const j in value[k]) {
             const cat = value[k][j];
-            // console.log(cat);
             if (cat.name !== undefined) {
               const obj = this.createCategoryObject(cat, value[k].id);
               this.populateRotation(obj);
@@ -139,8 +138,13 @@ export class VideotarComponent {
             const video = videos[k];
             console.log(video);
             console.log(video.field_rotation.name);
+            console.log(video.field_category.name)
+            console.log(obj.title);
+            console.log(video.field_video);
             if (video.field_category.name === obj.title && Array.isArray(video.field_video)) {
+              console.log(video.field_rotation.name);
               const findedRotation = obj.rotation.find((i: any) => i.title === video.field_rotation.name);
+              console.log(findedRotation);
               if (findedRotation) {
                 if (video.field_video[0].type === "paragraph--video") {
                   console.log(video.field_video[0]);
@@ -171,6 +175,28 @@ export class VideotarComponent {
                   //findedRotation.videos.push({ id: video.id, url: "https://www.youtube.com/embed/" + videoId, iframe: true, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value) });
                 }
               }
+              else if(video.field_rotation.name === undefined) {
+                console.log(video);
+                const baseUrl = this.fooldalService.getBaseUrl();
+                var video_url = baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url;
+                var thumbnail;
+                if(video.field_video[0].field_video.field_thumbnail.field_media_image){
+                  if (video.field_video[0].field_video.field_thumbnail.field_media_image.uri != undefined ) {
+                    thumbnail = baseUrl + video.field_video[0].field_video.field_thumbnail.field_media_image.uri.url;
+                  }
+                }
+                const videoObj = {
+                  id: video.id,
+                  url: video_url,
+                  iframe: false,
+                  title: video.title,
+                  description: this.htmlconvetrService.convertToHtml(""),
+                  thumbnail: thumbnail
+                };
+                obj.rotation.forEach((rotation: any) => {
+                  rotation.videos.push(videoObj);
+                });
+            }
             }
           }
         }

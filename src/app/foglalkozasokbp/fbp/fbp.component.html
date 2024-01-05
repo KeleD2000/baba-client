@@ -2,11 +2,11 @@
   *ngFor="let content of content">
   <ng-container *ngIf="content.img_url && content.content">
     <div class="col-lg-6 p-0">
-      <img class="img" *ngIf="content.img_layout == 'img-left'" [src]="content.img_url" alt="" srcset="">
+      <img class="img" *ngIf="content.img_layout == 'img-left'" [src]="content.img_url" [alt]="content.img_blue_alt">
       <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-right'"></div>
     </div>
     <div class="col-lg-6 p-0">
-      <img class="img" *ngIf="content.img_layout == 'img-right'" [src]="content.img_url" alt="" srcset="">
+      <img class="img" *ngIf="content.img_layout == 'img-right'" [src]="content.img_url" [alt]="content.img_blue_alt">
       <div [innerHTML]="content.content" *ngIf="content.img_layout == 'img-left'"></div>
     </div>
   </ng-container>
@@ -24,7 +24,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="!content.content && content.img_url">
-    <img class="img" [src]="content.img_url" alt="">
+    <img class="img" [src]="content.img_url" [alt]="content.img_alt">
   </ng-container>
   <ng-container *ngIf="content.button_content && !content.content && !content.img_url">
     <div class="text-center">

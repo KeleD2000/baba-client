@@ -190,6 +190,7 @@ export class ViditekaComponent {
 
 
   loadRecommendedVideos() {
+    this.objVid = [];
     if (this.activeCategoryIndex >= 0) {
       const selectedCategory = this.objCat[this.activeCategoryIndex];
       this.fooldalService.getCurrentVideos(selectedCategory.tid).subscribe((v) => {
@@ -233,7 +234,7 @@ export class ViditekaComponent {
             objVid.thumbnail = this.baseUrl + value.thumbnail;
             console.log(objVid);
             this.objVid.push(objVid);
-
+            console.log(this.objVid);
           }
           this.fooldalService.getFavoritesVideos().subscribe(fav => {
             for (const [k, v] of Object.entries(fav)) {

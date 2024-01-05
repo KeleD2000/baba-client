@@ -31,6 +31,7 @@ export class TartalomComponent {
                     const obj = {content: "" as SafeHtml, img_url: "", img_layout: "", 
                     text_condensed: "" as SafeHtml, button_content: "" as SafeHtml, 
                     text_highlighted_content: "" as SafeHtml, video: "", video_thumbnail:"",
+                    img_alt:"", img_blue_alt: "",
                     alignmentSettings: {
                       isCenterText: false,
                       isJustifiedText: false,
@@ -45,10 +46,12 @@ export class TartalomComponent {
                   };
                     if(value.field_paragraphs[k].type === 'paragraph--image_full'){
                       obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_full.field_media_image.uri.url;
+                      obj.img_alt = value.field_paragraphs[k].field_image_full.field_media_image.meta.alt
                     }else if(value.field_paragraphs[k].type === 'paragraph--image_text_blue'){
                       obj.content = this.htmlconvertService.convertToHtml(value.field_paragraphs[k].field_content.value);
                       if(value.field_paragraphs[k].field_image_inline.field_media_image){
                         obj.img_url = this.baseUrl + value.field_paragraphs[k].field_image_inline.field_media_image.uri.url;
+                        obj.img_blue_alt =  value.field_paragraphs[k].field_image_inline.field_media_image.meta.alt;
                       }
                       obj.img_layout = value.field_paragraphs[k].field_layout;
                     }else if(value.field_paragraphs[k].type === 'paragraph--text'){
