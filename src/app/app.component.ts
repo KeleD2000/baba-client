@@ -6,6 +6,7 @@ import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { AuthService } from './services/auth.service';
 import { Subscription } from 'rxjs';
 import { UserService } from './services/user.service';
+import { Meta } from '@angular/platform-browser';
 
 
 
@@ -38,12 +39,15 @@ export class AppComponent {
   constructor(private fooldalService: FooldalService,
     private router: Router,
     private authService: AuthService,
-    private userService: UserService) {
+    private userService: UserService, private metaService: Meta) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.url;
       }
     });
+    this.metaService.addTags([
+      {name: 'keywords', content: 'Termékenység, Petefészek, Méh, Meddőség, Lombik, Nőijóga, Hormon egyensúly, Ösztrogén dominancia, Ösztrogén, Progeszteron, PCO, Policisztás ovárium, IR, inzulinrezisztencia, Mióma, Petefészek kimerülés, Endometriózis, Pajzsmirigy alulműködés, IVF, Lombikprogram, mesterséges megtermékenyítés'}
+    ])
   }
 
 

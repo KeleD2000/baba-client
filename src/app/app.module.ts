@@ -33,6 +33,7 @@ import { VideoStatusService } from './services/video-status.service';
 import { SpecialCharacterDirective } from './directives/special-character.directive';
 import { GyikComponent } from './components/gyik/gyik.component';
 import { AdminInterceptorService } from './admin-interceptor';
+import { LostPasswordComponent } from './components/lost-password/lost-password.component';
 
 
 
@@ -59,7 +60,8 @@ const firebaseConfig = {
     AszfComponent,
     RefreshComponent,
     SpecialCharacterDirective,
-    GyikComponent
+    GyikComponent,
+    LostPasswordComponent
   ],
   imports: [
     BrowserModule,

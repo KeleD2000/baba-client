@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FooldalService } from 'src/app/services/fooldal.service';
 import { HtmlconvertService } from 'src/app/services/htmlconvert.service';
 
@@ -12,11 +12,12 @@ export class KurzusoldalComponent {
   urlParam: string = '';
   pageBody: any[] = [];
 
-  constructor(private fooldalService: FooldalService, private router: ActivatedRoute, private htmlConvert: HtmlconvertService){}
+  constructor(private fooldalService: FooldalService, private route: ActivatedRoute, 
+    private htmlConvert: HtmlconvertService, private router: Router){}
 
 
   ngOnInit(){ 
-    const currenUrl = this.router.snapshot.params['urlParam'];
+    const currenUrl = this.route.snapshot.params['urlParam'];
     this.fooldalService.getPageAlias().subscribe(out => {
       for(const [key, value] of Object.entries(out)){
         if(key === 'data'){

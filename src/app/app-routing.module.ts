@@ -18,13 +18,14 @@ import { KurzusModule } from './kurzus/kurzus.module';
 import { RefreshComponent } from './components/refresh/refresh.component';
 import { KurzusoldalComponent } from './kurzus/kurzusoldal/kurzusoldal.component';
 import { GyikComponent } from './components/gyik/gyik.component';
+import { LostPasswordComponent } from './components/lost-password/lost-password.component';
 
 const routes: Routes = [
   {path: '', loadChildren: () => FooldalModule},
-  {path: 'not-found', component: NotFoundComponent},
   {path: 'signin', component: SigninComponent},
   {path: 'signup', component: SignupComponent},
-  {path: 'resetpassword', component: ResetPasswordComponent},
+  {path: 'lost-password', component: LostPasswordComponent},
+  {path: 'reset-password', component: ResetPasswordComponent},
   {path: 'gdpr', component: AdatkezelesComponent},
   {path: 'aszf', component: AszfComponent},
   {path: 'GYIK', component: GyikComponent},
@@ -32,20 +33,23 @@ const routes: Routes = [
   {path: 'babafeszkelo-kurzus', loadChildren: () => BabafeszkelokurzusModule},
   {path: 'lombikra-felkeszito-kurzus', loadChildren: () => LombikrafelkeszitokurzusModule},
   {path: 'foglalkozasok-teremben', loadChildren: () => FoglalkozasokbpModule},
-  {path: 'rolam', loadChildren: () => RolamModule},
-  {path: 'videotar', loadChildren:() => VideotarModule},
+  {path: 'user', loadChildren:() => import('./user/user.module').then(u =>u.UserModule), canActivate: [UserGuard]},
   {path: 'admin' , loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [AdminGuard]},
   {path: '', loadChildren: () => import('./elofizetes/elofizetes.module').then(e => e.ElofizetesModule)},
+  {path: 'rolam', loadChildren: () => RolamModule},
+  {path: 'videotar', loadChildren:() => VideotarModule},
   {path: 'kurzusok/:title', loadChildren: () => KurzusModule},
-  {path: ':urlParam', component: KurzusoldalComponent},
-  {path: 'user', loadChildren:() => import('./user/user.module').then(u =>u.UserModule), canActivate: [UserGuard]},
+  {path: 'kurzusaloldal/:urlParam', component: KurzusoldalComponent},
   {path: 'not-found', component: NotFoundComponent},
   {path: 'refresh', component: RefreshComponent},
-  {path: '**', component: RefreshComponent}
+  {path: '**', component: RefreshComponent},
+
+
+
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,{onSameUrlNavigation: 'reload'})],
+  imports: [RouterModule.forRoot(routes,{ enableTracing: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

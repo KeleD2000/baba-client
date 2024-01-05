@@ -95,13 +95,18 @@ export class AuthService {
     return this.http.get<string>(`${this.baseUrl}/session/token`, { responseType: 'text' as 'json' });
   }
 
-  resetPassword(data: any){
+  lostPassword(data: any){
     const headers =  new HttpHeaders({
-      "Content-Type" : "application/vnd.api+json"
+      "Content-Type" : "application/json"
     });
-    return this.http.post(`${this.baseUrl}/jsonapi/user/password/reset`, data, {headers});
+    return this.http.post(`${this.baseUrl}/user/lost-password?_format=json`, data, {headers});
   }
 
-
+  resetPassword(data: any){
+    const headers =  new HttpHeaders({
+      "Content-Type" : "application/json"
+    });
+    return this.http.post(`${this.baseUrl}/user/lost-password-reset?_format=json`, data, {headers});
+  }
 
 }

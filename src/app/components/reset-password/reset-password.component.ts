@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -12,28 +12,35 @@ import { UserService } from 'src/app/services/user.service';
 export class ResetPasswordComponent {
 
   resetpw: FormGroup;
+  user: string | null = null;
+  token: string | null = null;
 
-  constructor(private authService: AuthService, private route: Router, private userService: UserService) {
+  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router) {
     this.resetpw = new FormGroup(
       {
-        email: new FormControl('', [Validators.required, Validators.email]),
+        new_password: new FormControl('', [Validators.required]),
       }
     )
   }
 
+  ngOnInit(){
+    this.route.queryParams.subscribe(params => {
+      this.user = params['user'];
+      this.token = params['token'];
+    });
+  }
+
   resetPw() {
     if (this.resetpw.valid) {
-      console.log(this.resetpw.get('email')?.value);
+      console.log(this.resetpw.get('new_password')?.value);
       const resetPw = {
-        "data": {
-          "type": "user--password-reset",
-          "attributes": {
-            "mail": this.resetpw.get('email')?.value
-          }
-        }
+        "name" : this.user,
+        "temp_pass" : this.token,
+        "new_pass" : this.resetpw.get('new_password')?.value
       }
       this.authService.resetPassword(resetPw).subscribe( pw => {
         console.log(pw);
+        this.router.navigate(['/signin']);
       });
     }
   }
