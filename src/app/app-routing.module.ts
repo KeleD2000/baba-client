@@ -19,6 +19,7 @@ import { RefreshComponent } from './components/refresh/refresh.component';
 import { KurzusoldalComponent } from './kurzus/kurzusoldal/kurzusoldal.component';
 import { GyikComponent } from './components/gyik/gyik.component';
 import { LostPasswordComponent } from './components/lost-password/lost-password.component';
+import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
 
 const routes: Routes = [
   {path: '', loadChildren: () => FooldalModule},
@@ -40,6 +41,7 @@ const routes: Routes = [
   {path: 'videotar', loadChildren:() => VideotarModule},
   {path: 'kurzusok/:title', loadChildren: () => KurzusModule},
   {path: 'kurzusaloldal/:urlParam', component: KurzusoldalComponent},
+  {path: 'update-profile', component: UpdateProfileComponent},
   {path: 'not-found', component: NotFoundComponent},
   {path: 'refresh', component: RefreshComponent},
   {path: '**', component: RefreshComponent},

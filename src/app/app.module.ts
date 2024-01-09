@@ -34,6 +34,7 @@ import { SpecialCharacterDirective } from './directives/special-character.direct
 import { GyikComponent } from './components/gyik/gyik.component';
 import { AdminInterceptorService } from './admin-interceptor';
 import { LostPasswordComponent } from './components/lost-password/lost-password.component';
+import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
 
 
 
@@ -61,7 +62,8 @@ const firebaseConfig = {
     RefreshComponent,
     SpecialCharacterDirective,
     GyikComponent,
-    LostPasswordComponent
+    LostPasswordComponent,
+    UpdateProfileComponent
   ],
   imports: [
     BrowserModule,

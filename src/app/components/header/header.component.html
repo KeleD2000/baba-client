@@ -26,7 +26,7 @@
             </div>
             <input type="checkbox" class="dd-input" id="test">
             <ul class="dd-menu">
-              <li>Saját adatok</li>
+              <li routerLink="/update-profile">Saját adatok</li>
               <li *ngIf="isAdmin" routerLink="/admin/videotar">Videotéka</li>
               <li *ngIf="!isAdmin && videostore" routerLink="/user/videotar_elofizetett">Videotéka</li>
               <li *ngFor="let enrolledC of enrolledCourse" [routerLink]="'/kurzusok/' + enrolledC.title">{{enrolledC.title}}</li>
