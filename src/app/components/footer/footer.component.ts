@@ -69,14 +69,11 @@ export class FooterComponent {
 
   
 
-  closeModal(modalNumber: number) {
+  closeModal() {
     const modal = document.getElementById('exampleModal');
-    const modal2 = document.getElementById('exampleModal2');
-    if (modal && modal2) {
+    if (modal) {
       modal.style.display = 'none';
       modal.classList.remove('show');
-      modal2.style.display = 'none';
-      modal2.classList.remove('show');
     }
     this.showModal = false;
     this.showModal2 = false;

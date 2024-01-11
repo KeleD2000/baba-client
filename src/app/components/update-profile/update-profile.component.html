@@ -6,10 +6,6 @@
             <div class="mb-3">
                     <label class="form-label">Email cím</label>
                     <input formControlName="email" type="email" class="form-control" [(ngModel)]="emailModel">
-                    <div *ngIf="registerForm.get('email')?.errors?.['required'] && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
-                        class="error-message">
-                        Email cím megadása kötelező
-                    </div>
                     <div *ngIf="registerForm.get('email')?.errors?.['email'] && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
                         class="error-message">
                         Adj meg érvényes email címet
@@ -18,73 +14,45 @@
                 <div class="mb-3">
                     <label class="form-label">Hogyan szólítsunk</label>
                     <input formControlName="display_name" type="text" class="form-control" [(ngModel)]="display_nameModel">
-                    <div *ngIf="registerForm.get('display_name')?.errors?.['required'] && (registerForm.get('display_name')?.dirty || registerForm.get('display_name')?.touched)"
-                        class="error-message">
-                        Megjelenítő név megadása kötelező
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Vezetéknév</label>
                     <input formControlName="last_name" type="text" class="form-control" [(ngModel)]="last_nameModel">
-                    <div *ngIf="registerForm.get('last_name')?.errors?.['required'] && (registerForm.get('last_name')?.dirty || registerForm.get('last_name')?.touched)"
-                        class="error-message">
-                        Vezetéknév megadása kötelező
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Keresztnév</label>
                     <input formControlName="first_name" type="text" class="form-control" [(ngModel)]="first_nameModel">
-                    <div *ngIf="registerForm.get('first_name')?.errors?.['required'] && (registerForm.get('first_name')?.dirty || registerForm.get('first_name')?.touched)"
-                        class="error-message">
-                        Keresztnév megadása kötelező
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Születési dátum</label>
                     <input formControlName="birthdate" type="date" class="form-control" [(ngModel)]="birthdateModel">
-                    <div *ngIf="registerForm.get('birthdate')?.errors?.['required'] && (registerForm.get('birthdate')?.dirty || registerForm.get('birthdate')?.touched)"
-                        class="error-message">
-                        Születési dátum megadása kötelező
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Irányítószám</label>
                     <input formControlName="postcode" type="number" class="form-control" [(ngModel)]="postcodeModel">
-                    <div *ngIf="registerForm.get('postcode')?.errors?.['required'] && (registerForm.get('postcode')?.dirty || registerForm.get('postcode')?.touched)"
-                        class="error-message">
-                        Irányítószám megadása kötelező
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Város</label>
                     <input formControlName="city" type="text" class="form-control" [(ngModel)]="cityModel">
-                    <div *ngIf="registerForm.get('city')?.errors?.['required'] && (registerForm.get('city')?.dirty || registerForm.get('city')?.touched)"
-                        class="error-message">
-                        Város megadása kötelező
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Utca</label>
                     <input formControlName="street" type="text" class="form-control" [(ngModel)]="streetModel">
-                    <div *ngIf="registerForm.get('street')?.errors?.['required'] && (registerForm.get('street')?.dirty || registerForm.get('street')?.touched)"
-                        class="error-message">
-                        Utca megadása kötelező
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Ház szám</label>
                     <input formControlName="snumber" type="text" class="form-control" [(ngModel)]="snumberModel">
-                    <div *ngIf="registerForm.get('snumber')?.errors?.['required'] && (registerForm.get('snumber')?.dirty || registerForm.get('snumber')?.touched)"
-                        class="error-message">
-                        Ház szám megadása kötelező
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Ország</label>
                     <input formControlName="country" type="text" class="form-control" [(ngModel)]="countryModel">
-                    <div *ngIf="registerForm.get('country')?.errors?.['required'] && (registerForm.get('country')?.dirty || registerForm.get('country')?.touched)"
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Jelszó megadása a változtatáshoz</label>
+                    <input formControlName="password" type="password" class="form-control">
+                    <div *ngIf="registerForm.get('password')?.errors?.['required'] && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
                         class="error-message">
-                        Ország megadása kötelező
+                        Jelszó megadása kötelező
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
@@ -92,5 +60,27 @@
                 </div>
             </form>
         </div>
+    </div>
+    <div class="overlay" *ngIf="showModal"></div>
+    <div class="modal fade modalc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+      id="exampleModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form>
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">{{ modalTitle }}</h5>
+              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+              </button>
+            </div>
+            <div class="modal-body">
+              <div>{{ modalContent }}</div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                (click)="closeModal()">Bezárás</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 </div>

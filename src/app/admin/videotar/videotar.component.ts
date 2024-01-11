@@ -85,11 +85,13 @@ export class VideotarComponent {
   populateCategory() {
     this.fooldalService.getCatNames().subscribe(catData => {
       for (const [key, value] of Object.entries(catData)) {
+        console.log(catData);
         for (const k in value) {
           for (const j in value[k]) {
             const cat = value[k][j];
             if (cat.name !== undefined) {
               const obj = this.createCategoryObject(cat, value[k].id);
+              console.log(obj);
               this.populateRotation(obj);
               this.populateVideos(obj);
               this.categories.push(obj);
@@ -131,16 +133,14 @@ export class VideotarComponent {
   }
 
   populateVideos(obj: any): void {
+    console.log(obj.id)
     this.fooldalService.getVideos().subscribe(videoData => {
+      console.log(videoData);
       for (const [key, videos] of Object.entries(videoData)) {
         if (key === "data") {
           for (const k in videos) {
             const video = videos[k];
             console.log(video);
-            console.log(video.field_rotation.name);
-            console.log(video.field_category.name)
-            console.log(obj.title);
-            console.log(video.field_video);
             if (video.field_category.name === obj.title && Array.isArray(video.field_video)) {
               console.log(video.field_rotation.name);
               const findedRotation = obj.rotation.find((i: any) => i.title === video.field_rotation.name);

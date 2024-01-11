@@ -109,4 +109,18 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/user/lost-password-reset?_format=json`, data, {headers});
   }
 
+  updateUser(id: string, body: any){
+    const headers = new HttpHeaders({
+      "Content-Type" : "application/vnd.api+json"
+    });
+    return this.http.patch(`${this.baseUrl}/jsonapi/user/user/${id}`,body, {headers});
+  }
+
+  updateProfile(id: string, body: any){
+    const headers = new HttpHeaders({
+      "Content-Type" : "application/vnd.api+json"
+    });
+    return this.http.patch(`${this.baseUrl}/jsonapi/profile/customer/${id}`, body, {headers});
+  }
+
 }

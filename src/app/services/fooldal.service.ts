@@ -69,7 +69,7 @@ export class FooldalService {
       'Content-Type': 'application/vnd.api+json',
       'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
-    return this.http.get(`${this.baseUrl}/jsonapi/node/videostore`, { headers });
+    return this.http.get(`${this.baseUrl}/jsonapi/node/videostore?sort=field_weight`, { headers });
   }
 
   deleteVideos(id: string) {
