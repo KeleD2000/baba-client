@@ -63,14 +63,19 @@ export class FooldalService {
   getToken(): Observable<string> {
     return this.http.get<string>(`${this.baseUrl}/session/token`, { responseType: 'text' as 'json' });
   }
-
-  getVideos() {
+  
+  getVideos(url?: string) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/vnd.api+json',
-      'api-key' : '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
+      'api-key': '4d6b1b9d7ce8eddd9e81a4a0150c3d34'
     });
-    return this.http.get(`${this.baseUrl}/jsonapi/node/videostore?sort=field_weight`, { headers });
+  
+    // Ha van megadva URL, akkor azt használjuk, különben az alap URL-t
+    const apiUrl = url || `${this.baseUrl}/jsonapi/node/videostore?sort=field_weight,id`;
+  
+    return this.http.get(apiUrl, { headers });
   }
+  
 
   deleteVideos(id: string) {
     const headers = new HttpHeaders({

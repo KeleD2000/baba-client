@@ -85,13 +85,11 @@ export class VideotarComponent {
   populateCategory() {
     this.fooldalService.getCatNames().subscribe(catData => {
       for (const [key, value] of Object.entries(catData)) {
-        console.log(catData);
         for (const k in value) {
           for (const j in value[k]) {
             const cat = value[k][j];
             if (cat.name !== undefined) {
               const obj = this.createCategoryObject(cat, value[k].id);
-              console.log(obj);
               this.populateRotation(obj);
               this.populateVideos(obj);
               this.categories.push(obj);
@@ -132,25 +130,23 @@ export class VideotarComponent {
     });
   }
 
-  populateVideos(obj: any): void {
-    console.log(obj.id)
-    this.fooldalService.getVideos().subscribe(videoData => {
-      console.log(videoData);
+  populateVideos(obj: any, nextPageUrl?: string): void {
+
+    const videoObservable = nextPageUrl
+    ? this.fooldalService.getVideos(nextPageUrl)
+    : this.fooldalService.getVideos();
+
+    videoObservable.subscribe(videoData => {
       for (const [key, videos] of Object.entries(videoData)) {
         if (key === "data") {
           for (const k in videos) {
             const video = videos[k];
-            console.log(video);
             if (video.field_category.name === obj.title && Array.isArray(video.field_video)) {
-              console.log(video.field_rotation.name);
               const findedRotation = obj.rotation.find((i: any) => i.title === video.field_rotation.name);
-              console.log(findedRotation);
               if (findedRotation) {
                 if (video.field_video[0].type === "paragraph--video") {
-                  console.log(video.field_video[0]);
                   if (video.field_video[0].field_video.field_media_video_file != undefined) {
                       const baseUrl = this.fooldalService.getBaseUrl();
-                      console.log(video.field_video[0].field_video.field_media_video_file.uri);
                       if(video.field_video[0].field_video.field_media_video_file.uri){
                         var video_url = baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url;
                         var thumbnail;
@@ -168,7 +164,6 @@ export class VideotarComponent {
                 } else if (video.field_video[0].type === "paragraph--youtube_video") {
                   //youtube video
                   const videoId = this.extractVideoId(video.field_video[0].field_youtube_video.field_media_oembed_video);
-                  console.log(video.body.value);
                   if(video.body.value){
                     findedRotation.videos.push({ id: video.id, url: "https://www.youtube.com/embed/" + videoId, iframe: true, title: video.title, description: this.htmlconvetrService.convertToHtml(video.body.value) });
                   }
@@ -176,7 +171,6 @@ export class VideotarComponent {
                 }
               }
               else if(video.field_rotation.name === undefined) {
-                console.log(video);
                 const baseUrl = this.fooldalService.getBaseUrl();
                 var video_url = baseUrl + video.field_video[0].field_video.field_media_video_file.uri.url;
                 var thumbnail;
@@ -200,8 +194,16 @@ export class VideotarComponent {
             }
           }
         }
+        if(key === 'links'){
+          if(videos.next && videos.next.href !== undefined){
+            var nextLink = videos.next.href;
+          }
+        }
+        if (nextLink) {
+          this.populateVideos(obj, nextLink);
+        }
       }
-    });
+    })
   }
 
   sortCategories(): void {
@@ -244,9 +246,7 @@ export class VideotarComponent {
   }
 
   deleteVideos(videoId: string) {
-    console.log(videoId);
     this.fooldalService.deleteVideos(videoId).subscribe(response => {
-      console.log(response);
       this.categories = [];
       this.populateCategory();
     });
@@ -262,8 +262,6 @@ export class VideotarComponent {
       return;
     }
     if (this.video && this.thumbnail && this.uploadForm.valid) {
-      console.log(this.video);
-      console.log(this.thumbnail);
       this.upload = true;
       const formData = new FormData();
       formData.append('file', this.video, this.video.name);
@@ -309,7 +307,6 @@ export class VideotarComponent {
       try {
         const createMediaVideo = await this.fooldalService.createMediaVideo(data).toPromise();
         const createThumbnail = await this.fooldalService.createThumbnail(thumbnailData).toPromise();
-        console.log(createThumbnail);
         if (createMediaVideo) {
           for (const [key, value] of Object.entries(createMediaVideo)) {
             if (key === "data") {
@@ -322,7 +319,6 @@ export class VideotarComponent {
           for (const [key, value] of Object.entries(createThumbnail)) {
             if (key === "data") {
               const sendThumbnailImage = await this.fooldalService.sendImage(thumbnailFormData, this.thumbnail.name as string, value.id).toPromise();
-              console.log(sendThumbnailImage);
               videoPatchData.data.relationships.field_thumbnail.data[0].id = value.id;
             }
           }
@@ -400,7 +396,6 @@ export class VideotarComponent {
         }
         videoStoreData.data.relationships.uid.data.id = this.loggedUuid;
         const videoStore = await this.fooldalService.sendVideoStore(videoStoreData).toPromise();
-        console.log(videoStore);
         if (videoStore) {
           this.upload = false;
           this.closeModal();
