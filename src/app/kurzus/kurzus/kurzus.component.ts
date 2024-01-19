@@ -98,60 +98,69 @@ export class KurzusComponent {
 
   ngOnInit(): void {
     this.courseTitle = this.router.snapshot.params['title'];
-    this.fooldalService.getCoursesId().subscribe((cids: string[]) => {
-      for (const cid of cids) {
-        this.fooldalService.enrolledUserOutline(cid).subscribe((out) => {
-          console.log(out);
-          for (const [key, v] of Object.entries(out)) {
-            if (v.title != undefined && v.title[0].value != this.router.snapshot.params['title']) {
-              continue;
-            }
-            if (key === 'outline') {
-              this.firstBlock = true;
-              for (let i in v) {
-                console.log(v[i]);
-                this.obj = {
-                  tema_title: "",
-                  tema_description: "",
-                  lessons: [] as {}[]
+    this.fooldalService.getCourses().subscribe(crouse => {
+      for (const [key, value] of Object.entries(crouse)) {
+        if (key === 'courses') {
+          for (let i in value) {
+            if (this.courseTitle === value[i].title[0].value) {
+              console.log(value[i].cid[0].value);
+              this.fooldalService.enrolledUserOutline(value[i].cid[0].value).subscribe((out) => {
+                console.log(out);
+                for (const [key, v] of Object.entries(out)) {
+                  if (v.title != undefined && v.title[0].value != this.router.snapshot.params['title']) {
+                    continue;
+                  }
+                  if (key === 'outline') {
+                    this.firstBlock = true;
+                    for (let i in v) {
+                      console.log(v[i]);
+                      this.obj = {
+                        tema_title: "",
+                        tema_description: "",
+                        lessons: [] as {}[]
 
-                };
-                console.log(v[i]);
-                if (v[i].node.hasOwnProperty("title")) {
-                  this.obj.tema_title = v[i].node.title[0].value;
-                }
-                if (v[i].node.hasOwnProperty("body") && v[i].node.body.length > 0) {
-                  this.obj.tema_description = v[i].node.body[0].value;
+                      };
+                      console.log(v[i]);
+                      if (v[i].node.hasOwnProperty("title")) {
+                        this.obj.tema_title = v[i].node.title[0].value;
+                      }
+                      if (v[i].node.hasOwnProperty("body") && v[i].node.body.length > 0) {
+                        this.obj.tema_description = v[i].node.body[0].value;
 
-                }
+                      }
 
-                if (Array.isArray(v[i].lessons)) {
-                  console.log(v[i]);
-                  this.checkAndSetVideoEnded(v[i]);
-                  if (v[i].lessons.length > 0) {
-                    this.currentLesson.push(v[i]);
-                    console.log(this.currentLesson);
+                      if (Array.isArray(v[i].lessons)) {
+                        console.log(v[i]);
+                        this.checkAndSetVideoEnded(v[i]);
+                        if (v[i].lessons.length > 0) {
+                          this.currentLesson.push(v[i]);
+                          console.log(this.currentLesson);
+                        }
+
+                      }
+                      this.block.push(this.obj);
+                      console.log(this.block);
+                    }
+
+                    //console.log(this.block);
+                    this.block.forEach(element => {
+                      //console.log(element.lessons);
+                      for (let i in element.lessons) {
+
+                        this.completed.push(element.lessons[i].completed);
+                      }
+                    });
                   }
 
                 }
-                this.block.push(this.obj);
-                console.log(this.block);
-              }
-
-              //console.log(this.block);
-              this.block.forEach(element => {
-                //console.log(element.lessons);
-                for (let i in element.lessons) {
-
-                  this.completed.push(element.lessons[i].completed);
-                }
               });
             }
-
           }
-        });
+        }
       }
-    });
+    })
+
+
     console.log(this.currentLesson);
   }
 
@@ -160,25 +169,25 @@ export class KurzusComponent {
     if (clickedElement.tagName === 'A' && this.currentLesson.length > 0) {
       let patchExecuted = false; // Új változó a patch művelet végrehajtásának nyilvántartására
       const lessonsToPatch = [];
-  
+
       for (let k in this.currentLesson) {
         for (let j in this.currentLesson[k].lessons) {
           const lesson = this.currentLesson[k].lessons[j];
           console.log(lesson.fulfillment);
-  
+
           // Csak azokat a leckéket tároljuk el, ahol a feltétel teljesül
           if (lesson.fulfillment.complete.length <= 0) {
             lessonsToPatch.push(lesson);
           }
         }
-  
+
         // Ha van olyan lecke, amit patchelni kell, kilépünk mindkét ciklusból
         if (lessonsToPatch.length > 0) {
           patchExecuted = true;
           break;
         }
       }
-  
+
       // Patch műveletet csak akkor hajtjuk végre, ha van olyan lecke, amit patchelni kell
       if (patchExecuted) {
         const firstLessonToPatch = lessonsToPatch[0];
@@ -191,7 +200,7 @@ export class KurzusComponent {
             }
           }
         };
-  
+
         // Várjuk meg a patchelést, csak az első megfelelő leckére
         console.log(firstLessonToPatch);
         console.log(watchedBody);
@@ -201,7 +210,7 @@ export class KurzusComponent {
       }
     }
   }
-  
+
 
   private checkAndSetVideoEnded(vElement: any): void {
     let firstMatch = true;

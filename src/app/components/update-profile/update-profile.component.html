@@ -29,7 +29,11 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Irányítószám</label>
-                    <input formControlName="postcode" type="number" class="form-control" [(ngModel)]="postcodeModel">
+                    <input formControlName="postcode" type="text" class="form-control" [(ngModel)]="postcodeModel">
+                    <div *ngIf="registerForm.get('postcode')?.errors?.['pattern'] && (registerForm.get('postcode')?.dirty || registerForm.get('postcode')?.touched)"
+                    class="error-message">
+                    Adj meg érvényes irányitószámot (pl: 1111)!
+                </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Város</label>

@@ -39,7 +39,7 @@ export class UpdateProfileComponent {
         first_name: new FormControl(''),
         last_name: new FormControl(''),
         birthdate: new FormControl(''),
-        postcode: new FormControl(''),
+        postcode: new FormControl('',[ Validators.pattern(/^\d{4}$/)]),
         city: new FormControl(''),
         street: new FormControl(''),
         snumber: new FormControl(''),
