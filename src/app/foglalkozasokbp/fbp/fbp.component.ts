@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { format, parseISO, isEqual, isBefore, isAfter } from 'date-fns';
 import { ChangeDetectorRef, Component, ElementRef, Renderer2, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -323,58 +323,80 @@ export class FbpComponent {
               var_id: '',
               var_type: '',
               convertedDate: '',
+              registerData: '',
               is_booked: false,
               is_can_pay: false,
               todayDateVsHallDate: true
             }
+            console.log(value[i]);
             hallObj.title = value[i].title;
             hallObj.place = value[i].field_location.field_label;
             let rawDate = value[i].field_date;
             let formattedDate = rawDate ? this.datePipe.transform(rawDate, 'yyyy.MM.dd. – HH:mm') : '';
             hallObj.date = formattedDate || ''
+            let rawDateR = value[i].field_registration_start;
+            console.log(value[i].field_registration_start);
+            let formattedDateR = rawDateR ? this.datePipe.transform(rawDateR, 'yyyy.MM.dd. – HH:mm') : '';
+            console.log(formattedDateR);
+            hallObj.registerData = formattedDateR || ''
             let converted = this.htmlconvertService.convertToHtml(value[i].body.value);
             hallObj.desc = converted;
-            hallObj.max_member = value[i].variations[0].field_headcount.available_stock;
-            hallObj.price = value[i].variations[0].price.formatted;
+            console.log(value[i].variations.length);
+            if (value[i].variations.length !== undefined) {
+              hallObj.max_member = value[i].variations[0].field_headcount.available_stock;
+              hallObj.price = value[i].variations[0].price.formatted;
+              console.log(value[i].variations[0]);
+              hallObj.var_type = value[i].variations[0].type;
+              hallObj.var_id = value[i].variations[0].id;
+            }
             hallObj.product_id = value[i].id;
-            hallObj.var_type = value[i].variations[0].type;
-            hallObj.var_id = value[i].variations[0].id;
             let coord = value[i].field_location.field_address;
             const coordSplit = coord.split(',');
             const NumberLat = Number(coordSplit[0]);
             const NumberLong = Number(coordSplit[1]);
+            console.log
             const todayDate: string = format(new Date(), 'yyyy.MM.dd');
             const onlyDate: string = formattedDate ? formattedDate.split(' – ')[0] : '';
+            const regData: string = formattedDateR ? formattedDateR.split(' – ')[0] : '';
+            console.log(regData);
             const convertedTodayDate = format(new Date(todayDate), 'yyyy-MM-dd');
             const convertedOnlyDate = format(new Date(onlyDate), 'yyyy-MM-dd');
+            const convertedRegDate = format(new Date(regData), 'yyyy-MM-dd');
+            console.log(convertedRegDate);
             hallObj.convertedDate = convertedOnlyDate;
+            hallObj.registerData = convertedRegDate;
             const convertTodayDate = parseISO(convertedTodayDate);
             const convertOnlyDate = parseISO(convertedOnlyDate);
+            const convertRegDate = parseISO(convertedRegDate);
             console.log(convertTodayDate);
             console.log(convertOnlyDate);
-            if (isBefore(convertOnlyDate, convertTodayDate)) {
-              hallObj.todayDateVsHallDate = false;
-
+            console.log(convertRegDate);
+    
+            // Kiegészítés: Ne pusholja bele a tömbbe, ha a dátum a mai dátum előtt van
+            if (!isBefore(convertOnlyDate, convertTodayDate)) {
+              if (isEqual(convertOnlyDate, convertTodayDate) || isBefore(convertRegDate, convertTodayDate)) {
+                hallObj.is_can_pay = true;
+              } else if (isAfter(convertOnlyDate, convertTodayDate)) {
+                hallObj.is_booked = true;
+              }
+              hallObj.lat = NumberLat;
+              hallObj.long = NumberLong;
+              this.hallProducts.push(hallObj);
+              console.log(this.hallProducts)
+              localStorage.setItem('hall', JSON.stringify(this.hallProducts));
+              this.cdr.detectChanges();
             }
-            if (isEqual(convertOnlyDate, convertTodayDate) || isBefore(convertOnlyDate, convertTodayDate)) {
-              hallObj.is_can_pay = true
-            } else if (isAfter(convertOnlyDate, convertTodayDate)) {
-              hallObj.is_booked = true;
-            }
-            hallObj.lat = NumberLat;
-            hallObj.long = NumberLong;
-            this.hallProducts.push(hallObj);
-            localStorage.setItem('hall', JSON.stringify(this.hallProducts));
-            this.cdr.detectChanges();
           }
         }
       }
     });
-    console.log(this.hallProducts)
+    
+
 
   }
 
   addCart(type: any, id: any) {
+    console.log(type, id);
     this.postDataProducts = {
       data: [
         {
@@ -399,6 +421,7 @@ export class FbpComponent {
       given_name: '',
       family_name: '',
     };
+    console.log(this.postDataProducts);
     this.fooldalService.addItemToCart(this.postDataProducts).subscribe((p) => {
       for (const [key, value] of Object.entries(p)) {
         if (key === 'data') {

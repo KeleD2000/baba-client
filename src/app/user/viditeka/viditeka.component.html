@@ -30,8 +30,11 @@
     <button type="button" class="btn btn-primary m-4" (click)="loadRecommendedVideos()">Kérem az ajánlott
       videókat</button>
   </div>
+  <div [@fadeInOut] *ngIf="errorMessage" class="err-message">
+    {{ errorMessage }}
+  </div>
   <div class="lessons">
-    <div class="lesson" *ngFor="let vid of objVid; let k = index">
+    <div [@fadeInOut] class="lesson" *ngFor="let vid of objVid; let k = index">
       <div class="lesson-container">
         <div class="video-container">
           <div *ngIf="vid.video_url && !vid.y_video_url">

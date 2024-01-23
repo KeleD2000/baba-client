@@ -23,6 +23,13 @@
     text-align: center;
 }
 
+.p-pos-down{
+    font-size: 20px;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #0A606F;
+    text-align: center;
+}
+
 .overlay {
     position: fixed;
     z-index: 9998;

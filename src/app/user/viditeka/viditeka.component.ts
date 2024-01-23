@@ -45,6 +45,8 @@ export class ViditekaComponent {
   modalContent: string = '';
   showFullCatDesc: boolean = false; // Zászló a teljes kategória leírásának megjelenítéséhez
   showSummary: boolean = false;
+  errorMessage: string = '';
+
 
 
   constructor(private fooldalService: FooldalService, private htmlConvert: HtmlconvertService,
@@ -192,6 +194,7 @@ export class ViditekaComponent {
   loadRecommendedVideos() {
     this.objVid = [];
     if (this.activeCategoryIndex >= 0) {
+      this.errorMessage = '';
       const selectedCategory = this.objCat[this.activeCategoryIndex];
       this.fooldalService.getCurrentVideos(selectedCategory.tid).subscribe((v) => {
         // Ellenőrizzük, hogy van-e videó az adott kategóriához
@@ -255,6 +258,9 @@ export class ViditekaComponent {
           this.objVid = []; // Nincs videó az adott kategóriához, üres tömb
         }
       });
+    }else {
+      this.errorMessage = 'Kérlek válassz ki egy kategóriát!';
+      return;
     }
   }
 

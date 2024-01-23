@@ -166,3 +166,12 @@ li:hover .cat-image span {
 .modal {
     z-index: 9999;
 }
+
+.err-message {
+    font-size: 20px;
+    color: #F54D9F;
+    /*text-transform: uppercase;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);*/
+    font-style: italic;
+    text-align: center;
+}
