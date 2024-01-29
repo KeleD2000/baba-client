@@ -5,6 +5,7 @@ import { KurzusRoutingModule } from './kurzus-routing.modul';
 import { SharedModule } from '../shared/shared.module';
 import { KurzussafePipe } from '../pipes/kurzussafe.pipe';
 import { KurzusoldalComponent } from './kurzusoldal/kurzusoldal.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 
@@ -20,7 +21,8 @@ import { KurzusoldalComponent } from './kurzusoldal/kurzusoldal.component';
   imports: [
     CommonModule,
     KurzusRoutingModule,
-    SharedModule
+    SharedModule,
+    FontAwesomeModule
   ]
 })
 export class KurzusModule { }

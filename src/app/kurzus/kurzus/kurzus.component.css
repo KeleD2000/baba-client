@@ -75,15 +75,21 @@
     white-space: normal;
 }
 
-.read-more-button{
-    color:#F54D9F;
+.read-more-button {
+    color: #F54D9F;
     padding: 5px 10px;
     cursor: pointer;
     text-align: right;
-  }
+}
 
-  .disabled-button {
+.disabled-button {
     color: #808080;
     pointer-events: none;
-  }
-  
+}
+
+.down-arrow {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+}

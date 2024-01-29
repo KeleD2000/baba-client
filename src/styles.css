@@ -35,6 +35,7 @@
 button.btn.btn-primary.button-style{
     background-color: #F54D9F;
     border:none;
+    width: 40%;
 }
 
 button.btn.btn-primary.button-style.custom{

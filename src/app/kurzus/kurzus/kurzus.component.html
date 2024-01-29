@@ -3,7 +3,8 @@
 </div>
 <div class="container">
   <ng-container *ngFor="let blockt of block; let i = index">
-    <div class="course mb-3" *ngIf="blockt.tema_title || blockt.tema_description">
+    <div class="course mb-3 position-relative" *ngIf="blockt.tema_title || blockt.tema_description">
+      <fa-icon (click)="toggleLesson(i)"  [icon]="lessonStates[i] ? upArrow : downArrow" class="down-arrow"></fa-icon>
       <p class="course-title" (click)="toggleLesson(i)" *ngIf="blockt.tema_title">{{ blockt.tema_title }}</p>
       <div class="container" *ngIf="blockt.tema_description">
         <p class="course-desc" (click)="toggleLesson(i)" [innerHTML]="blockt.tema_description"></p>

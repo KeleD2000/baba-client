@@ -6,6 +6,7 @@ import { SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { VideoStatusService } from 'src/app/services/video-status.service';
+import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-kurzus',
@@ -29,6 +30,8 @@ export class KurzusComponent {
   videoIds: any[] = [];
   lessonColor: string = 'darkgray';
   visible: boolean = false;
+  downArrow = faArrowDown;
+  upArrow = faArrowUp;
   private currentLesson: any[] = [];
   private isFirstFalseAfterTrue: boolean = true;
   public videoEnded?: boolean;
