@@ -72,3 +72,7 @@ button.btn.btn-primary.button-style.custom{
     font-style: italic;
 }
 
+a{
+    text-decoration: none;
+}
+
