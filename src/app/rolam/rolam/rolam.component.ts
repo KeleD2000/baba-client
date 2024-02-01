@@ -39,7 +39,7 @@ export class RolamComponent {
                       content: "" as SafeHtml, img_url: "", img_layout: "", youtube_video: "",
                       text_condensed: "" as SafeHtml, button_content: "" as SafeHtml,
                       text_highlighted_content: "" as SafeHtml, video: "", video_thumbnail: "",
-                      img_alt:"", img_blue_alt: "",
+                      img_alt:"", img_blue_alt: "", video_360: "", video_720: "", video_1080: "",
                       alignmentSettings: {
                         isCenterText: false,
                         isJustifiedText: false,
@@ -110,7 +110,9 @@ export class RolamComponent {
                     } else if (value.field_paragraphs[k].type === 'paragraph--video') {
                       obj.video = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url;
                       obj.video_thumbnail = this.baseUrl + value.field_paragraphs[k].field_video.thumbnail.uri.url;
-
+                      obj.video_360 = this.baseUrl + value.field_paragraphs[k].field_video.field_converted_360p.uri.url;
+                      obj.video_720 = this.baseUrl + value.field_paragraphs[k].field_video.field_converted_720p.uri.url;
+                      obj.video_1080 = this.baseUrl + value.field_paragraphs[k].field_video.field_converted_1080p.uri.url;
                     }
                     this.content.push(obj);
 

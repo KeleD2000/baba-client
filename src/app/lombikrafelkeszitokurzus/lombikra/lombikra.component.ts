@@ -17,6 +17,13 @@ export class LombikraComponent {
 
   constructor(private fooldalService: FooldalService, private htmlconvertService: HtmlconvertService, private sanitizer: DomSanitizer) { }
 
+  
+  extractVideoId(url: string): string | null {
+    const regex = /[?&]v=([^&#]*)/i;
+    const match = regex.exec(url);
+    return match ? match[1] : null;
+  }
+
   ngOnInit() {
     this.fooldalService.getId().subscribe((i) => {
       for (const [key, value] of Object.entries(i)) {
@@ -32,7 +39,8 @@ export class LombikraComponent {
                     const obj = {
                       content: "" as SafeHtml, img_url: "", img_layout: "", text_condensed: "" as SafeHtml,
                       button_content: "" as SafeHtml, text_highlighted_content: "" as SafeHtml,
-                      video: "", video_thumbnail: "", img_alt:"", img_blue_alt: "",
+                      video: "", video_thumbnail: "", img_alt:"", img_blue_alt: "",  video_360: "", video_720: "", video_1080: "",
+                      youtube_video : "",
                       alignmentSettings: {
                         isCenterText: false,
                         isJustifiedText: false,
@@ -101,7 +109,12 @@ export class LombikraComponent {
                     } else if (value.field_paragraphs[k].type === 'paragraph--video') {
                       obj.video = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url
                       obj.video_thumbnail = this.baseUrl + value.field_paragraphs[k].field_video.field_thumbnail.field_media_image.uri.url;
-                      console.log(obj.video_thumbnail);
+                      obj.video_360 = this.baseUrl + value.field_paragraphs[k].field_video.field_converted_360p.uri.url;
+                      obj.video_720 = this.baseUrl + value.field_paragraphs[k].field_video.field_converted_720p.uri.url;
+                      obj.video_1080 = this.baseUrl + value.field_paragraphs[k].field_video.field_converted_1080p.uri.url;
+                    }else if (value.field_paragraphs[k].type === 'paragraph--youtube_video') {
+                      const videoId = this.extractVideoId(value.field_paragraphs[k].field_youtube_video.field_media_oembed_video);
+                      obj.youtube_video = "https://www.youtube.com/embed/" + videoId
                     }
                     this.content.push(obj);
                   }

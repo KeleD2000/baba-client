@@ -4,12 +4,14 @@ import { RouterModule } from '@angular/router';
 import { BabafeszkeloComponent } from './babafeszkelo/babafeszkelo.component';
 import { BabafeszkelokurzusRoutingModule } from './babafeszkelokurzus-routing.module';
 import { SharedModule } from "../shared/shared.module";
+import { BabafeszkelosafePipe } from '../pipes/babafeszkelosafe.pipe';
 
 
 
 @NgModule({
     declarations: [
-        BabafeszkeloComponent
+        BabafeszkeloComponent,
+        BabafeszkelosafePipe
     ],
     imports: [
         CommonModule,

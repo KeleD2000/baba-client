@@ -4,12 +4,14 @@ import { RouterModule } from '@angular/router'
 import { FooldalRoutingModule } from './fooldal-routing.module';
 import { TartalomComponent } from './tartalom/tartalom.component';
 import { SharedModule } from "../shared/shared.module";
+import { TartalomsafePipe } from '../pipes/tartalomsafe.pipe';
 
 
 
 @NgModule({
     declarations: [
-        TartalomComponent
+        TartalomComponent,
+        TartalomsafePipe
     ],
     imports: [
         CommonModule,

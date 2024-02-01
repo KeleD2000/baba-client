@@ -42,8 +42,6 @@ export class KurzusComponent {
   };
   firstBlock: boolean = true;
 
-
-
   constructor(private fooldalService: FooldalService,
     private htmlconvertService: HtmlconvertService,
     private router: ActivatedRoute,

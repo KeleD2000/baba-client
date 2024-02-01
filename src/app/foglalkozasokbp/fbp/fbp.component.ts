@@ -220,7 +220,7 @@ export class FbpComponent {
                       content: '' as SafeHtml, youtube_video: "", img_url: "", img_layout: "",
                       video_url: "", text_condensed: "" as SafeHtml, button_content: "" as SafeHtml,
                       text_highlighted_content: "" as SafeHtml, video: "", video_thumbnail: "",
-                      img_alt:"", img_blue_alt: "",
+                      img_alt:"", img_blue_alt: "", video_360: "", video_720: "", video_1080: "",
                       alignmentSettings: {
                         isCenterText: false,
                         isJustifiedText: false,
@@ -290,6 +290,9 @@ export class FbpComponent {
                     } else if (value.field_paragraphs[k].type === 'paragraph--video') {
                       obj.video = this.baseUrl + value.field_paragraphs[k].field_video.field_media_video_file.uri.url
                       obj.video_thumbnail = this.baseUrl + value.field_paragraphs[k].field_video.field_thumbnail.field_media_image.uri.url;
+                      obj.video_360 = this.baseUrl + value.field_paragraphs[k].field_video.field_converted_360p.uri.url;
+                      obj.video_720 = this.baseUrl + value.field_paragraphs[k].field_video.field_converted_720p.uri.url;
+                      obj.video_1080 = this.baseUrl + value.field_paragraphs[k].field_video.field_converted_1080p.uri.url;
                     } else if (value.field_paragraphs[k].type === 'paragraph--youtube_video') {
                       const videoId = this.extractVideoIdAndTime(value.field_paragraphs[k].field_youtube_video.field_media_oembed_video).videoId;
                       obj.youtube_video = "https://www.youtube.com/embed/" + videoId

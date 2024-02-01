@@ -116,7 +116,7 @@ export class OsszegzesComponent {
               for(const [k,v] of Object.entries(s)){
                 if(k === 'data'){
                   for(let j in v){
-                    if(v[j].title === productTitle){
+                    if(v[j].variations[0].title === productTitle){
                       console.log(v[j].body.value.toString());
                       const createPayPal = {
                         "intent" : "CAPTURE",
