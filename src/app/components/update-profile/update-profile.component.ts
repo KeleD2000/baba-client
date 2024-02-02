@@ -1,4 +1,5 @@
 import { Component, Renderer2 } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs';
@@ -9,7 +10,14 @@ import { FooldalService } from 'src/app/services/fooldal.service';
 @Component({
   selector: 'app-update-profile',
   templateUrl: './update-profile.component.html',
-  styleUrls: ['./update-profile.component.css']
+  styleUrls: ['./update-profile.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      state('in', style({ opacity: 1 })),
+      transition(':enter', [style({ opacity: 0 }), animate(300)]),
+      transition(':leave', animate(300, style({ opacity: 0 })))
+    ])
+  ]
 })
 export class UpdateProfileComponent {
   registerForm: FormGroup;
@@ -28,6 +36,8 @@ export class UpdateProfileComponent {
   showModal: boolean = false;
   modalTitle: string = '';
   modalContent: string = '';
+  loginError?: string;
+  showLoginAlert: boolean = false;
   countryAvailable: any[] = [];
 
   constructor(private authService: AuthService, private router: Router, private fooldalService: FooldalService,
@@ -39,7 +49,7 @@ export class UpdateProfileComponent {
         first_name: new FormControl(''),
         last_name: new FormControl(''),
         birthdate: new FormControl(''),
-        postcode: new FormControl('',[ Validators.pattern(/^\d{4}$/)]),
+        postcode: new FormControl('', [Validators.pattern(/^\d{4}$/)]),
         city: new FormControl(''),
         street: new FormControl(''),
         snumber: new FormControl(''),
@@ -164,6 +174,12 @@ export class UpdateProfileComponent {
           }
         }
       }
+    }, error => {
+      this.showLoginAlert = true;
+      this.loginError = error.error.errors[1].detail;
+      setTimeout(() => {
+        this.showLoginAlert = false;
+      }, 3000);
     }
     );
   }
@@ -176,7 +192,7 @@ export class UpdateProfileComponent {
     }
     this.showModal = true;
     this.renderer.addClass(document.body, 'no-scroll');
-  
+
     // Az adott platformnak megfelelő tartalom beállítása
     this.modalTitle = '';
     this.modalContent = '';
@@ -186,7 +202,7 @@ export class UpdateProfileComponent {
         this.modalContent = 'Az adataid sikeresen módosította.';
         break;
     }
-  
+
     // A popup tartalom és cím beállítása
     const modalTitleElement = document.querySelector('.modal-title');
     const modalBody = document.querySelector('.modal-body');

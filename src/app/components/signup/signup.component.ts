@@ -31,7 +31,7 @@ export class SignupComponent {
         password: new FormControl('', [Validators.required]),
         passwordAccept: new FormControl('', [Validators.required]),
         birthdate: new FormControl('', [Validators.required]),
-        postcode: new FormControl('',[Validators.required]),
+        postcode: new FormControl('',[Validators.required, Validators.pattern(/^\d{4}$/)]),
         city: new FormControl('', [Validators.required]),
         street: new FormControl('', [Validators.required]),
         snumber: new FormControl('', [Validators.required]),

@@ -12,7 +12,7 @@ export class AdminInterceptorService implements HttpInterceptor {
     constructor(private fooldalService: FooldalService, private authService: AuthService) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
         // Ellenőrizd, hogy a kérés a megfelelő szolgáltatás URL-ét tartalmazza-e
-        if (request.url.includes(this.baseUrl + '/jsonapi/promotions' || this.baseUrl + '/user/register?_format=json') || request.url.includes(this.baseUrl + '/jsonapi/path_alias/path_alias') || request.url.includes(this.baseUrl + '/jsonapi/orders/default') || request.url.includes(this.baseUrl + '/jsonapi/checkout') || request.url.includes(this.baseUrl + '/jsonapi/promotion-coupons') || request.url.includes(this.baseUrl + '/jsonapi/course_object_fulfillment/course_object_fulfillment')) {
+        if (request.url.includes(this.baseUrl + '/jsonapi/paragraph/video') || request.url.includes(this.baseUrl + '/jsonapi/node/videostore') || request.url.includes(this.baseUrl + '/jsonapi/media/image') || request.url.includes(this.baseUrl + '/jsonapi/media/video') || request.url.includes(this.baseUrl + '/jsonapi/promotions' || this.baseUrl + '/user/register?_format=json') || request.url.includes(this.baseUrl + '/jsonapi/path_alias/path_alias') || request.url.includes(this.baseUrl + '/jsonapi/orders/default') || request.url.includes(this.baseUrl + '/jsonapi/checkout') || request.url.includes(this.baseUrl + '/jsonapi/promotion-coupons') || request.url.includes(this.baseUrl + '/jsonapi/course_object_fulfillment/course_object_fulfillment')) {
           // Lekérdezzük a CSRF tokent
           return from(this.fooldalService.getToken()).pipe(
             switchMap((token) => {

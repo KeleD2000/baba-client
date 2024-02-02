@@ -60,7 +60,7 @@ export class KurzusComponent {
     const textContainer = document.createElement('div');
     textContainer.innerHTML = lesson.lessons_desc;
     document.body.appendChild(textContainer);
-    const isOverflowing = textContainer.scrollHeight > 118;
+    const isOverflowing = textContainer.scrollHeight > 145;
     document.body.removeChild(textContainer);
     return isOverflowing;
   }

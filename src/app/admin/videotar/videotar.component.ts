@@ -307,6 +307,7 @@ export class VideotarComponent {
       try {
         const createMediaVideo = await this.fooldalService.createMediaVideo(data).toPromise();
         const createThumbnail = await this.fooldalService.createThumbnail(thumbnailData).toPromise();
+        console.log(createMediaVideo, createThumbnail);
         if (createMediaVideo) {
           for (const [key, value] of Object.entries(createMediaVideo)) {
             if (key === "data") {
