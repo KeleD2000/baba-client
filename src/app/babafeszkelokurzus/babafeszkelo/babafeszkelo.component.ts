@@ -116,6 +116,8 @@ export class BabafeszkeloComponent {
                       const videoId = this.extractVideoId(value.field_paragraphs[k].field_youtube_video.field_media_oembed_video);
                       obj.youtube_video = "https://www.youtube.com/embed/" + videoId
                     }
+
+                    console.log(obj);
                     this.content.push(obj);
                   }
                 }

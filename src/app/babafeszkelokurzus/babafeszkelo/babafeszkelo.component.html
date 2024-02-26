@@ -26,25 +26,25 @@
     <ng-container *ngIf="!content.content && content.img_url">
         <img class="img" [src]="content.img_url" [alt]="content.img_alt">
     </ng-container>
-    <ng-container *ngIf="content.button_content && !content.content && !content.img_url">
+    <ng-container *ngIf="content.button_content">
         <div class="text-center">
             <button type="button" class="btn btn-primary button-style" [innerHTML]="content.button_content"></button>
         </div>
     </ng-container>
-    <ng-container *ngIf="content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
+    <ng-container *ngIf="content.text_condensed">
         <div [innerHTML]="content.text_condensed" [ngClass]="{'text-con' : isTextCondensed}"></div>
     </ng-container>
     <ng-container
-        *ngIf="content.text_highlighted_content && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content">
+        *ngIf="content.text_highlighted_content">
         <div [innerHTML]="content.text_highlighted_content" [ngClass]="{'bgGreen' : isTextBackgroundGreen}"></div>
     </ng-container>
     <ng-container
-        *ngIf="content.video && !content.text_condensed && !content.youtube_video && !content.img_url && !content.content && !content.button_content">
+        *ngIf="content.video">
         <app-video-player style="padding-top: 15px;"
             [options]="{fluid: true, aspectRatio: '16:9', autoplay: false, poster: content.video_thumbnail, sources: [{ src: content.video, type: 'video/mp4' , label: 'Basic' }, { src: content.video_1080, type: 'video/mp4' , label: '1080p' },{ src: content.video_720, type: 'video/mp4' , label: '720p' }, { src: content.video_360, type: 'video/mp4' , label: '360p' }]}">
         </app-video-player>
     </ng-container>
-    <ng-container *ngIf="content.youtube_video && !content.img_url && !content.content">
+    <ng-container *ngIf="content.youtube_video">
         <div class="col-lg-12 text-center">
           <iframe class="iframe-size" [src]="content.youtube_video | babafeszkelosafe : 'resourceUrl'" frameborder="0"></iframe>
         </div>

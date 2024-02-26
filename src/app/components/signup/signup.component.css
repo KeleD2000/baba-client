@@ -1,18 +1,23 @@
-.reg{
+.reg {
     float: right;
 }
 
-.c{
+.c {
     background-color: #0A606F;
     border-color: #0A606F;
 }
 
-.form-control{
+.form-control {
     border-color: #0A606F;
 }
 
-.btn:hover{
+.btn:hover {
     background-color: #E6009F;
     border-color: #E6009F;
 }
 
+.p-pos {
+    font-size: 24px;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #E6009F;
+}

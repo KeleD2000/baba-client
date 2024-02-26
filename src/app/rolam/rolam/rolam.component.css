@@ -69,25 +69,22 @@
     padding: 10px;
 }
 
-.iframe-size{
+.iframe-size {
     width: 540px;
     height: 320px;
 }
 
-.p-10{
-    padding: 10px;
-}
-
 @media screen and (max-width: 768px) {
-    .column{
+    .column {
         width: 100% !important;
     }
-    iframe{
+
+    iframe {
         width: 90% !important;
     }
-  }
+}
 
-.iframe-container{
+.iframe-container {
     display: flex;
     justify-content: center;
 }
