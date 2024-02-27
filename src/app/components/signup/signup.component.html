@@ -63,7 +63,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Születési év</label>
-                    <input formControlName="birthdate" type="date" class="form-control">
+                    <input formControlName="birthdate" type="number" class="form-control">
                     <div *ngIf="registerForm.get('birthdate')?.errors?.['required'] && (registerForm.get('birthdate')?.dirty || registerForm.get('birthdate')?.touched)"
                         class="error-message">
                         Születési dátum megadása kötelező

@@ -54,11 +54,13 @@ export class SignupComponent {
     console.log(this.registerForm.valid);
 
     if (this.registerForm.valid) {
+      const year: number = this.registerForm.get('birthdate')?.value;
+      const formattedBirthdate =  `${year}-01-01`;
       const userData: Register = {
         mail: { value: this.registerForm.get('email')?.value },
         name: { value: this.registerForm.get('email')?.value },
         display_name: { value: this.registerForm.get('display_name')?.value },
-        field_birth_date: { value: this.registerForm.get('birthdate')?.value.replace(/\./g, "-") },
+        field_birth_date: { value: formattedBirthdate },
         pass: { value: this.registerForm.get('password')?.value }
 
       }
