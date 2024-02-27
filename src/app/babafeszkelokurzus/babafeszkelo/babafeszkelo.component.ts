@@ -31,7 +31,7 @@ export class BabafeszkeloComponent {
       for (const [key, value] of Object.entries(i)) {
         if (Array.isArray(value)) {
           for (const [k, v] of Object.entries(value)) {
-            //console.log(k,v);
+            console.log(k,v);
             //console.log(v.path.alias);
             if (v.title === 'Babafészkelő kurzus') {
               this.fooldalService.getFooldal(v.id).subscribe((page) => {
